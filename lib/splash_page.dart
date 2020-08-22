@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:this_music/shared/widgets/thismusic_logo.dart';
 import 'welcome_page.dart';
 
 class SplashPage extends StatefulWidget {
+  static const routeName = '/splash-page';
   @override
   _SplashPageState createState() => _SplashPageState();
 }
@@ -25,21 +28,13 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    double hight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20),
-          ),
-          child: Image.asset(
-            'assets/images/splash.jpg',
-            fit: BoxFit.fill,
-            height: 150,
-          ),
-        ),
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width / 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
       ),
+      child: ThisMusicLogo(),
     );
   }
 }
