@@ -1,7 +1,6 @@
 {
-  "lawyer" : "Avukat",
-  "customer" : "Müşteri",
-  "student" : "Öğrenci",
+  "welcomeStart": "İçindeki Ritmi Keşfet!",
+  "registerStart": "Denemeye başlamak için ücretsiz kaydol",
   "b0" : "Hesap oluştur",
   "b0Msg" : "Lorem Ipsum, baskı ve dizgi endüstrisinin kukla metni",
   "b1" : "Doğru avukatı bulun",
@@ -11,7 +10,7 @@
   "b3" : "Abone Ol ve Öde",
   "b3Msg" : "Lorem Ipsum, baskı ve dizgi endüstrisinin kukla metni",
   "register" : "Kayıt ol",
-  "login" : "Oturum aç",
+  "login" : "Giriş yap",
   "loginMsg" : "Merhaba! lütfen aşağıdaki alanları doldurun",
   "socialMediaMsg" : "Veya Sosyal Medya ile Devam Et",
   "facebook" : "Facebook",

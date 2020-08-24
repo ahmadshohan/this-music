@@ -1,7 +1,6 @@
 {
-  "lawyer" : "Lawyer",
-  "customer" : "Customer",
-  "student" : "Student",
+  "welcomeStart": "Discover the Rhythm Inside!",
+  "registerStart": "Sign up for free to start trial",
   "b0" : "Create Account",
   "b0Msg" :"Lorem ipsum is simply dummy text of the printing and typesetting industry",
   "b1" : "Find the right lawyer",

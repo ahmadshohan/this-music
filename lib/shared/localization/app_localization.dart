@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:easy_localization/easy_localization.dart';
+import '../services/preferences_service.dart';
 
 class AppLocalization {
   static const ar = 'ar';
@@ -9,6 +11,8 @@ class AppLocalization {
   static const tr = 'tr';
   static const defaultLang = tr;
   static String currentLang = en;
+  static PreferencesService _preferencesService = PreferencesService();
+  static BehaviorSubject<String> langStream = new BehaviorSubject();
 
   static get translationPath {
     return 'assets/translations';
@@ -16,16 +20,33 @@ class AppLocalization {
 
   static get supportedLocales {
     return [
-      Locale(ar),
-      Locale(en),
       Locale(tr),
+      Locale(en),
+      Locale(ar),
     ];
   }
 
+  static setLang(BuildContext context, String lang) {
+    currentLang = lang;
+    context.locale = Locale(lang);
+    _preferencesService.lang = lang;
+    langStream.value = lang;
+  }
+
+  static get(String label, {List<String> args}) {
+    if (args != null && args.isNotEmpty) {
+      for (var i = 0; i < args.length; ++i) {
+        label = label.tr().replaceAll("{$i}", args[i]);
+      }
+    }
+    return label.tr();
+  }
+
+  static get welcomeStart => 'welcomeStart'.tr();
+  static get registerStart => 'registerStart'.tr();
   static get lorem => 'lorem'.tr();
   static get loremLarge => 'loremLarge'.tr();
 
-  static get student => 'student'.tr();
   static get register => 'register'.tr();
   static get login => 'login'.tr();
   static get loginMsg => 'loginMsg'.tr();
