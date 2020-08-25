@@ -10,7 +10,7 @@ class ThisMusicColors {
   static const navigationBar = const Color(0xff0a1617);
   static const statusBar = const Color(0x660a1617);
 
-  static const button = const Color(0xfff5f5f5);
+  static const button = const Color(0xffD5BD77);
   static const googleButton = const Color(0xffdb4437);
   static const liteRedCalendar = const Color(0xfffccfcf);
   static const facebookButton = const Color(0xff4267b2);

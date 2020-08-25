@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'account/login/login_page.dart';
 import 'account/register/register_page.dart';
+import 'account/forgot_password/forget_password_page.dart';
 import 'colors.dart';
 import 'welcome/welcome_page.dart';
 import 'splash/splash_page.dart';
@@ -31,7 +32,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      title: 'This Music',
+      title: 'THIS MUSIC',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: ThisMusicColors.button,
@@ -47,6 +48,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         WelcomePage.routerName: (ctx) => WelcomePage(),
         RegisterPage.routerName: (ctx) => RegisterPage(),
         LoginPage.routerName: (ctx) => LoginPage(),
+        ForgotPasswordPage.routerName: (ctx) => ForgotPasswordPage(),
       },
     );
   }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/app_widget.dart';
+import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_outline_button.dart';
 import 'package:this_music/shared/widgets/j_raised_buttonborder.dart';
@@ -15,6 +18,8 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  String _welcomeBg = 'assets/jpg/app_bg.jpg';
+  String _logo = 'assets/png/welcome_logo.png';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +32,7 @@ class _WelcomePageState extends State<WelcomePage> {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/jpg/app_bg.jpg'),
+                image: AssetImage(_welcomeBg),
                 fit: BoxFit.fill,
               ),
             ),
@@ -35,6 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
               children: <Widget>[
                 _buildTitleAndLogo(),
                 _buildRegisterAndLoginButtons(),
+                _buildSocialMediaButtons(),
               ],
             )),
       ),
@@ -53,14 +59,14 @@ class _WelcomePageState extends State<WelcomePage> {
                   children: <Widget>[
                     _buildPopupMenuLanguageButton(),
                     Image.asset(
-                      'assets/png/welcome_logo.png',
-                      height: 100,
-                      width: 100,
+                      _logo,
+                      height: 80,
+                      width: 80,
                     ),
                     Text(
-                      'This Music',
+                      'THIS MUSIC',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -72,8 +78,9 @@ class _WelcomePageState extends State<WelcomePage> {
           ),
           Text(
             AppLocalization.welcomeStart,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 18,
+              fontSize: 16,
               fontWeight: FontWeight.w400,
               color: Colors.white,
             ),
@@ -83,26 +90,61 @@ class _WelcomePageState extends State<WelcomePage> {
     );
   }
 
-  _buildRegisterAndLoginButtons() {
-    return Expanded(
-      flex: 4,
+  _buildSocialMediaButtons() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          JRaisedButtonBorder(
-            onPressed: () =>
-                Navigator.pushNamed(context, RegisterPage.routerName),
-            text: AppLocalization.register,
-            color: Color(0xFFE3D2A3),
+          Text(AppLocalization.socialMediaMsg,
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .subtitle1
+                  .copyWith(color: ThisMusicColors.white)),
+          SignInButton(
+            Buttons.Google,
+            text: AppLocalization.googleMsg,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () {},
           ),
-          SizedBox(height: 5),
-          JOutlineButton(
-            onPressed: () => Navigator.pushNamed(context, LoginPage.routerName),
-            text: AppLocalization.login,
-            color: Color(0xFFE3D2A3),
+          SignInButton(
+            Buttons.Facebook,
+            text: AppLocalization.facebookMsg,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            onPressed: () {},
           ),
         ],
+      ),
+    );
+  }
+
+  _buildRegisterAndLoginButtons() {
+    return Expanded(
+      flex: 3,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            JRaisedButtonBorder(
+              onPressed: () =>
+                  Navigator.pushNamed(context, RegisterPage.routerName),
+              text: AppLocalization.register,
+              color: Color(0xFFD5BD77),
+            ),
+            SizedBox(height: 5),
+            JOutlineButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, LoginPage.routerName),
+              text: AppLocalization.login,
+              color: Color(0xFFD5BD77),
+            ),
+          ],
+        ),
       ),
     );
   }

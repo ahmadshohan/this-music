@@ -51,6 +51,9 @@ class AppLocalization {
   static get login => 'login'.tr();
   static get loginMsg => 'loginMsg'.tr();
   static get socialMediaMsg => 'socialMediaMsg'.tr();
+  static get googleMsg => 'googleMsg'.tr();
+  static get facebookMsg => 'facebookMsg'.tr();
+
   static get facebook => 'facebook'.tr();
   static get google => 'google'.tr();
   static get apple => 'apple'.tr();
@@ -60,6 +63,8 @@ class AppLocalization {
   static get forgotPassword => 'forgotPassword'.tr();
   static get forgotPasswordMsg => 'forgotPasswordMsg'.tr();
   static get name => 'name'.tr();
+  static get userName => 'userName'.tr();
+  static get dateBirth => 'dateBirth'.tr();
   static get phoneNumber => 'phoneNumber'.tr();
   static get idNumber => 'idNumber'.tr();
   static get verify => 'verify'.tr();
