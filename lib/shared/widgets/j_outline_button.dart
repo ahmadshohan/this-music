@@ -18,6 +18,9 @@ class JOutlineButton extends StatelessWidget {
         textColor: color,
         highlightedBorderColor: color,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        child: Text(text));
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 14),
+        ));
   }
 }

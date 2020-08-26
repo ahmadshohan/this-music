@@ -6,6 +6,7 @@ import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/app_widget.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
+import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/j_outline_button.dart';
 import 'package:this_music/shared/widgets/j_raised_buttonborder.dart';
 
@@ -20,6 +21,18 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   String _welcomeBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
+  PreferencesService _preferencesService = PreferencesService();
+  String _selectedLang = 'TR';
+  static Locale locale;
+  @override
+  void initState() {
+    super.initState();
+    Future<void>.delayed(Duration(seconds: 2), () async {
+      _selectedLang = await _preferencesService.lang;
+      AppLocalization.setLang(context, _selectedLang);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +61,8 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   _buildTitleAndLogo() {
-    return Expanded(
-      flex: 1,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
       child: Column(
         children: <Widget>[
           Row(
@@ -107,14 +120,18 @@ class _WelcomePageState extends State<WelcomePage> {
             text: AppLocalization.googleMsg,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onPressed: () {},
+            onPressed: () {
+              //TODO handle login with google
+            },
           ),
           SignInButton(
             Buttons.Facebook,
             text: AppLocalization.facebookMsg,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onPressed: () {},
+            onPressed: () {
+              //TODO handle login with facebook
+            },
           ),
         ],
       ),
@@ -131,15 +148,19 @@ class _WelcomePageState extends State<WelcomePage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             JRaisedButtonBorder(
-              onPressed: () =>
-                  Navigator.pushNamed(context, RegisterPage.routerName),
+              onPressed: () {
+                //TODO handle register
+                Navigator.pushNamed(context, RegisterPage.routerName);
+              },
               text: AppLocalization.register,
               color: Color(0xFFD5BD77),
             ),
             SizedBox(height: 5),
             JOutlineButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, LoginPage.routerName),
+              onPressed: () {
+                //TODO handle login
+                Navigator.pushNamed(context, LoginPage.routerName);
+              },
               text: AppLocalization.login,
               color: Color(0xFFD5BD77),
             ),
@@ -159,16 +180,31 @@ class _WelcomePageState extends State<WelcomePage> {
         setState(() {
           if (selectedLanguage == PopLanguageOption.Turkish) {
             ThisMusicAppState.setLang(context, AppLocalization.tr);
+            setState(() {
+              _selectedLang = 'TR';
+            });
           } else if (selectedLanguage == PopLanguageOption.English) {
             ThisMusicAppState.setLang(context, AppLocalization.en);
+            setState(() {
+              _selectedLang = 'EN';
+            });
           } else {
             ThisMusicAppState.setLang(context, AppLocalization.ar);
+            setState(() {
+              _selectedLang = 'AR';
+            });
           }
         });
       },
-      icon: Icon(
-        Icons.language,
-        color: Colors.white,
+      icon: Container(
+        width: 30,
+        decoration:
+            BoxDecoration(border: Border.all(color: Colors.white, width: 2)),
+        child: Text(
+          _selectedLang,
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 17, color: Colors.white),
+        ),
       ),
       itemBuilder: (_) => [
         PopupMenuItem(

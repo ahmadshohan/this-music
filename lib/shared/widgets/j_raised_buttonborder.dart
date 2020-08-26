@@ -20,6 +20,9 @@ class JRaisedButtonBorder extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           side: BorderSide(color: color),
         ),
-        child: Text(text));
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 14),
+        ));
   }
 }

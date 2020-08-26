@@ -66,6 +66,11 @@ class AppLocalization {
   static get userName => 'userName'.tr();
   static get dateBirth => 'dateBirth'.tr();
   static get phoneNumber => 'phoneNumber'.tr();
+  static get gender => 'gender'.tr();
+  static get male => 'male'.tr();
+  static get other => 'other'.tr();
+  static get female => 'female'.tr();
+
   static get idNumber => 'idNumber'.tr();
   static get verify => 'verify'.tr();
   static get resend => 'resend'.tr();

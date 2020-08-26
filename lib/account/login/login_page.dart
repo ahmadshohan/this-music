@@ -88,42 +88,45 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _buildTitleAndLogo() {
-    return Column(
-      children: <Widget>[
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Image.asset(
-                    _logo,
-                    height: 80,
-                    width: 80,
-                  ),
-                  Text(
-                    'THIS MUSIC',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 30),
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Image.asset(
+                      _logo,
+                      height: 80,
+                      width: 80,
                     ),
-                  ),
-                ],
+                    Text(
+                      'THIS MUSIC',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-        Text(
-          AppLocalization.registerStart,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
+            ],
           ),
-        ),
-      ],
+          Text(
+            AppLocalization.registerStart,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -186,6 +189,7 @@ class _LoginPageState extends State<LoginPage> {
           onChanged: (value) {
             setState(() {
               _rememberMe = value;
+              //TODO handle remember me
             });
           },
         ),
