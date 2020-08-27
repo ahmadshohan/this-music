@@ -31,6 +31,8 @@
   "male": "Male",
   "female":"Female",
   "other": "Other",
+  "noAccountMsg": "Dont have an account?",
+  "haveAccount": "I already have account?",
   "idNumber" : "Id number",
   "universityDegree" : "University Degree",
   "verify" : "Verify",

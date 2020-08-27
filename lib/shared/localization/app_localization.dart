@@ -68,8 +68,10 @@ class AppLocalization {
   static get phoneNumber => 'phoneNumber'.tr();
   static get gender => 'gender'.tr();
   static get male => 'male'.tr();
-  static get other => 'other'.tr();
   static get female => 'female'.tr();
+  static get other => 'other'.tr();
+  static get haveAccountMsg => 'haveAccountMsg'.tr();
+  static get noAccountMsg => 'noAccountMsg'.tr();
 
   static get idNumber => 'idNumber'.tr();
   static get verify => 'verify'.tr();

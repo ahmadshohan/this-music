@@ -8,12 +8,9 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(
-    EasyLocalization(
+  runApp(EasyLocalization(
       supportedLocales: AppLocalization.supportedLocales,
       path: AppLocalization.translationPath,
       fallbackLocale: Locale(AppLocalization.defaultLang),
-      child: ThisMusicApp(),
-    ),
-  );
+      child: ThisMusicApp()));
 }

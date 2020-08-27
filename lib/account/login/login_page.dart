@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import '../forgot_password/forget_password_page.dart';
+import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
   static const routerName = '/account/login-page';
@@ -13,8 +16,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _showPassword = true;
-  bool _rememberMe = false;
+  final LoginController _loginController = LoginController();
   String _loginBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
   FocusNode _emailFocusNode = FocusNode();
@@ -29,12 +31,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: true,
-        bottom: true,
-        left: false,
-        right: false,
-        child: Container(
+      body: Observer(
+        builder: (_) => Container(
             padding: EdgeInsets.all(10),
             height: double.infinity,
             decoration: BoxDecoration(
@@ -43,29 +41,37 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.fill,
               ),
             ),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _buildTitleAndLogo(),
-                  SizedBox(height: 70),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        ..._buildTitles(),
-                        SizedBox(height: 10),
-                        ..._buildInputs(),
-                        SizedBox(height: 10),
-                        _buildActions(),
-                        SizedBox(height: 20),
-                        _buildLoginButton()
-                      ],
+            child: SafeArea(
+              top: true,
+              bottom: true,
+              left: false,
+              right: false,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTitleAndLogo(),
+                    SizedBox(height: 70),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          ..._buildTitles(),
+                          SizedBox(height: 10),
+                          ..._buildInputs(),
+                          SizedBox(height: 10),
+                          _buildActions(),
+                          SizedBox(height: 20),
+                          _buildLoginButton(),
+                          SizedBox(height: 10),
+                          _buildDontHaveAccount(),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )),
       ),
@@ -152,53 +158,46 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       SizedBox(height: 10),
-      TextFormField(
-          style: TextStyle(color: Colors.white),
-          obscureText: _showPassword,
-          focusNode: _passwordFocusNode,
-          decoration: InputDecoration(
-              labelText: AppLocalization.password,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.all(16),
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showPassword = !_showPassword;
-                  });
-                },
-                child: Icon(
-                  _showPassword ? EvaIcons.eyeOff : EvaIcons.eye,
-                  color: Colors.white,
+      Observer(
+        builder: (_) => TextFormField(
+            style: TextStyle(color: Colors.white),
+            obscureText: !_loginController.showPassword,
+            focusNode: _passwordFocusNode,
+            decoration: InputDecoration(
+                labelText: AppLocalization.password,
+                fillColor: Colors.white10,
+                filled: true,
+                labelStyle: TextStyle(color: Colors.white),
+                contentPadding: EdgeInsets.all(16),
+                suffixIcon: GestureDetector(
+                  onTap: () => _loginController.changeViewPassword(),
+                  child: Icon(
+                    _loginController.showPassword
+                        ? EvaIcons.eye
+                        : EvaIcons.eyeOff,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ))),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ))),
+      ),
     ];
   }
 
   _buildActions() {
     return Row(children: [
       Row(children: [
-        Checkbox(
-          activeColor: Colors.white,
-          checkColor: Colors.black,
-          value: _rememberMe,
-          onChanged: (value) {
-            setState(() {
-              _rememberMe = value;
-              //TODO handle remember me
-            });
-          },
+        Observer(
+          builder: (_) => Checkbox(
+            activeColor: Colors.white,
+            checkColor: Colors.black,
+            value: _loginController.rememberMe,
+            onChanged: (value) => _loginController.changeRememberMe(),
+          ),
         ),
         GestureDetector(
-          onTap: () {
-            setState(() {
-              _rememberMe = !_rememberMe;
-            });
-          },
+          onTap: () => _loginController.changeRememberMe(),
           child: Text(
             AppLocalization.rememberMe,
             style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -227,6 +226,38 @@ class _LoginPageState extends State<LoginPage> {
       height: 50,
       width: double.infinity,
       child: JRaisedButton(onPressed: () {}, text: AppLocalization.login),
+    );
+  }
+
+  _buildDontHaveAccount() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 35,
+      ),
+      child: GestureDetector(
+        onTap: () =>
+            Navigator.pushReplacementNamed(context, RegisterPage.routerName),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text: AppLocalization.noAccountMsg,
+              style: TextStyle(
+                color: ThisMusicColors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 17,
+              ),
+            ),
+            TextSpan(
+              text: AppLocalization.register,
+              style: TextStyle(
+                color: ThisMusicColors.button,
+                fontWeight: FontWeight.w500,
+                fontSize: 17,
+              ),
+            )
+          ]),
+        ),
+      ),
     );
   }
 }

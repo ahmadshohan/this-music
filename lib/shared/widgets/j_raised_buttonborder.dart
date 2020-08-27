@@ -17,7 +17,7 @@ class JRaisedButtonBorder extends StatelessWidget {
         color: ThisMusicColors.button,
         textColor: ThisMusicColors.black,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(20),
           side: BorderSide(color: color),
         ),
         child: Text(

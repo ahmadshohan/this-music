@@ -27,7 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   void initState() {
     super.initState();
-    Future<void>.delayed(Duration(seconds: 2), () async {
+    Future<void>.delayed(Duration(milliseconds: 1000), () async {
       _selectedLang = await _preferencesService.lang;
       AppLocalization.setLang(context, _selectedLang);
     });
@@ -62,7 +62,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildTitleAndLogo() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.only(top: 30),
       child: Column(
         children: <Widget>[
           Row(
@@ -105,7 +105,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildSocialMediaButtons() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -115,23 +115,35 @@ class _WelcomePageState extends State<WelcomePage> {
                   .textTheme
                   .subtitle1
                   .copyWith(color: ThisMusicColors.white)),
-          SignInButton(
-            Buttons.Google,
-            text: AppLocalization.googleMsg,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onPressed: () {
-              //TODO handle login with google
-            },
+          SizedBox(
+            height: 10,
           ),
-          SignInButton(
-            Buttons.Facebook,
-            text: AppLocalization.facebookMsg,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            onPressed: () {
-              //TODO handle login with facebook
-            },
+          SizedBox(
+            height: 50,
+            child: SignInButton(
+              Buttons.Google,
+              text: AppLocalization.googleMsg,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              onPressed: () {
+                //TODO handle login with google
+              },
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          SizedBox(
+            height: 50,
+            child: SignInButton(
+              Buttons.Facebook,
+              text: AppLocalization.facebookMsg,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              onPressed: () {
+                //TODO handle login with facebook
+              },
+            ),
           ),
         ],
       ),
@@ -142,28 +154,34 @@ class _WelcomePageState extends State<WelcomePage> {
     return Expanded(
       flex: 3,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 80),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            JRaisedButtonBorder(
-              onPressed: () {
-                //TODO handle register
-                Navigator.pushNamed(context, RegisterPage.routerName);
-              },
-              text: AppLocalization.register,
-              color: Color(0xFFD5BD77),
+            SizedBox(
+              height: 50,
+              child: JRaisedButtonBorder(
+                onPressed: () {
+                  //TODO handle register
+                  Navigator.pushNamed(context, RegisterPage.routerName);
+                },
+                text: AppLocalization.register,
+                color: Color(0xFFD5BD77),
+              ),
             ),
-            SizedBox(height: 5),
-            JOutlineButton(
-              onPressed: () {
-                //TODO handle login
-                Navigator.pushNamed(context, LoginPage.routerName);
-              },
-              text: AppLocalization.login,
-              color: Color(0xFFD5BD77),
-            ),
+            SizedBox(height: 10),
+            SizedBox(
+              height: 50,
+              child: JOutlineButton(
+                onPressed: () {
+                  //TODO handle login
+                  Navigator.pushNamed(context, LoginPage.routerName);
+                },
+                text: AppLocalization.login,
+                color: Color(0xFFD5BD77),
+              ),
+            )
           ],
         ),
       ),

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
+import 'package:this_music/account/login/login_page.dart';
+import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/data_picker.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
@@ -19,7 +22,7 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String _registerBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
-  bool _showPassword;
+  RegisterController _registerController = RegisterController();
   int _selectedRadio;
   TextEditingController _dateBirth = TextEditingController();
   FocusNode _nameFN = FocusNode();
@@ -28,19 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
   FocusNode _passwordFN = FocusNode();
   FocusNode _userNameFN = FocusNode();
   FocusNode _birthFN = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _showPassword = true;
-    _selectedRadio = 0;
-  }
-
-  _setSelectedRadioTile(int value) {
-    setState(() {
-      _selectedRadio = value;
-    });
-  }
 
   @override
   void dispose() {
@@ -57,44 +47,52 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            top: true,
-            bottom: true,
-            left: false,
-            right: false,
-            child: Container(
-              height: double.infinity,
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(_registerBg),
-                  fit: BoxFit.fill,
-                ),
-              ),
-              child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTitleAndLogo(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 35, horizontal: 30),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 30),
-                            ..._buildTitles(),
-                            SizedBox(height: 10),
-                            ..._buildInputs(),
-                            SizedBox(height: 20),
-                            _buildRegisterButton()
-                          ],
-                        ),
+        body: Observer(
+      builder: (_) => Container(
+        height: double.infinity,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(_registerBg),
+            fit: BoxFit.fill,
+          ),
+        ),
+        child: SafeArea(
+          top: true,
+          bottom: true,
+          left: false,
+          right: false,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTitleAndLogo(),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 35, horizontal: 20),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 30),
+                          ..._buildTitles(),
+                          SizedBox(height: 10),
+                          ..._buildInputs(),
+                          SizedBox(height: 20),
+                          _buildRegisterButton(),
+                          SizedBox(height: 10),
+                          _buildHaveAccount(),
+                        ],
                       ),
-                    ]),
-              ),
-            )));
+                    ),
+                  ]),
+            ),
+          ),
+        ),
+      ),
+    ));
   }
 
   _buildTitleAndLogo() {
@@ -207,30 +205,30 @@ class _RegisterPageState extends State<RegisterPage> {
                 borderRadius: new BorderRadius.circular(10),
               ))),
       SizedBox(height: 10),
-      TextFormField(
-          style: TextStyle(color: Colors.white),
-          textInputAction: TextInputAction.next,
-          focusNode: _passwordFN,
-          onFieldSubmitted: (_) =>
-              FocusScope.of(context).requestFocus(_userNameFN),
-          obscureText: _showPassword,
-          decoration: InputDecoration(
-              labelText: AppLocalization.password,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              suffixIcon: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _showPassword = !_showPassword;
-                  });
-                },
-                child: Icon(_showPassword ? EvaIcons.eyeOff : EvaIcons.eye),
-              ),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-              ))),
+      Observer(
+        builder: (_) => TextFormField(
+            style: TextStyle(color: Colors.white),
+            textInputAction: TextInputAction.next,
+            focusNode: _passwordFN,
+            onFieldSubmitted: (_) =>
+                FocusScope.of(context).requestFocus(_userNameFN),
+            obscureText: !_registerController.showPassword,
+            decoration: InputDecoration(
+                labelText: AppLocalization.password,
+                fillColor: Colors.white10,
+                filled: true,
+                labelStyle: TextStyle(color: Colors.white),
+                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                suffixIcon: GestureDetector(
+                  onTap: () => _registerController.changeViewPassword(),
+                  child: Icon(_registerController.showPassword
+                      ? EvaIcons.eye
+                      : EvaIcons.eyeOff),
+                ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ))),
+      ),
       SizedBox(height: 10),
       TextFormField(
           keyboardType: TextInputType.text,
@@ -269,7 +267,6 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         onTap: () async {
           DateTime date = DateTime(1900);
-//          FocusScope.of(context).requestFocus(FocusNode());
           date = Platform.isIOS
               ? await DatePicker().showIosDatePicker(context)
               : await DatePicker().showAndroidDatePicker(context);
@@ -282,54 +279,56 @@ class _RegisterPageState extends State<RegisterPage> {
         style: TextStyle(color: ThisMusicColors.white),
       ),
       Row(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: RadioListTile(
-              selected: true,
-              value: 1,
-              groupValue: _selectedRadio,
-              title: Text(
-                AppLocalization.male,
-                style: TextStyle(color: ThisMusicColors.white, fontSize: 10),
+          Observer(
+            builder: (_) => Expanded(
+              child: RadioListTile(
+                selected: true,
+                value: 1,
+                groupValue: _registerController.selectedGender,
+                title: Text(
+                  AppLocalization.male,
+                  style: TextStyle(color: ThisMusicColors.white, fontSize: 10),
+                ),
+                activeColor: Colors.blue,
+                onChanged: (newValue) {
+                  _registerController.setSelectedGenderType(newValue);
+                },
               ),
-              activeColor: ThisMusicColors.white,
-              onChanged: (newValue) {
-                _setSelectedRadioTile(newValue);
-              },
             ),
           ),
-          Expanded(
-            child: RadioListTile(
-              onChanged: (newValue) {
-                _setSelectedRadioTile(newValue);
-              },
-              value: 2,
-              groupValue: _selectedRadio,
-              title: Text(
-                AppLocalization.female,
-                style: TextStyle(color: ThisMusicColors.white, fontSize: 12),
+          Observer(
+            builder: (_) => Expanded(
+              child: RadioListTile(
+                onChanged: (newValue) =>
+                    _registerController.setSelectedGenderType(newValue),
+                value: 2,
+                groupValue: _registerController.selectedGender,
+                title: Text(
+                  AppLocalization.female,
+                  style: TextStyle(color: ThisMusicColors.white, fontSize: 12),
+                ),
+                activeColor: Colors.blue,
               ),
-              activeColor: ThisMusicColors.white,
             ),
           ),
-          Expanded(
-            child: RadioListTile(
-              value: 3,
-              groupValue: _selectedRadio,
-              title: Text(
-                AppLocalization.other,
-                style: TextStyle(color: ThisMusicColors.white, fontSize: 10),
-              ),
-              activeColor: ThisMusicColors.white,
-              onChanged: (newValue) {
-                _setSelectedRadioTile(newValue);
-              },
-            ),
-          ),
+//          Expanded(
+//            child: RadioListTile(
+//              value: 3,
+//              groupValue: _selectedRadio,
+//              title: Text(
+//                AppLocalization.other,
+//                style: TextStyle(color: ThisMusicColors.white, fontSize: 10),
+//              ),
+//              activeColor: Colors.blue,
+//              onChanged: (newValue) {
+//                _setSelectedRadioTile(newValue);
+//              },
+//            ),
+//          ),
         ],
-      )
+      ),
     ];
   }
 
@@ -338,6 +337,38 @@ class _RegisterPageState extends State<RegisterPage> {
       height: 50,
       width: double.infinity,
       child: JRaisedButton(onPressed: () {}, text: AppLocalization.register),
+    );
+  }
+
+  _buildHaveAccount() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 35,
+      ),
+      child: GestureDetector(
+        onTap: () =>
+            Navigator.pushReplacementNamed(context, LoginPage.routerName),
+        child: RichText(
+          text: TextSpan(children: [
+            TextSpan(
+              text: AppLocalization.haveAccountMsg,
+              style: TextStyle(
+                color: ThisMusicColors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 17,
+              ),
+            ),
+            TextSpan(
+              text: AppLocalization.login,
+              style: TextStyle(
+                color: ThisMusicColors.button,
+                fontWeight: FontWeight.w500,
+                fontSize: 17,
+              ),
+            )
+          ]),
+        ),
+      ),
     );
   }
 }

@@ -34,6 +34,8 @@
   "male": "ذكر",
   "female":"انثى",
   "other": "آخر",
+  "noAccountMsg": "ليس لديك حساب؟",
+  "haveAccountMsg":"لدي حساب ؟",
   "idNumber" : "رقم الهوية",
   "universityDegree" : "الشهادة الجامعية",
   "verify" : "تأكيد",
