@@ -20,6 +20,7 @@ dependencies:
   dio: ^3.0.10
   rxdart: ^0.24.1
   fluttertoast: ^7.0.2
+  bubble_bottom_bar: ^1.2.0
   sprintf: ^4.1.0
   eva_icons_flutter: ^2.0.1
   flutter_signin_button: ^1.0.0

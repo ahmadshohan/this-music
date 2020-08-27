@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
+import 'package:this_music/tab/tab_navigator.dart';
 import 'account/login/login_page.dart';
 import 'account/register/register_page.dart';
 import 'account/forgot_password/forget_password_page.dart';
@@ -24,7 +25,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         systemNavigationBarColor: ThisMusicColors.navigationBar,
         statusBarColor: Colors.transparent,
         systemNavigationBarIconBrightness: Brightness.light,
-        statusBarIconBrightness: Brightness.light,
+        // statusBarIconBrightness: Brightness.light,
         statusBarBrightness: Brightness.dark,
       ),
     );
@@ -49,6 +50,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         RegisterPage.routerName: (ctx) => RegisterPage(),
         LoginPage.routerName: (ctx) => LoginPage(),
         ForgotPasswordPage.routerName: (ctx) => ForgotPasswordPage(),
+        TabNavigator.routerName: (ctx) => TabNavigator(),
       },
     );
   }

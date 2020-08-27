@@ -8,6 +8,17 @@ class SearchPage extends StatefulWidget {
 class _HomePageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+        height: double.infinity,
+        padding: EdgeInsets.all(10),
+        child: SafeArea(
+          top: true,
+          bottom: true,
+          left: false,
+          right: false,
+          child: Column(
+            children: <Widget>[],
+          ),
+        ));
   }
 }

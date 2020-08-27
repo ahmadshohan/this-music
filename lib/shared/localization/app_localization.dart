@@ -70,6 +70,9 @@ class AppLocalization {
   static get male => 'male'.tr();
   static get female => 'female'.tr();
   static get other => 'other'.tr();
+  static get menu => 'menu'.tr();
+  static get search => "search".tr();
+  static get radio => "radio".tr();
   static get haveAccountMsg => 'haveAccountMsg'.tr();
   static get noAccountMsg => 'noAccountMsg'.tr();
 

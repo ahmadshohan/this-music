@@ -7,7 +7,10 @@ class ThisMusicColors {
   static const splashGradientLow = const Color(0xff0b4045);
   static const splashGradientHigh = const Color(0xff0a1617);
 
+  static const tabBackGround = const Color(0xff333333);
+
   static const navigationBar = const Color(0xff0a1617);
+  static const BottomNavigationBar = const Color(0xFF1A1A1A);
   static const statusBar = const Color(0x660a1617);
 
   static const button = const Color(0xffD5BD77);

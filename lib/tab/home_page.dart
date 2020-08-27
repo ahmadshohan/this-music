@@ -40,7 +40,17 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
-    return Scaffold();
+    return Container(
+        height: double.infinity,
+        padding: EdgeInsets.all(10),
+        child: SafeArea(
+          top: true,
+          bottom: true,
+          left: false,
+          right: false,
+          child: Column(
+            children: <Widget>[],
+          ),
+        ));
   }
 }

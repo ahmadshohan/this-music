@@ -31,6 +31,10 @@
   "male": "Male",
   "female":"Female",
   "other": "Other",
+  "menu": "Menu",
+  "search": "Search",
+  "radio": "Radio",
+
   "noAccountMsg": "Dont have an account?",
   "haveAccount": "I already have account?",
   "idNumber" : "Id number",

@@ -5,6 +5,7 @@ import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
+import 'package:this_music/tab/tab_navigator.dart';
 import '../forgot_password/forget_password_page.dart';
 import 'login_controller.dart';
 
@@ -200,9 +201,10 @@ class _LoginPageState extends State<LoginPage> {
           onTap: () => _loginController.changeRememberMe(),
           child: Text(
             AppLocalization.rememberMe,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
-                  color: Colors.white,
-                ),
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1
+                .copyWith(color: Colors.white, fontSize: 12),
           ),
         )
       ]),
@@ -214,6 +216,7 @@ class _LoginPageState extends State<LoginPage> {
           AppLocalization.forgotPassword,
           style: Theme.of(context).textTheme.bodyText1.copyWith(
                 color: Colors.white,
+                fontSize: 12,
                 decoration: TextDecoration.underline,
               ),
         ),
@@ -225,7 +228,10 @@ class _LoginPageState extends State<LoginPage> {
     return SizedBox(
       height: 50,
       width: double.infinity,
-      child: JRaisedButton(onPressed: () {}, text: AppLocalization.login),
+      child: JRaisedButton(
+          onPressed: () =>
+              Navigator.pushReplacementNamed(context, TabNavigator.routerName),
+          text: AppLocalization.login),
     );
   }
 
