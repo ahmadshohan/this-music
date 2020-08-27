@@ -23,7 +23,6 @@ class _RegisterPageState extends State<RegisterPage> {
   String _registerBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
   RegisterController _registerController = RegisterController();
-  int _selectedRadio;
   TextEditingController _dateBirth = TextEditingController();
   FocusNode _nameFN = FocusNode();
   FocusNode _telefonNumberFN = FocusNode();
