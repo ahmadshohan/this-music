@@ -7,7 +7,7 @@ import 'package:this_music/tab/play_List_page.dart';
 import 'package:this_music/tab/radio_page.dart';
 import 'package:this_music/tab/search_page.dart';
 
-import 'home_page.dart';
+import 'home/home_page.dart';
 
 class TabNavigator extends StatefulWidget {
   static const routerName = '/tab-page';
@@ -23,7 +23,7 @@ class _TabNavigatorState extends State<TabNavigator> {
     HomePage(),
     SearchPage(),
     RadioPage(),
-    PlayListPage()
+    PlayListPage(),
   ];
 
   @override
@@ -54,6 +54,7 @@ class _TabNavigatorState extends State<TabNavigator> {
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           backgroundColor: ThisMusicColors.BottomNavigationBar,
+          showUnselectedLabels: true,
           onTap: (int index) {
             _pageController.jumpToPage(index);
           },
@@ -91,14 +92,8 @@ class _TabNavigatorState extends State<TabNavigator> {
             ),
             BottomNavigationBarItem(
               backgroundColor: ThisMusicColors.BottomNavigationBar,
-              icon: Image.asset(
-                "assets/jpg/speaker.jpg",
-                height: 20,
-              ),
-              activeIcon: Image.asset(
-                "assets/jpg/speaker.jpg",
-                height: 20,
-              ),
+              icon: Icon(Icons.settings_voice),
+              activeIcon: Icon(Icons.settings_voice),
               title: Text(
                 AppLocalization.radio,
                 style: TextStyle(color: Colors.white),

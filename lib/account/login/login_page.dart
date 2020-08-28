@@ -189,12 +189,15 @@ class _LoginPageState extends State<LoginPage> {
   _buildActions() {
     return Row(children: [
       Row(children: [
-        Observer(
-          builder: (_) => Checkbox(
-            activeColor: Colors.white,
-            checkColor: Colors.black,
-            value: _loginController.rememberMe,
-            onChanged: (value) => _loginController.changeRememberMe(),
+        Theme(
+          data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
+          child: Observer(
+            builder: (_) => Checkbox(
+              activeColor: Colors.white,
+              checkColor: Colors.black,
+              value: _loginController.rememberMe,
+              onChanged: (value) => _loginController.changeRememberMe(),
+            ),
           ),
         ),
         GestureDetector(
@@ -210,8 +213,9 @@ class _LoginPageState extends State<LoginPage> {
       ]),
       Spacer(),
       GestureDetector(
-        onTap: () =>
-            Navigator.pushNamed(context, ForgotPasswordPage.routerName),
+        onTap: () {
+          Navigator.pushNamed(context, ForgotPasswordPage.routerName);
+        },
         child: Text(
           AppLocalization.forgotPassword,
           style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -229,17 +233,15 @@ class _LoginPageState extends State<LoginPage> {
       height: 50,
       width: double.infinity,
       child: JRaisedButton(
-          onPressed: () =>
-              Navigator.pushReplacementNamed(context, TabNavigator.routerName),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, TabNavigator.routerName);
+          },
           text: AppLocalization.login),
     );
   }
 
   _buildDontHaveAccount() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 35,
-      ),
+    return Center(
       child: GestureDetector(
         onTap: () =>
             Navigator.pushReplacementNamed(context, RegisterPage.routerName),

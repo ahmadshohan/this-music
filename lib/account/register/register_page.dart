@@ -62,32 +62,30 @@ class _RegisterPageState extends State<RegisterPage> {
           left: false,
           right: false,
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              _buildTitleAndLogo(),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 35,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTitleAndLogo(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 35, horizontal: 20),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          SizedBox(height: 30),
-                          ..._buildTitles(),
-                          SizedBox(height: 10),
-                          ..._buildInputs(),
-                          SizedBox(height: 20),
-                          _buildRegisterButton(),
-                          SizedBox(height: 10),
-                          _buildHaveAccount(),
-                        ],
-                      ),
-                    ),
-                  ]),
-            ),
+                  children: <Widget>[
+                    SizedBox(height: 30),
+                    _buildTitles(),
+                    SizedBox(height: 10),
+                    _buildInputs(),
+                    _buildGenderInput(),
+                    SizedBox(height: 20),
+                    _buildRegisterButton(),
+                    SizedBox(height: 10),
+                    _buildHaveAccount(),
+                  ],
+                ),
+              ),
+            ]),
           ),
         ),
       ),
@@ -96,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _buildTitleAndLogo() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 30),
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 30),
       child: Column(
         children: <Widget>[
           Row(
@@ -138,150 +136,171 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _buildTitles() {
-    return [
-      Text(AppLocalization.register,
-          style: Theme.of(context)
-              .textTheme
-              .headline5
-              .copyWith(color: ThisMusicColors.button)),
-      Text(AppLocalization.loginMsg,
-          style: Theme.of(context)
-              .textTheme
-              .bodyText1
-              .copyWith(color: Colors.white))
-    ];
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(AppLocalization.register,
+              style: Theme.of(context)
+                  .textTheme
+                  .headline5
+                  .copyWith(color: ThisMusicColors.button)),
+          Text(AppLocalization.loginMsg,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyText1
+                  .copyWith(color: Colors.white))
+        ],
+      ),
+    );
   }
 
   _buildInputs() {
-    return [
-      TextFormField(
-          style: TextStyle(color: Colors.white),
-          focusNode: _nameFN,
-          onFieldSubmitted: (_) =>
-              FocusScope.of(context).requestFocus(_telefonNumberFN),
-          decoration: InputDecoration(
-              labelText: AppLocalization.name,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(10),
-              ))),
-      SizedBox(height: 10),
-      TextFormField(
-          keyboardType: TextInputType.numberWithOptions(),
-          textInputAction: TextInputAction.next,
-          focusNode: _telefonNumberFN,
-          onFieldSubmitted: (_) =>
-              FocusScope.of(context).requestFocus(_emailFN),
-          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-              labelText: AppLocalization.phoneNumber,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(10),
-              ))),
-      SizedBox(height: 10),
-      TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          textInputAction: TextInputAction.next,
-          focusNode: _emailFN,
-          onFieldSubmitted: (_) =>
-              FocusScope.of(context).requestFocus(_passwordFN),
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-              labelText: AppLocalization.email,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(10),
-              ))),
-      SizedBox(height: 10),
-      Observer(
-        builder: (_) => TextFormField(
-            style: TextStyle(color: Colors.white),
-            textInputAction: TextInputAction.next,
-            focusNode: _passwordFN,
-            onFieldSubmitted: (_) =>
-                FocusScope.of(context).requestFocus(_userNameFN),
-            obscureText: !_registerController.showPassword,
-            decoration: InputDecoration(
-                labelText: AppLocalization.password,
-                fillColor: Colors.white10,
-                filled: true,
-                labelStyle: TextStyle(color: Colors.white),
-                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                suffixIcon: GestureDetector(
-                  onTap: () => _registerController.changeViewPassword(),
-                  child: Icon(_registerController.showPassword
-                      ? EvaIcons.eye
-                      : EvaIcons.eyeOff),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ))),
-      ),
-      SizedBox(height: 10),
-      TextFormField(
-          keyboardType: TextInputType.text,
-          textInputAction: TextInputAction.next,
-          focusNode: _userNameFN,
-          onFieldSubmitted: (_) =>
-              FocusScope.of(context).requestFocus(_birthFN),
-          maxLines: 1,
-          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-          style: TextStyle(color: Colors.white),
-          decoration: InputDecoration(
-              labelText: AppLocalization.userName,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(10),
-              ))),
-      SizedBox(height: 10),
-      TextFormField(
-        textInputAction: TextInputAction.next,
-        focusNode: _birthFN,
-        style: TextStyle(color: Colors.white),
-        controller: _dateBirth,
-        readOnly: true,
-        decoration: InputDecoration(
-          labelText: AppLocalization.dateBirth,
-          fillColor: Colors.white10,
-          filled: true,
-          labelStyle: TextStyle(color: Colors.white),
-          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-          border: OutlineInputBorder(
-            borderRadius: new BorderRadius.circular(10),
-          ),
-        ),
-        onTap: () async {
-          DateTime date = DateTime(1900);
-          date = Platform.isIOS
-              ? await DatePicker().showIosDatePicker(context)
-              : await DatePicker().showAndroidDatePicker(context);
-          _dateBirth.text = DateFormat('dd-MM-yyyy').format(date);
-        },
-      ),
-      SizedBox(height: 10),
-      Text(
-        AppLocalization.gender,
-        style: TextStyle(color: ThisMusicColors.white),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          TextFormField(
+              style: TextStyle(color: Colors.white),
+              focusNode: _nameFN,
+              onFieldSubmitted: (_) =>
+                  FocusScope.of(context).requestFocus(_telefonNumberFN),
+              decoration: InputDecoration(
+                  labelText: AppLocalization.name,
+                  fillColor: Colors.white10,
+                  filled: true,
+                  labelStyle: TextStyle(color: Colors.white),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  border: OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(10),
+                  ))),
+          SizedBox(height: 10),
+          TextFormField(
+              keyboardType: TextInputType.numberWithOptions(),
+              textInputAction: TextInputAction.next,
+              focusNode: _telefonNumberFN,
+              onFieldSubmitted: (_) =>
+                  FocusScope.of(context).requestFocus(_emailFN),
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  labelText: AppLocalization.phoneNumber,
+                  fillColor: Colors.white10,
+                  filled: true,
+                  labelStyle: TextStyle(color: Colors.white),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  border: OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(10),
+                  ))),
+          SizedBox(height: 10),
+          TextFormField(
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              focusNode: _emailFN,
+              onFieldSubmitted: (_) =>
+                  FocusScope.of(context).requestFocus(_passwordFN),
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  labelText: AppLocalization.email,
+                  fillColor: Colors.white10,
+                  filled: true,
+                  labelStyle: TextStyle(color: Colors.white),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  border: OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(10),
+                  ))),
+          SizedBox(height: 10),
           Observer(
-            builder: (_) => Expanded(
+            builder: (_) => TextFormField(
+                style: TextStyle(color: Colors.white),
+                textInputAction: TextInputAction.next,
+                focusNode: _passwordFN,
+                onFieldSubmitted: (_) =>
+                    FocusScope.of(context).requestFocus(_userNameFN),
+                obscureText: !_registerController.showPassword,
+                decoration: InputDecoration(
+                    labelText: AppLocalization.password,
+                    fillColor: Colors.white10,
+                    filled: true,
+                    labelStyle: TextStyle(color: Colors.white),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    suffixIcon: GestureDetector(
+                      onTap: () => _registerController.changeViewPassword(),
+                      child: Icon(_registerController.showPassword
+                          ? EvaIcons.eye
+                          : EvaIcons.eyeOff),
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ))),
+          ),
+          SizedBox(height: 10),
+          TextFormField(
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.next,
+              focusNode: _userNameFN,
+              onFieldSubmitted: (_) =>
+                  FocusScope.of(context).requestFocus(_birthFN),
+              maxLines: 1,
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                  labelText: AppLocalization.userName,
+                  fillColor: Colors.white10,
+                  filled: true,
+                  labelStyle: TextStyle(color: Colors.white),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  border: OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(10),
+                  ))),
+          SizedBox(height: 10),
+          TextFormField(
+            textInputAction: TextInputAction.next,
+            focusNode: _birthFN,
+            style: TextStyle(color: Colors.white),
+            controller: _dateBirth,
+            readOnly: true,
+            decoration: InputDecoration(
+              labelText: AppLocalization.dateBirth,
+              fillColor: Colors.white10,
+              filled: true,
+              labelStyle: TextStyle(color: Colors.white),
+              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+              border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(10),
+              ),
+            ),
+            onTap: () async {
+              DateTime date = DateTime(1900);
+              date = Platform.isIOS
+                  ? await DatePicker().showIosDatePicker(context)
+                  : await DatePicker().showAndroidDatePicker(context);
+              _dateBirth.text = DateFormat('dd-MM-yyyy').format(date);
+            },
+          ),
+          SizedBox(height: 10),
+          Text(
+            AppLocalization.gender,
+            style: TextStyle(color: ThisMusicColors.white),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildGenderInput() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        Observer(
+          builder: (_) => Expanded(
+            child: Theme(
+              data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
               child: RadioListTile(
                 selected: true,
                 value: 1,
@@ -297,8 +316,11 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-          Observer(
-            builder: (_) => Expanded(
+        ),
+        Observer(
+          builder: (_) => Expanded(
+            child: Theme(
+              data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
               child: RadioListTile(
                 onChanged: (newValue) =>
                     _registerController.setSelectedGenderType(newValue),
@@ -312,38 +334,41 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
           ),
-//          Expanded(
-//            child: RadioListTile(
-//              value: 3,
-//              groupValue: _selectedRadio,
-//              title: Text(
-//                AppLocalization.other,
-//                style: TextStyle(color: ThisMusicColors.white, fontSize: 10),
-//              ),
-//              activeColor: Colors.blue,
-//              onChanged: (newValue) {
-//                _setSelectedRadioTile(newValue);
-//              },
-//            ),
-//          ),
-        ],
-      ),
-    ];
+        ),
+        Observer(
+          builder: (_) => Expanded(
+            child: Theme(
+              data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
+              child: RadioListTile(
+                value: 3,
+                groupValue: _registerController.selectedGender,
+                title: Text(
+                  AppLocalization.other,
+                  style: TextStyle(color: ThisMusicColors.white, fontSize: 10),
+                ),
+                activeColor: Colors.blue,
+                onChanged: (newValue) {
+                  _registerController.setSelectedGenderType(newValue);
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   _buildRegisterButton() {
-    return SizedBox(
+    return Container(
       height: 50,
+      padding: const EdgeInsets.symmetric(horizontal: 30),
       width: double.infinity,
       child: JRaisedButton(onPressed: () {}, text: AppLocalization.register),
     );
   }
 
   _buildHaveAccount() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 35,
-      ),
+    return Center(
       child: GestureDetector(
         onTap: () =>
             Navigator.pushReplacementNamed(context, LoginPage.routerName),

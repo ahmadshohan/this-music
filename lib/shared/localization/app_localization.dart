@@ -75,6 +75,9 @@ class AppLocalization {
   static get radio => "radio".tr();
   static get haveAccountMsg => 'haveAccountMsg'.tr();
   static get noAccountMsg => 'noAccountMsg'.tr();
+  static get bestAlbumsWeeklyMsg => 'bestAlbumsWeeklyMsg'.tr();
+  static get specialAlbumsUserMsg => 'specialAlbumsUserMsg'.tr();
+  static get specialPlaylistUserMsg => 'specialPlaylistUserMsg'.tr();
 
   static get idNumber => 'idNumber'.tr();
   static get verify => 'verify'.tr();

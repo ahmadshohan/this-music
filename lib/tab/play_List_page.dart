@@ -16,8 +16,10 @@ class _PlayListPageState extends State<PlayListPage> {
           bottom: true,
           left: false,
           right: false,
-          child: Column(
-            children: <Widget>[],
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[],
+            ),
           ),
         ));
   }

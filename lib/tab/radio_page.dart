@@ -16,8 +16,10 @@ class _RadioPageState extends State<RadioPage> {
           bottom: true,
           left: false,
           right: false,
-          child: Column(
-            children: <Widget>[],
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[],
+            ),
           ),
         ));
   }
