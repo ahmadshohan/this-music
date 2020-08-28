@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:this_music/player/player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/tab/tab_navigator.dart';
 import 'account/login/login_page.dart';
@@ -51,6 +52,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         LoginPage.routerName: (ctx) => LoginPage(),
         ForgotPasswordPage.routerName: (ctx) => ForgotPasswordPage(),
         TabNavigator.routerName: (ctx) => TabNavigator(),
+        PlayerPage.routerName: (ctx) => PlayerPage(),
       },
     );
   }

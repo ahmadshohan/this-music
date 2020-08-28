@@ -24,6 +24,9 @@ dependencies:
   pull_to_refresh: ^1.6.1
   carousel_pro: ^1.0.0
   sprintf: ^4.1.0
+  http: ^0.12.2
+  audio_service: ^0.14.0
+  just_audio: ^0.4.0
   cached_network_image: ^2.2.0
   eva_icons_flutter: ^2.0.1
   flutter_signin_button: ^1.0.0

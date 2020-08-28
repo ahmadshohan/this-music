@@ -47,7 +47,7 @@ class _BestAlbumsWeeklyState extends State<BestAlbumsWeekly> {
                             Image(
                               height: 120.0,
                               width: 120.0,
-                              image: AssetImage('assets/png//temp_news.png'),
+                              image: AssetImage('assets/png/temp_news.png'),
                               // image: CachedNetworkImageProvider(
                               //     'assets/lang/turkey.png'),
                               fit: BoxFit.cover,

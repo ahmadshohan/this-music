@@ -9,6 +9,7 @@ import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/data_picker.dart';
+import 'package:this_music/player/player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 
@@ -363,7 +364,10 @@ class _RegisterPageState extends State<RegisterPage> {
       height: 50,
       padding: const EdgeInsets.symmetric(horizontal: 30),
       width: double.infinity,
-      child: JRaisedButton(onPressed: () {}, text: AppLocalization.register),
+      child: JRaisedButton(
+          onPressed: () =>
+              Navigator.of(context).pushNamed(PlayerPage.routerName),
+          text: AppLocalization.register),
     );
   }
 
