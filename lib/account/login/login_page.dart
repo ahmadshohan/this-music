@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
+import 'package:this_music/shared/services/preferences_service.dart';
+import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
+import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/tab/tab_navigator.dart';
 import '../forgot_password/forget_password_page.dart';
 import 'login_controller.dart';
@@ -17,11 +21,20 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final LoginController _loginController = LoginController();
+  LoginController _loginController = LoginController();
+  final _formKey = GlobalKey<FormState>();
   String _loginBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
   FocusNode _emailFocusNode = FocusNode();
   FocusNode _passwordFocusNode = FocusNode();
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(milliseconds: 1000), () async {
+      await _loginController.init();
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -33,48 +46,62 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Observer(
-        builder: (_) => Container(
-            padding: EdgeInsets.all(10),
-            height: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(_loginBg),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: SafeArea(
-              top: true,
-              bottom: true,
-              left: false,
-              right: false,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTitleAndLogo(),
-                    SizedBox(height: 70),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ..._buildTitles(),
-                          SizedBox(height: 10),
-                          ..._buildInputs(),
-                          SizedBox(height: 10),
-                          _buildActions(),
-                          SizedBox(height: 20),
-                          _buildLoginButton(),
-                          SizedBox(height: 10),
-                          _buildDontHaveAccount(),
-                        ],
-                      ),
-                    ),
-                  ],
+        builder: (_) => Stack(
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.all(10),
+                height: double.infinity,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(_loginBg),
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-            )),
+                child: SafeArea(
+                  top: true,
+                  bottom: true,
+                  left: false,
+                  right: false,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTitleAndLogo(),
+                        SizedBox(height: 70),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              ..._buildTitles(),
+                              SizedBox(height: 10),
+                              Form(
+                                  key: _formKey,
+                                  autovalidate: _loginController.autoValidate,
+                                  child: Column(
+                                    children: <Widget>[
+                                      ..._buildInputs(),
+                                    ],
+                                  )),
+                              SizedBox(height: 10),
+                              _buildActions(),
+                              SizedBox(height: 20),
+                              _buildLoginButton(),
+                              SizedBox(height: 10),
+                              _buildDontHaveAccount(),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )),
+            Visibility(
+                visible: _loginController.loading,
+                child: Center(child: Loader())),
+          ],
+        ),
       ),
     );
   }
@@ -141,6 +168,8 @@ class _LoginPageState extends State<LoginPage> {
     return [
       TextFormField(
         keyboardType: TextInputType.emailAddress,
+        onChanged: (value) => _loginController.model.email = value,
+        validator: (_) => _loginController.checkEmail(),
         style: TextStyle(color: Colors.white),
         textInputAction: TextInputAction.next,
         focusNode: _emailFocusNode,
@@ -164,6 +193,8 @@ class _LoginPageState extends State<LoginPage> {
             style: TextStyle(color: Colors.white),
             obscureText: !_loginController.showPassword,
             focusNode: _passwordFocusNode,
+            onChanged: (value) => _loginController.model.password = value,
+            validator: (_) => _loginController.checkPassword(),
             decoration: InputDecoration(
                 labelText: AppLocalization.password,
                 fillColor: Colors.white10,
@@ -233,8 +264,12 @@ class _LoginPageState extends State<LoginPage> {
       height: 50,
       width: double.infinity,
       child: JRaisedButton(
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, TabNavigator.routerName);
+          onPressed: () async {
+            KeyBoard.close(context);
+            if (_formKey.currentState.validate()) {
+              await _loginController.login(context);
+            } else
+              _loginController.autoValidate = true;
           },
           text: AppLocalization.login),
     );

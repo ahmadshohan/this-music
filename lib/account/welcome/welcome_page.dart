@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:this_music/account/login/login_page.dart';
@@ -9,16 +10,19 @@ import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/j_outline_button.dart';
 import 'package:this_music/shared/widgets/j_raised_buttonborder.dart';
+import 'package:this_music/shared/widgets/loader.dart';
+import 'package:this_music/account/welcome/welcome_page_controller.dart';
 
 enum PopLanguageOption { Turkish, English, Arabic }
 
 class WelcomePage extends StatefulWidget {
-  static const routerName = '/welcome-page';
+  static const routerName = '/account.welcome-page';
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
 
 class _WelcomePageState extends State<WelcomePage> {
+  WelcomeController _welcomeController = WelcomeController();
   String _welcomeBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
   PreferencesService _preferencesService = PreferencesService();
@@ -36,26 +40,35 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: true,
-        bottom: true,
-        left: false,
-        right: false,
-        child: Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(_welcomeBg),
-                fit: BoxFit.fill,
-              ),
-            ),
-            child: Column(
-              children: <Widget>[
-                _buildTitleAndLogo(),
-                _buildRegisterAndLoginButtons(),
-                _buildSocialMediaButtons(),
-              ],
-            )),
+      body: Observer(
+        builder: (_) => Stack(
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(_welcomeBg),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: SafeArea(
+                  top: true,
+                  bottom: true,
+                  right: false,
+                  left: false,
+                  child: Column(
+                    children: <Widget>[
+                      _buildTitleAndLogo(),
+                      _buildRegisterAndLoginButtons(),
+                      _buildSocialMediaButtons(),
+                    ],
+                  ),
+                )),
+            Visibility(
+                visible: _welcomeController.loading,
+                child: Center(child: Loader())),
+          ],
+        ),
       ),
     );
   }
@@ -125,9 +138,7 @@ class _WelcomePageState extends State<WelcomePage> {
               text: AppLocalization.googleMsg,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              onPressed: () {
-                //TODO handle login with google
-              },
+              onPressed: () => _welcomeController.googleLogin(),
             ),
           ),
           SizedBox(
@@ -142,6 +153,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   borderRadius: BorderRadius.circular(20)),
               onPressed: () {
                 //TODO handle login with facebook
+                _welcomeController.facebookLogin();
               },
             ),
           ),
@@ -163,7 +175,6 @@ class _WelcomePageState extends State<WelcomePage> {
               height: 50,
               child: JRaisedButtonBorder(
                 onPressed: () {
-                  //TODO handle register
                   Navigator.pushNamed(context, RegisterPage.routerName);
                 },
                 text: AppLocalization.register,
@@ -175,7 +186,6 @@ class _WelcomePageState extends State<WelcomePage> {
               height: 50,
               child: JOutlineButton(
                 onPressed: () {
-                  //TODO handle login
                   Navigator.pushNamed(context, LoginPage.routerName);
                 },
                 text: AppLocalization.login,

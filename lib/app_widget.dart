@@ -7,8 +7,9 @@ import 'package:this_music/tab/tab_navigator.dart';
 import 'account/login/login_page.dart';
 import 'account/register/register_page.dart';
 import 'account/forgot_password/forget_password_page.dart';
+import 'account/welcome/welcome_page.dart';
 import 'colors.dart';
-import 'welcome/welcome_page.dart';
+
 import 'splash/splash_page.dart';
 
 class ThisMusicApp extends StatefulWidget {

@@ -39,6 +39,36 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
+  final _$loadingAtom = Atom(name: '_LoginControllerBase.loading');
+
+  @override
+  bool get loading {
+    _$loadingAtom.reportRead();
+    return super.loading;
+  }
+
+  @override
+  set loading(bool value) {
+    _$loadingAtom.reportWrite(value, super.loading, () {
+      super.loading = value;
+    });
+  }
+
+  final _$autoValidateAtom = Atom(name: '_LoginControllerBase.autoValidate');
+
+  @override
+  bool get autoValidate {
+    _$autoValidateAtom.reportRead();
+    return super.autoValidate;
+  }
+
+  @override
+  set autoValidate(bool value) {
+    _$autoValidateAtom.reportWrite(value, super.autoValidate, () {
+      super.autoValidate = value;
+    });
+  }
+
   final _$langAtom = Atom(name: '_LoginControllerBase.lang');
 
   @override
@@ -52,6 +82,28 @@ mixin _$LoginController on _LoginControllerBase, Store {
     _$langAtom.reportWrite(value, super.lang, () {
       super.lang = value;
     });
+  }
+
+  final _$modelAtom = Atom(name: '_LoginControllerBase.model');
+
+  @override
+  LoginModel get model {
+    _$modelAtom.reportRead();
+    return super.model;
+  }
+
+  @override
+  set model(LoginModel value) {
+    _$modelAtom.reportWrite(value, super.model, () {
+      super.model = value;
+    });
+  }
+
+  final _$loginAsyncAction = AsyncAction('_LoginControllerBase.login');
+
+  @override
+  Future login(BuildContext context) {
+    return _$loginAsyncAction.run(() => super.login(context));
   }
 
   final _$_LoginControllerBaseActionController =
@@ -80,6 +132,28 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   @override
+  String checkEmail() {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.checkEmail');
+    try {
+      return super.checkEmail();
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String checkPassword() {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.checkPassword');
+    try {
+      return super.checkPassword();
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changeViewPassword() {
     final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
         name: '_LoginControllerBase.changeViewPassword');
@@ -95,7 +169,10 @@ mixin _$LoginController on _LoginControllerBase, Store {
     return '''
 rememberMe: ${rememberMe},
 showPassword: ${showPassword},
-lang: ${lang}
+loading: ${loading},
+autoValidate: ${autoValidate},
+lang: ${lang},
+model: ${model}
     ''';
   }
 }

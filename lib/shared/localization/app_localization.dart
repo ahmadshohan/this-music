@@ -80,6 +80,19 @@ class AppLocalization {
   static get specialPlaylistUserMsg => 'specialPlaylistUserMsg'.tr();
 
   static get idNumber => 'idNumber'.tr();
+
+  static get someError => 'someError'.tr();
+  static get emailRequired => 'emailRequired'.tr();
+  static get emailNotValid => 'emailNotValid'.tr();
+  static get passwordRequired => 'passwordRequired'.tr();
+  static get passwordNotValid => 'passwordNotValid'.tr();
+  static get userNameRequired => 'userNameRequired'.tr();
+  static get userNameNotValid => 'userNameNotValid'.tr();
+  static get phoneNumberRequired => 'phoneNumberRequired'.tr();
+  static get phoneNumberNotValid => 'phoneNumberNotValid'.tr();
+  static get idNumberRequired => 'idNumberRequired'.tr();
+  static get degreeRequired => 'degreeRequired'.tr();
+
   static get verify => 'verify'.tr();
   static get resend => 'resend'.tr();
   static get resendMsg => 'resendMsg'.tr();

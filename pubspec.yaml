@@ -18,12 +18,17 @@ dependencies:
   mobx: ^1.2.1+2
   flutter_mobx: ^1.1.0+2
   dio: ^3.0.10
+  dio_flutter_transformer: ^3.0.2
   rxdart: ^0.24.1
   fluttertoast: ^7.0.2
+  flutter_spinkit: ^4.1.2+1
+  google_sign_in: ^4.5.3
+#  flutter_facebook_login: ^3.0.0
   bubble_bottom_bar: ^1.2.0
   pull_to_refresh: ^1.6.1
   carousel_pro: ^1.0.0
   sprintf: ^4.1.0
+  email_validator: ^1.0.5
   http: ^0.12.2
   audio_service: ^0.14.0
   just_audio: ^0.4.0
@@ -69,5 +74,5 @@ vars:
   get: flutter pub get
   runner: flutter pub run build_runner
 scripts:
-  mobx_build: $clean & $get & $runner build
-  mobx_watch: $clean & $get & $runner watch
+  mobx_build: $clean & $get & $runner build --delete-conflicting-outputs
+  mobx_watch: $clean & $get & $runner watch --delete-conflicting-outputs

@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:this_music/account/welcome/welcome_page.dart';
 import 'package:this_music/shared/widgets/thismusic_logo.dart';
-import '../welcome/welcome_page.dart';
+
 
 class SplashPage extends StatefulWidget {
   static const routerName = '/splash/splash-page';

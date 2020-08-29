@@ -39,6 +39,20 @@
   "bestAlbumsWeeklyMsg":"Haftanın en iyileri",
   "specialAlbumsUserMsg": "Sana Özel Şarkılar",
   "specialPlaylistUserMsg": "Sana Özel Playlistler",
+
+
+  "someError" : "bir hata oluştu .. lütfen daha sonra tekrar deneyin",
+  "emailRequired" : "Email gereklidir",
+  "emailNotValid" : "E-posta geçerli değil",
+  "passwordRequired" : "Şifre gereklidir",
+  "passwordNotValid" : "Parola 6 ile 30 karakter arasında olmalıdır",
+  "userNameRequired" : "Kullanıcı adı gerekli",
+  "userNameNotValid" : "Kullanıcı adı 4 karakterden uzun olmalıdır",
+  "phoneNumberRequired" : "Telefon numarası gerekli",
+  "phoneNumberNotValid" : "Telefon numarası 10 karakterden büyük olmalıdır",
+  "idNumberRequired" : "Kimlik numarası gerekli",
+  "degreeRequired" : "Üniversite derecesi gereklidir",
+
   "idNumber" : "Kimlik Numarası",
   "universityDegree" : "üniversite derecesi",
   "verify" : "Doğrulayın",

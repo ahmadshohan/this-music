@@ -39,6 +39,20 @@
   "bestAlbumsWeeklyMsg": "Best of the week",
   "specialAlbumsUserMsg": "Special Songs for You ",
   "specialPlaylistUserMsg": "Special Playlists for you ",
+
+
+  "someError" : "some error occurred.. please retry later",
+  "emailRequired" : "Email is required",
+  "emailNotValid" : "Email not valid",
+  "passwordRequired" : "Password is required",
+  "passwordNotValid" : "Password must be between 6 and 30 characters",
+  "userNameRequired" : "User name is required",
+  "userNameNotValid" : "User name must be grater than 4 characters",
+  "phoneNumberRequired" : "Phone number is required",
+  "phoneNumberNotValid" : "Phone number must be grater than 10 characters",
+  "idNumberRequired" : "Id number is required",
+  "degreeRequired" : "University degree is required",
+
   "idNumber" : "Id number",
   "universityDegree" : "University Degree",
   "verify" : "Verify",

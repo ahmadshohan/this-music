@@ -11,7 +11,11 @@ import 'package:this_music/colors.dart';
 import 'package:this_music/data_picker.dart';
 import 'package:this_music/player/player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
+import 'package:this_music/shared/model/user_gender.dart';
+import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
+import 'package:this_music/shared/widgets/loader.dart';
+import 'package:this_music/tab/tab_navigator.dart';
 
 class RegisterPage extends StatefulWidget {
   static const routerName = '/account/register-page';
@@ -21,6 +25,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final _formKey = GlobalKey<FormState>();
   String _registerBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
   RegisterController _registerController = RegisterController();
@@ -41,54 +46,69 @@ class _RegisterPageState extends State<RegisterPage> {
     _nameFN.dispose();
     _passwordFN.dispose();
     _telefonNumberFN.dispose();
-    FocusScope.of(context).dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Observer(
-      builder: (_) => Container(
-        height: double.infinity,
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(_registerBg),
-            fit: BoxFit.fill,
-          ),
-        ),
-        child: SafeArea(
-          top: true,
-          bottom: true,
-          left: false,
-          right: false,
-          child: SingleChildScrollView(
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              _buildTitleAndLogo(),
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 35,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 30),
-                    _buildTitles(),
-                    SizedBox(height: 10),
-                    _buildInputs(),
-                    _buildGenderInput(),
-                    SizedBox(height: 20),
-                    _buildRegisterButton(),
-                    SizedBox(height: 10),
-                    _buildHaveAccount(),
-                  ],
-                ),
+      builder: (_) => Stack(
+        children: <Widget>[
+          Container(
+            height: double.infinity,
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(_registerBg),
+                fit: BoxFit.fill,
               ),
-            ]),
+            ),
+            child: SafeArea(
+              top: true,
+              bottom: true,
+              left: false,
+              right: false,
+              child: SingleChildScrollView(
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildTitleAndLogo(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 35,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            SizedBox(height: 30),
+                            _buildTitles(),
+                            SizedBox(height: 10),
+                            Form(
+                              key: _formKey,
+                              autovalidate: _registerController.autoValidate,
+                              child: Column(
+                                children: <Widget>[
+                                  _buildInputs(),
+                                  _buildGenderInput(),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20),
+                            _buildRegisterButton(),
+                            SizedBox(height: 10),
+                            _buildHaveAccount(),
+                          ],
+                        ),
+                      ),
+                    ]),
+              ),
+            ),
           ),
-        ),
+          Visibility(
+              visible: _registerController.loading,
+              child: Center(child: Loader()))
+        ],
       ),
     ));
   }
@@ -168,6 +188,8 @@ class _RegisterPageState extends State<RegisterPage> {
           TextFormField(
               style: TextStyle(color: Colors.white),
               focusNode: _nameFN,
+              onChanged: (value) => _registerController.model.fullName = value,
+              validator: (_) => _registerController.checkFullName(),
               onFieldSubmitted: (_) =>
                   FocusScope.of(context).requestFocus(_telefonNumberFN),
               decoration: InputDecoration(
@@ -184,6 +206,9 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.numberWithOptions(),
               textInputAction: TextInputAction.next,
               focusNode: _telefonNumberFN,
+              onChanged: (value) =>
+                  _registerController.model.phoneNumber = value,
+              validator: (_) => _registerController.checkPhoneNumber(),
               onFieldSubmitted: (_) =>
                   FocusScope.of(context).requestFocus(_emailFN),
               inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
@@ -201,6 +226,8 @@ class _RegisterPageState extends State<RegisterPage> {
           TextFormField(
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.next,
+              onChanged: (value) => _registerController.model.email = value,
+              validator: (_) => _registerController.checkEmail(),
               focusNode: _emailFN,
               onFieldSubmitted: (_) =>
                   FocusScope.of(context).requestFocus(_passwordFN),
@@ -222,6 +249,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 focusNode: _passwordFN,
                 onFieldSubmitted: (_) =>
                     FocusScope.of(context).requestFocus(_userNameFN),
+                onChanged: (value) =>
+                    _registerController.model.password = value,
+                validator: (_) => _registerController.checkPassword(),
                 obscureText: !_registerController.showPassword,
                 decoration: InputDecoration(
                     labelText: AppLocalization.password,
@@ -247,8 +277,9 @@ class _RegisterPageState extends State<RegisterPage> {
               onFieldSubmitted: (_) =>
                   FocusScope.of(context).requestFocus(_birthFN),
               maxLines: 1,
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
               style: TextStyle(color: Colors.white),
+              onChanged: (value) => _registerController.model.userName = value,
+              validator: (_) => _registerController.checkUserName(),
               decoration: InputDecoration(
                   labelText: AppLocalization.userName,
                   fillColor: Colors.white10,
@@ -262,9 +293,10 @@ class _RegisterPageState extends State<RegisterPage> {
           TextFormField(
             textInputAction: TextInputAction.next,
             focusNode: _birthFN,
-            style: TextStyle(color: Colors.white),
             controller: _dateBirth,
-            readOnly: true,
+            style: TextStyle(color: Colors.white),
+            onChanged: (value) => _registerController.model.dateBirth = value,
+            // validator: (_) => _registerController.checkdateBirth(),
             decoration: InputDecoration(
               labelText: AppLocalization.dateBirth,
               fillColor: Colors.white10,
@@ -276,11 +308,8 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ),
             onTap: () async {
-              DateTime date = DateTime(1900);
-              date = Platform.isIOS
-                  ? await DatePicker().showIosDatePicker(context)
-                  : await DatePicker().showAndroidDatePicker(context);
-              _dateBirth.text = DateFormat('dd-MM-yyyy').format(date);
+              KeyBoard.close(context);
+              _dateBirth.text = await _registerController.datePicker(context);
             },
           ),
           SizedBox(height: 10),
@@ -300,11 +329,12 @@ class _RegisterPageState extends State<RegisterPage> {
       children: <Widget>[
         Observer(
           builder: (_) => Expanded(
+            flex: 1,
             child: Theme(
               data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
               child: RadioListTile(
                 selected: true,
-                value: 1,
+                value: UserGender.Male,
                 groupValue: _registerController.selectedGender,
                 title: Text(
                   AppLocalization.male,
@@ -320,12 +350,13 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         Observer(
           builder: (_) => Expanded(
+            flex: 1,
             child: Theme(
               data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
               child: RadioListTile(
                 onChanged: (newValue) =>
                     _registerController.setSelectedGenderType(newValue),
-                value: 2,
+                value: UserGender.Female,
                 groupValue: _registerController.selectedGender,
                 title: Text(
                   AppLocalization.female,
@@ -338,10 +369,11 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
         Observer(
           builder: (_) => Expanded(
+            flex: 1,
             child: Theme(
               data: ThemeData(unselectedWidgetColor: ThisMusicColors.white),
               child: RadioListTile(
-                value: 3,
+                value: UserGender.Other,
                 groupValue: _registerController.selectedGender,
                 title: Text(
                   AppLocalization.other,
@@ -365,8 +397,14 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       width: double.infinity,
       child: JRaisedButton(
-          onPressed: () =>
-              Navigator.of(context).pushNamed(PlayerPage.routerName),
+          onPressed: () async {
+            KeyBoard.close(context);
+            if (_formKey.currentState.validate()) {
+              await _registerController.register();
+              Navigator.pushReplacementNamed(context, TabNavigator.routerName);
+            } else
+              _registerController.autoValidate = true;
+          },
           text: AppLocalization.register),
     );
   }

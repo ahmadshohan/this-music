@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "245883684562",
+    "firebase_url": "https://this-music-e7323.firebaseio.com",
+    "project_id": "this-music-e7323",
+    "storage_bucket": "this-music-e7323.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245883684562:android:e6728b0dd1b9fb37aacf0b",
+        "android_client_info": {
+          "package_name": "com.thismusic.this_music"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245883684562-sd4t9m1118sga43o6nec4mfn6hvo2m1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3hSkPySqSfN1Joic7DFAe9ZpD8X5QQTc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245883684562-sd4t9m1118sga43o6nec4mfn6hvo2m1u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
