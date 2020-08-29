@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-// import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:path/path.dart';
 import 'package:this_music/data/models/result.dart';
@@ -66,7 +66,7 @@ class AccountRepository extends Repository {
     try {
       final result = await _googleSignIn.signIn();
       if (result != null) {
-        return _socialMediaLogin( result.email, result.displayName,
+        return _socialMediaLogin(result.email, result.displayName,
             SocialMedia.googlePrefix, SocialMedia.googlePassword);
       }
       return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
@@ -76,34 +76,34 @@ class AccountRepository extends Repository {
     }
   }
 
-  // Future<Result<dynamic>> facebookSignIn(String role) async {
-  //   try {
-  //     final result = await FacebookLogin().logIn(['email']);
-  //     if (result.status == FacebookLoginStatus.loggedIn) {
-  //       final response = await dio.get(
-  //           'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${result.accessToken.token}');
-  //       final profile = jsonDecode(response.data);
-  //       return _socialMediaLogin(role, profile['email'], profile['name'],
-  //           SocialMedia.facebookPrefix, SocialMedia.facebookPassword);
-  //     }
-  //     return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
-  //   } catch (error) {
-  //     print(error);
-  //     return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
-  //   }
-  // }
+  Future<Result<dynamic>> facebookSignIn() async {
+    try {
+      final result = await FacebookLogin().logIn(['email']);
+      if (result.status == FacebookLoginStatus.loggedIn) {
+        final response = await dio.get(
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${result.accessToken.token}');
+        final profile = jsonDecode(response.data);
+        return _socialMediaLogin(profile['email'], profile['name'],
+            SocialMedia.facebookPrefix, SocialMedia.facebookPassword);
+      }
+      return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
+    } catch (error) {
+      print(error);
+      return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
+    }
+  }
 
   logout() async {
     try {
-      // await FacebookLogin().logOut();
+      await FacebookLogin().logOut();
       await GoogleSignIn().signOut();
     } catch (e) {
       print(e);
     }
   }
 
-  Future<Result<dynamic>> _socialMediaLogin( String email,
-      String name, String prefix, String password) async {
+  Future<Result<dynamic>> _socialMediaLogin(
+      String email, String name, String prefix, String password) async {
     //try login
     final loginModel = LoginModel();
     loginModel.email = prefix + email;

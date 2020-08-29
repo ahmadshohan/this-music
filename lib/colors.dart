@@ -4,8 +4,8 @@ class ThisMusicColors {
   static const white = const Color(0xffffffff);
   static const black = const Color(0xff000000);
 
-  static const splashGradientLow = const Color(0xff0b4045);
-  static const splashGradientHigh = const Color(0xff0a1617);
+  static const playerGradientLow = const Color(0xff252527);
+  static const playerGradientHigh = const Color(0xff060606);
 
   static const tabBackGround = const Color(0xff333333);
 

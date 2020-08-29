@@ -29,14 +29,11 @@ abstract class _WelcomeControllerBase with Store {
   @observable
   bool loading = false;
 
-
   @observable
   String lang = AppLocalization.defaultLang;
 
   @action
   bool isRtl() => lang == AppLocalization.ar;
-
-
 
   @action
   googleLogin() async {
@@ -53,12 +50,12 @@ abstract class _WelcomeControllerBase with Store {
   @action
   facebookLogin() async {
     loading = true;
-    // final result = await _accountRepository.facebookSignIn(gender);
-    // if (result.state == ResultStatus.SUCCESS) {
-    //   final data = result.data as LoginResult;
-    //   _preferencesService.token = data.token;
-    //   _preferencesService.user = jsonEncode(data.user);
-    // }
-    // loading = false;
+    final result = await _accountRepository.facebookSignIn();
+    if (result.state == ResultStatus.SUCCESS) {
+      final data = result.data as LoginResult;
+      _preferencesService.token = data.token;
+      _preferencesService.user = jsonEncode(data.user);
+    }
+    loading = false;
   }
 }

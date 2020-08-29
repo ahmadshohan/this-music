@@ -274,8 +274,7 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.next,
               focusNode: _userNameFN,
-              onFieldSubmitted: (_) =>
-                  FocusScope.of(context).requestFocus(_birthFN),
+              onFieldSubmitted: (_) => KeyBoard.close(context),
               maxLines: 1,
               style: TextStyle(color: Colors.white),
               onChanged: (value) => _registerController.model.userName = value,

@@ -1,5 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_visualizers/Visualizers/LineBarVisualizer.dart';
+import 'package:flutter_visualizers/Visualizers/LineVisualizer.dart';
+import 'package:flutter_visualizers/visualizer.dart';
 import 'package:this_music/animations/player_anim.dart';
 import 'package:this_music/colors.dart';
 
@@ -52,88 +55,74 @@ class _PlayerPageState extends State<PlayerPage> with TickerProviderStateMixin {
     //   controllerPlayer.stop(canceled: false);
     // }
     return Scaffold(
-      backgroundColor: ThisMusicColors.black,
-      body: SafeArea(
-        child: Column(
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  // !songModel.showList
-                  //     ?
-                  Column(
-                    children: <Widget>[
-                      _BuildAppBar(),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.05),
-                      RotatePlayer(
-                          animation: _commonTween.animate(controllerPlayer)),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.03),
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.list,
-                                size: 25.0,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.repeat,
-                                  size: 25.0,
-                                  color: Colors.grey,
-                                )
-                                // : Icon(
-                                //     Icons.shuffle,
-                                //     size: 25.0,
-                                // //     color: Colors.grey,
-                                //   ),
+      body: Container(
+        decoration: BoxDecoration(
+            gradient: RadialGradient(colors: [
+          ThisMusicColors.playerGradientLow,
+          ThisMusicColors.playerGradientHigh
+        ], focal: Alignment.center, focalRadius: 0.2, radius: 0.9)),
+        child: SafeArea(
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    // !songModel.showList
+                    //     ?
+                    Column(
+                      children: <Widget>[
+                        _BuildAppBar(),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.05),
+                        RotatePlayer(
+                            animation: _commonTween.animate(controllerPlayer)),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.03),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.02),
+                        Text(
+                          " currentSong.author",
+                          style: TextStyle(color: Colors.grey, fontSize: 15.0),
+                        ),
+                        SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01),
+                        Text(
+                          "currentSong.title",
+                          style: TextStyle(color: Colors.grey, fontSize: 20.0),
+                        ),
+                        /*TODO Visualizer*/
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          width: MediaQuery.of(context).size.width,
+                          child: Visualizer(
+                            builder: (BuildContext context, List<int> wave) {
+                              return CustomPaint(
+                                painter: LineBarVisualizer(
+                                  waveData: wave,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.2,
+                                  width: MediaQuery.of(context).size.width,
+                                  color: Colors.red,
                                 ),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.favorite,
-                                  size: 25.0,
-                                  color: Theme.of(context).accentColor,
-                                )),
-                            IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.cloud_done,
-                                  size: 25.0,
-                                  color: Theme.of(context).accentColor,
-                                )),
-                          ]),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.02),
-                      Text(
-                        " currentSong.author",
-                        style: TextStyle(color: Colors.grey, fontSize: 15.0),
-                      ),
-                      SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01),
-                      Text(
-                        "currentSong.title",
-                        style: TextStyle(fontSize: 20.0),
-                      ),
-                    ],
-                  )
-                  // : SongListCarousel(),
-                ],
+                                child: Container(),
+                              );
+                            },
+                            id: 3,
+                          ),
+                        )
+                      ],
+                    )
+                    // : SongListCarousel(),
+                  ],
+                ),
               ),
-            ),
-            // Player(
-            //   songData: songModel,
-            //   downloadData: downloadModel,
-            //   nowPlay: widget.nowPlay,
-            // ),
-          ],
+              // Player(
+              //   songData: songModel,
+              //   downloadData: downloadModel,
+              //   nowPlay: widget.nowPlay,
+              // ),
+            ],
+          ),
         ),
       ),
     );

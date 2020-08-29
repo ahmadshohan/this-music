@@ -41,7 +41,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         primaryColor: ThisMusicColors.button,
         canvasColor: ThisMusicColors.bg,
         appBarTheme: Theme.of(context).appBarTheme.copyWith(
-            color: ThisMusicColors.splashGradientLow,
+            color: ThisMusicColors.playerGradientLow,
             iconTheme: IconThemeData(color: Colors.white)),
         fontFamily: _fontFamily,
       ),
