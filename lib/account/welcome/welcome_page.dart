@@ -32,8 +32,10 @@ class _WelcomePageState extends State<WelcomePage> {
   void initState() {
     super.initState();
     Future<void>.delayed(Duration(milliseconds: 1000), () async {
-      _selectedLang = await _preferencesService.lang;
-      AppLocalization.setLang(context, _selectedLang);
+      setState(() async {
+        _selectedLang = await _preferencesService.lang;
+        AppLocalization.setLang(context, _selectedLang);
+      });
     });
   }
 

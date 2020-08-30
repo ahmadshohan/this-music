@@ -45,8 +45,8 @@
 //
 //   MediaItem get mediaItem => _queue[_queueIndex];
 //
-//   StreamSubscription<PlaybackState> _playerStateSubscription;
-//   StreamSubscription<PlaybackEvent> _eventSubscription;
+//   StreamSubscription<dynamic> _playerStateSubscription;
+//   StreamSubscription<dynamic> _eventSubscription;
 //
 //   @override
 //   Future<void> onStart(Map<String, dynamic> params) async {
@@ -62,23 +62,23 @@
 //       _handlePlaybackCompleted();
 //     });
 //     _eventSubscription = _audioPlayer.playbackEventStream.listen((event) {
-//       final bufferingState =
-//           event.buffering ? AudioProcessingState.buffering : null;
-//       switch (event.state) {
+//       // final bufferingState =
+//       //     event.buffering ? AudioProcessingState.buffering : null;
+//       switch (event.processingState) {
 //         case AudioPlaybackState.paused:
 //           _setState(
 //               processingState: bufferingState ?? AudioProcessingState.ready,
-//               position: event.position);
+//               position: event.bufferedPosition);
 //           break;
 //         case AudioPlaybackState.playing:
 //           _setState(
 //               processingState: bufferingState ?? AudioProcessingState.ready,
-//               position: event.position);
+//               position: event.bufferedPosition);
 //           break;
 //         case AudioPlaybackState.connecting:
 //           _setState(
 //               processingState: _skipState ?? AudioProcessingState.connecting,
-//               position: event.position);
+//               position: event.bufferedPosition);
 //           break;
 //         default:
 //       }
@@ -165,14 +165,15 @@
 //   }
 //
 //   Future<void> _seekRelative(Duration offset) async {
-//     var newPosition = _audioPlayer.playbackEvent.position + offset;
+//     var newPosition = _audioPlayer.playbackEvent.bufferedPosition + offset;
 //     if (newPosition < Duration.zero) {
 //       newPosition = Duration.zero;
 //     }
 //     if (newPosition > mediaItem.duration) {
 //       newPosition = mediaItem.duration;
 //     }
-//     await _audioPlayer.seek(_audioPlayer.playbackEvent.position + offset);
+//     await _audioPlayer
+//         .seek(_audioPlayer.playbackEvent.bufferedPosition + offset);
 //   }
 //
 //   _handlePlaybackCompleted() {
@@ -197,7 +198,7 @@
 //   }) async {
 //     print('SetState $processingState');
 //     if (position == null) {
-//       position = _audioPlayer.playbackEvent.position;
+//       position = _audioPlayer.playbackEvent.bufferedPosition;
 //     }
 //     await AudioServiceBackground.setState(
 //       controls: getControls(),

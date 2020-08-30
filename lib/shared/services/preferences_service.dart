@@ -1,10 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:this_music/shared/model/user_gender.dart';
 import '../localization/app_localization.dart';
 
 class PreferencesService {
   final _lang = 'lang';
-  final _userGender = UserGender.Male;
   final _token = 'token';
   final _user = 'user';
 

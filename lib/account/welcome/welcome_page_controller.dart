@@ -19,7 +19,7 @@ abstract class _WelcomeControllerBase with Store {
   PreferencesService _preferencesService = PreferencesService();
   AccountRepository _accountRepository = AccountRepository();
 
-  Future _init() async {
+  Future init() async {
     lang = await _preferencesService.lang;
     AppLocalization.langStream.listen((value) {
       lang = value;

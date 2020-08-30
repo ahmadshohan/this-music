@@ -24,7 +24,7 @@ abstract class _RegisterControllerBase with Store {
   PreferencesService _preferencesService = PreferencesService();
   AccountRepository _accountRepository = AccountRepository();
 
-  Future _init() async {
+  Future init() async {
     autoValidate = false;
     lang = await _preferencesService.lang;
     AppLocalization.langStream.listen((value) {

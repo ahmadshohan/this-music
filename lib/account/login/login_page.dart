@@ -4,7 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/music_player/music_player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
@@ -244,9 +243,10 @@ class _LoginPageState extends State<LoginPage> {
       ]),
       Spacer(),
       GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, ForgotPasswordPage.routerName);
-        },
+        onTap: () {},
+        // onTap: () {
+        //   Navigator.pushNamed(context, ForgotPasswordPage.routerName);
+        // },
         child: Text(
           AppLocalization.forgotPassword,
           style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -265,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       child: JRaisedButton(
           onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => MusicPlayerPage())),
+              .push(MaterialPageRoute(builder: (context) => TabNavigator())),
           // onPressed: () async {
           //   KeyBoard.close(context);
           //   if (_formKey.currentState.validate()) {

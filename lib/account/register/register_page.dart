@@ -4,11 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:intl/intl.dart';
 import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/data_picker.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/model/user_gender.dart';
 import 'package:this_music/shared/widgets/closable.dart';
@@ -45,6 +43,13 @@ class _RegisterPageState extends State<RegisterPage> {
     _nameFN.dispose();
     _passwordFN.dispose();
     _telefonNumberFN.dispose();
+  }
+
+  void initState() {
+    super.initState();
+    Future<void>.delayed(Duration(milliseconds: 1000), () async {
+      await _registerController.init();
+    });
   }
 
   @override
