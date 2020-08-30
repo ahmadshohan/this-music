@@ -4,8 +4,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/music_player/music_player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/shared/widgets/loader.dart';
@@ -264,13 +264,15 @@ class _LoginPageState extends State<LoginPage> {
       height: 50,
       width: double.infinity,
       child: JRaisedButton(
-          onPressed: () async {
-            KeyBoard.close(context);
-            if (_formKey.currentState.validate()) {
-              await _loginController.login(context);
-            } else
-              _loginController.autoValidate = true;
-          },
+          onPressed: () => Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => MusicPlayerPage())),
+          // onPressed: () async {
+          //   KeyBoard.close(context);
+          //   if (_formKey.currentState.validate()) {
+          //     await _loginController.login(context);
+          //   } else
+          //     _loginController.autoValidate = true;
+          // },
           text: AppLocalization.login),
     );
   }

@@ -64,9 +64,8 @@ abstract class _LoginControllerBase with Store {
 
   @action
   String checkPassword() {
-    if (model.password.isEmpty)
-      return AppLocalization.passwordRequired;
-    else if (model.password.length < 6 || model.password.length > 30)
+    if (model.password.isEmpty) return AppLocalization.passwordRequired;
+    if (model.password.length < 6 || model.password.length > 30)
       AppLocalization.passwordNotValid;
     else
       return null;

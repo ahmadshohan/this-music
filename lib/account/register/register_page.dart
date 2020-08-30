@@ -9,7 +9,6 @@ import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/data_picker.dart';
-import 'package:this_music/player/player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/model/user_gender.dart';
 import 'package:this_music/shared/widgets/closable.dart';

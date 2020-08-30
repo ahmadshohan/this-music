@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/player/player_page.dart';
+import 'package:this_music/music_player/music_player_page.dart';
 import 'package:this_music/tab/home/special_albums_for_user.dart';
 import 'package:this_music/tab/home/special_user_playlist.dart';
 
@@ -88,16 +89,18 @@ class _HomePageState extends State<HomePage>
 
   _buildStoryCarousel() {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed(PlayerPage.routerName),
+      onTap: () {},
       child: SizedBox(
           height: 180.0,
           width: double.infinity - 30,
           child: Carousel(
             images: [
-              NetworkImage(
-                  'https://cdn-images-1.medium.com/max/2000/1*GqdzzfB_BHorv7V2NV7Jgg.jpeg'),
-              NetworkImage(
-                  'https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
+              CachedNetworkImage(
+                  imageUrl:
+                      'https://cdn-images-1.medium.com/max/2000/1*GqdzzfB_BHorv7V2NV7Jgg.jpeg'),
+              CachedNetworkImage(
+                  imageUrl:
+                      'https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
               ExactAssetImage("assets/page_design/home_page.jpeg"),
               ExactAssetImage("assets/png//temp_news.png")
             ],
