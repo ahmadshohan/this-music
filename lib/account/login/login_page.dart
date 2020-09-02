@@ -243,10 +243,10 @@ class _LoginPageState extends State<LoginPage> {
       ]),
       Spacer(),
       GestureDetector(
-        onTap: () {},
-        // onTap: () {
-        //   Navigator.pushNamed(context, ForgotPasswordPage.routerName);
-        // },
+        // onTap: () {},
+        onTap: () {
+          Navigator.pushNamed(context, ForgotPasswordPage.routerName);
+        },
         child: Text(
           AppLocalization.forgotPassword,
           style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -264,15 +264,13 @@ class _LoginPageState extends State<LoginPage> {
       height: 50,
       width: double.infinity,
       child: JRaisedButton(
-          onPressed: () => Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => TabNavigator())),
-          // onPressed: () async {
-          //   KeyBoard.close(context);
-          //   if (_formKey.currentState.validate()) {
-          //     await _loginController.login(context);
-          //   } else
-          //     _loginController.autoValidate = true;
-          // },
+          onPressed: () async {
+            KeyBoard.close(context);
+            if (_formKey.currentState.validate()) {
+              await _loginController.login(context);
+            } else
+              _loginController.autoValidate = true;
+          },
           text: AppLocalization.login),
     );
   }

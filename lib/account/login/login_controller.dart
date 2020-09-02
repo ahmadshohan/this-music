@@ -24,6 +24,7 @@ abstract class _LoginControllerBase with Store {
 
   @observable
   bool showPassword = false;
+
   @observable
   bool loading = false;
 
@@ -72,6 +73,11 @@ abstract class _LoginControllerBase with Store {
   }
 
   @action
+  void changeViewPassword() {
+    showPassword = !showPassword;
+  }
+
+  @action
   login(BuildContext context) async {
     loading = true;
     final result = await _accountRepository.login(model);
@@ -84,10 +90,5 @@ abstract class _LoginControllerBase with Store {
       Navigator.pushReplacementNamed(context, TabNavigator.routerName);
     }
     loading = false;
-  }
-
-  @action
-  void changeViewPassword() {
-    showPassword = !showPassword;
   }
 }

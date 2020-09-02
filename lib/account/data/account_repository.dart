@@ -112,7 +112,6 @@ class AccountRepository extends Repository {
 
     //try register
     final registerModel = RegisterModel();
-    // registerModel.genderType = role;
     registerModel.email = prefix + email;
     registerModel.userName = name;
     registerModel.password = password;

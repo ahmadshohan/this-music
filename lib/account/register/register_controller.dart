@@ -27,6 +27,7 @@ abstract class _RegisterControllerBase with Store {
   Future init() async {
     autoValidate = false;
     lang = await _preferencesService.lang;
+    model.genderType = UserGender.Male.toString();
     AppLocalization.langStream.listen((value) {
       lang = value;
     });
@@ -128,6 +129,7 @@ abstract class _RegisterControllerBase with Store {
         ? await DatePicker().showIosDatePicker(context)
         : await DatePicker().showAndroidDatePicker(context);
     String dateBirth = DateFormat('dd-MM-yyyy').format(date);
+    model.dateBirth = dateBirth;
     return dateBirth;
   }
 

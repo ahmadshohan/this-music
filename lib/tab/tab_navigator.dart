@@ -54,6 +54,13 @@ class _TabNavigatorState extends State<TabNavigator> {
         child: BottomNavigationBar(
           currentIndex: _selectedIndex,
           backgroundColor: ThisMusicColors.BottomNavigationBar,
+          selectedIconTheme:
+              IconThemeData(color: ThisMusicColors.button, size: 25),
+          unselectedIconTheme: IconThemeData(color: Colors.grey, size: 16),
+          selectedLabelStyle:
+              TextStyle(color: ThisMusicColors.button, fontSize: 15),
+          unselectedLabelStyle: TextStyle(color: Colors.grey, fontSize: 13),
+          showSelectedLabels: true,
           showUnselectedLabels: true,
           onTap: (int index) {
             _pageController.jumpToPage(index);
@@ -63,31 +70,24 @@ class _TabNavigatorState extends State<TabNavigator> {
               backgroundColor: ThisMusicColors.BottomNavigationBar,
               activeIcon: Icon(
                 Icons.home,
-                size: 20.0,
               ),
               icon: Icon(
                 Icons.home,
-                size: 20.0,
               ),
               title: Text(
                 AppLocalization.menu,
-                style: TextStyle(color: Colors.white),
               ),
             ),
             BottomNavigationBarItem(
               backgroundColor: ThisMusicColors.BottomNavigationBar,
               icon: Icon(
                 Icons.search,
-                size: 20.0,
               ),
               activeIcon: Icon(
                 Icons.search,
-                size: 20.0,
-                color: Colors.white,
               ),
               title: Text(
                 AppLocalization.search,
-                style: TextStyle(color: Colors.white),
               ),
             ),
             BottomNavigationBarItem(
@@ -96,23 +96,18 @@ class _TabNavigatorState extends State<TabNavigator> {
               activeIcon: Icon(Icons.settings_voice),
               title: Text(
                 AppLocalization.radio,
-                style: TextStyle(color: Colors.white),
               ),
             ),
             BottomNavigationBarItem(
               backgroundColor: ThisMusicColors.BottomNavigationBar,
               icon: Icon(
                 Icons.library_music,
-                size: 20.0,
               ),
               activeIcon: Icon(
                 Icons.library_music,
-                size: 20.0,
-                color: Colors.white,
               ),
               title: Text(
                 "Kitaplik",
-                style: TextStyle(color: Colors.white),
               ),
             ),
           ],

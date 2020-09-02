@@ -298,8 +298,7 @@ class _RegisterPageState extends State<RegisterPage> {
             focusNode: _birthFN,
             controller: _dateBirth,
             style: TextStyle(color: Colors.white),
-            onChanged: (value) => _registerController.model.dateBirth = value,
-            // validator: (_) => _registerController.checkdateBirth(),
+            validator: (_) => _registerController.checkdateBirth(),
             decoration: InputDecoration(
               labelText: AppLocalization.dateBirth,
               fillColor: Colors.white10,
@@ -363,7 +362,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 groupValue: _registerController.selectedGender,
                 title: Text(
                   AppLocalization.female,
-                  style: TextStyle(color: ThisMusicColors.white, fontSize: 12),
+                  style: TextStyle(color: ThisMusicColors.white, fontSize: 11),
                 ),
                 activeColor: Colors.blue,
               ),

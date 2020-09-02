@@ -58,6 +58,7 @@ class AppLocalization {
   static get google => 'google'.tr();
   static get apple => 'apple'.tr();
   static get email => 'email'.tr();
+  static get emailMsg => 'emailMsg'.tr();
   static get password => 'password'.tr();
   static get rememberMe => 'rememberMe'.tr();
   static get forgotPassword => 'forgotPassword'.tr();
@@ -93,8 +94,33 @@ class AppLocalization {
   static get idNumberRequired => 'idNumberRequired'.tr();
   static get degreeRequired => 'degreeRequired'.tr();
 
+  static get linkedAccount => 'linkedAccount'.tr();
+  static get changeLanguage => 'changeLanguage'.tr();
+  static get textMessage => 'textMessage'.tr();
+  static get settings => 'settings'.tr();
+  static get update => 'update'.tr();
+  static get language => 'language'.tr();
+  static get currancy => 'currancy'.tr();
+  static get phoneCalls => 'phoneCalls'.tr();
+  static get accountManagement => 'accountManagement'.tr();
+  static get soundSettings => 'soundSettings'.tr();
+  static get offlineMode => 'offlineMode'.tr();
+  static get applicationEvaluation => 'applicationEvaluation'.tr();
+  static get aboutUs => 'aboutUs'.tr();
+
+  static get searchSuggest => "searchSuggest".tr();
+  static get types => "types".tr();
+  static get moodActivities => "moodActivities".tr();
+
   static get verify => 'verify'.tr();
   static get resend => 'resend'.tr();
+  static get send => 'send'.tr();
   static get resendMsg => 'resendMsg'.tr();
   static get hello => 'hello'.tr();
+
+  static get yourRequestSent => 'yourRequestSent'.tr();
+  static get yourRequestSentMsg => 'yourRequestSentMsg'.tr();
+  static get continueLabel => 'continue'.tr();
+
+  static get logout => 'logout'.tr();
 }

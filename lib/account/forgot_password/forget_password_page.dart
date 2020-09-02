@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
+import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/colors.dart';
 
@@ -14,21 +16,17 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
+  final _formKey = GlobalKey<FormState>();
   String _forgetPasswordBg = 'assets/jpg/app_bg.jpg';
   String _logo = 'assets/png/welcome_logo.png';
   final ForgotPasswordController _forgotPasswordController =
       ForgotPasswordController();
-  FocusNode _fieldFN1 = FocusNode();
-  FocusNode _fieldFN2 = FocusNode();
-  FocusNode _fieldFN3 = FocusNode();
-  FocusNode _fieldFN4 = FocusNode();
-  @override
-  void dispose() {
-    super.dispose();
-    _fieldFN1.dispose();
-    _fieldFN2.dispose();
-    _fieldFN3.dispose();
-    _fieldFN3.dispose();
+
+  void initState() {
+    super.initState();
+    Future<void>.delayed(Duration(milliseconds: 1000), () async {
+      await _forgotPasswordController.init();
+    });
   }
 
   @override
@@ -54,16 +52,23 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     SizedBox(height: 150),
                     ..._buildTitles(),
                     SizedBox(height: 20),
-                    _buildInputs(),
+                    Form(
+                      key: _formKey,
+                      autovalidate: _forgotPasswordController.autoValidate,
+                      child: _buildInputs(),
+                    ),
                     Observer(
-                      builder: (_) => Text('${_forgotPasswordController.timer}',
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .copyWith(color: Colors.white)),
+                      builder: (_) => Visibility(
+                        visible: _forgotPasswordController.showTimer,
+                        child: Text('${_forgotPasswordController.timer}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1
+                                .copyWith(color: Colors.white)),
+                      ),
                     ),
                     SizedBox(height: 20),
-                    _buildVerifyButton(),
+                    _buildSendButton(),
                     SizedBox(height: 20),
                     _buildResend()
                   ],
@@ -122,109 +127,41 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   _buildInputs() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: <Widget>[
-          SizedBox(
-            width: 50,
-            child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                focusNode: _fieldFN1,
-                onFieldSubmitted: (_) =>
-                    FocusScope.of(context).requestFocus(_fieldFN2),
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
-                maxLength: 1,
-                decoration: InputDecoration(
-                    hintText: '0',
-                    counter: Text(''),
-                    hintStyle: TextStyle(color: Colors.white38),
-                    fillColor: Colors.white10,
-                    filled: true,
-                    labelStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(16),
-                    border: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(5),
-                    ))),
-          ),
-          SizedBox(
-            width: 50,
-            child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                focusNode: _fieldFN2,
-                onFieldSubmitted: (_) =>
-                    FocusScope.of(context).requestFocus(_fieldFN3),
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
-                maxLength: 1,
-                decoration: InputDecoration(
-                    hintText: '0',
-                    counter: Text(''),
-                    hintStyle: TextStyle(color: Colors.white38),
-                    fillColor: Colors.white10,
-                    filled: true,
-                    labelStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(16),
-                    border: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(5),
-                    ))),
-          ),
-          SizedBox(
-            width: 50,
-            child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                focusNode: _fieldFN3,
-                onFieldSubmitted: (_) =>
-                    FocusScope.of(context).requestFocus(_fieldFN4),
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
-                maxLength: 1,
-                decoration: InputDecoration(
-                    hintText: '0',
-                    counter: Text(''),
-                    hintStyle: TextStyle(color: Colors.white38),
-                    fillColor: Colors.white10,
-                    filled: true,
-                    labelStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(16),
-                    border: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(5),
-                    ))),
-          ),
-          SizedBox(
-            width: 50,
-            child: TextFormField(
-                keyboardType: TextInputType.numberWithOptions(),
-                focusNode: _fieldFN4,
-                inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white),
-                maxLength: 1,
-                decoration: InputDecoration(
-                    hintText: '0',
-                    counter: Text(''),
-                    hintStyle: TextStyle(color: Colors.white38),
-                    fillColor: Colors.white10,
-                    filled: true,
-                    labelStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.all(16),
-                    border: OutlineInputBorder(
-                      borderRadius: new BorderRadius.circular(5),
-                    ))),
-          )
-        ]);
+    return TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.next,
+        onChanged: (value) => _forgotPasswordController.model.email = value,
+        validator: (_) => _forgotPasswordController.checkEmail(),
+        onFieldSubmitted: (_) {
+          KeyBoard.close(context);
+        },
+        style: TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+            labelText: AppLocalization.emailMsg,
+            fillColor: Colors.white10,
+            filled: true,
+            labelStyle: TextStyle(color: Colors.white),
+            contentPadding: EdgeInsets.symmetric(horizontal: 10),
+            border: OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(10),
+            )));
   }
 
-  _buildVerifyButton() {
+  _buildSendButton() {
     return SizedBox(
       height: 50,
       width: double.infinity,
       child: JRaisedButton(
-          onPressed: () {/*Todo handle verifyButton go to home*/},
-          text: AppLocalization.verify),
+          onPressed: () async {
+            KeyBoard.close(context);
+            if (_formKey.currentState.validate()) {
+              _showSendEmailDialog();
+              /*todo handle send email api*/
+
+            } else
+              _forgotPasswordController.autoValidate = true;
+          },
+          text: AppLocalization.send),
     );
   }
 
@@ -237,12 +174,48 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               .copyWith(color: Colors.white)),
       SizedBox(width: 10),
       GestureDetector(
-        onTap: () => _forgotPasswordController.resend(),
+        onTap: () {
+          _forgotPasswordController.resend();
+        },
         child: Text(AppLocalization.resend,
             style: Theme.of(context).textTheme.bodyText1.copyWith(
                 color: ThisMusicColors.button,
                 decoration: TextDecoration.underline)),
       )
     ]);
+  }
+
+  _showSendEmailDialog() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (BuildContext context) {
+          return SimpleDialog(
+              contentPadding: EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+              children: <Widget>[
+                SizedBox(
+                    child: Image.asset('assets/png/sendCase.png',
+                        width: 50, height: 50)),
+                SizedBox(height: 10),
+                Text(AppLocalization.yourRequestSent,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14)),
+                SizedBox(height: 10),
+                SizedBox(
+                    height: 40,
+                    child: JRaisedButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pushReplacementNamed(
+                              context, LoginPage.routerName);
+                        },
+                        text: AppLocalization.continueLabel))
+              ]);
+        });
   }
 }

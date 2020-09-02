@@ -12,6 +12,7 @@ import 'package:this_music/shared/widgets/j_outline_button.dart';
 import 'package:this_music/shared/widgets/j_raised_buttonborder.dart';
 import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/account/welcome/welcome_page_controller.dart';
+import 'package:this_music/tab/tab_navigator.dart';
 
 enum PopLanguageOption { Turkish, English, Arabic }
 
@@ -140,7 +141,11 @@ class _WelcomePageState extends State<WelcomePage> {
               text: AppLocalization.googleMsg,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              onPressed: () => _welcomeController.googleLogin(),
+              onPressed: () async {
+                await _welcomeController.googleLogin();
+                Navigator.of(context)
+                    .pushReplacementNamed(TabNavigator.routerName);
+              },
             ),
           ),
           SizedBox(
@@ -153,9 +158,11 @@ class _WelcomePageState extends State<WelcomePage> {
               text: AppLocalization.facebookMsg,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
-              onPressed: () {
+              onPressed: () async {
                 //TODO handle login with facebook
-                _welcomeController.facebookLogin();
+                await _welcomeController.facebookLogin();
+                Navigator.of(context)
+                    .pushReplacementNamed(TabNavigator.routerName);
               },
             ),
           ),

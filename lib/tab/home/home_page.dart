@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/music_player/music_player_page.dart';
+import 'package:this_music/settings/settings_page.dart';
 import 'package:this_music/tab/home/special_albums_for_user.dart';
 import 'package:this_music/tab/home/special_user_playlist.dart';
 
@@ -89,7 +90,7 @@ class _HomePageState extends State<HomePage>
 
   _buildStoryCarousel() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () => Navigator.pushNamed(context, MusicPlayerPage.routerName),
       child: SizedBox(
           height: 180.0,
           width: double.infinity - 30,
@@ -124,7 +125,7 @@ class _HomePageState extends State<HomePage>
           Icons.settings,
           color: ThisMusicColors.white,
         ),
-        onPressed: () {/*TODO handle go to Settings Page */},
+        onPressed: () => Navigator.pushNamed(context, SettingsPage.routerName),
       ),
     );
   }
