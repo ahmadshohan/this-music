@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 
@@ -20,6 +22,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
         body: Stack(
           children: <Widget>[
             Container(
+              color: Colors.black,
               height: double.infinity,
               padding: EdgeInsets.all(10),
               child: SafeArea(
@@ -34,7 +37,14 @@ class _AboutUsPageState extends State<AboutUsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                             _buildVersionNumber(),
+                            Divider(thickness: 1, color: ThisMusicColors.white),
                             _buildUsingRules(),
+                            Divider(thickness: 1, color: ThisMusicColors.white),
+                            // _buildUsingRules(),
+                            // Divider(thickness: 2),
+                            // _buildUsingRules(),
+                            // Divider(thickness: 2),
+                            // _buildUsingRules(),
                           ])))),
             ),
           ],
@@ -42,15 +52,28 @@ class _AboutUsPageState extends State<AboutUsPage> {
   }
 
   _buildVersionNumber() {
-    return Column(
-      children: <Widget>[
-        Text('Version 0.0.1'),
-      ],
+    return Card(
+      elevation: 8,
+      child: Container(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          AppLocalization.versionNumber,
+          style: TextStyle(color: Colors.black, fontSize: 18),
+        ),
+      ),
     );
   }
 
   _buildUsingRules() {
     return GestureDetector(
-        onTap: () {}, child: Text('Kulanim sartlari ve kusolan'));
+        onTap: () {},
+        child: Card(
+          elevation: 8,
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            child: Text(AppLocalization.termsConditions,
+                style: TextStyle(fontSize: 18)),
+          ),
+        ));
   }
 }

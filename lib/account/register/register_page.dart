@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
@@ -15,7 +16,7 @@ import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/tab/tab_navigator.dart';
 
 class RegisterPage extends StatefulWidget {
-  static const routerName = '/account/register-page';
+  static const routerName = '/account/register/register-page';
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -128,17 +129,27 @@ class _RegisterPageState extends State<RegisterPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset(
-                      _logo,
-                      height: 80,
-                      width: 80,
+                    Shimmer.fromColors(
+                      baseColor: ThisMusicColors.white,
+                      highlightColor: ThisMusicColors.button,
+                      enabled: true,
+                      child: Image.asset(
+                        _logo,
+                        height: 80,
+                        width: 80,
+                      ),
                     ),
-                    Text(
-                      'THIS MUSIC',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Shimmer.fromColors(
+                      baseColor: ThisMusicColors.white,
+                      highlightColor: Colors.grey,
+                      enabled: true,
+                      child: Text(
+                        'THIS MUSIC',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

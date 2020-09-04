@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/app_widget.dart';
@@ -60,10 +62,15 @@ class _WelcomePageState extends State<WelcomePage> {
                   right: false,
                   left: false,
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       _buildTitleAndLogo(),
-                      _buildRegisterAndLoginButtons(),
-                      _buildSocialMediaButtons(),
+                      Column(
+                        children: <Widget>[
+                          _buildRegisterAndLoginButtons(),
+                          _buildSocialMediaButtons(),
+                        ],
+                      )
                     ],
                   ),
                 )),
@@ -78,7 +85,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildTitleAndLogo() {
     return Padding(
-      padding: const EdgeInsets.only(top: 30),
+      padding: const EdgeInsets.only(top: 35),
       child: Column(
         children: <Widget>[
           Row(
@@ -87,17 +94,27 @@ class _WelcomePageState extends State<WelcomePage> {
                 child: Row(
                   children: <Widget>[
                     _buildPopupMenuLanguageButton(),
-                    Image.asset(
-                      _logo,
-                      height: 80,
-                      width: 80,
+                    Shimmer.fromColors(
+                      baseColor: ThisMusicColors.white,
+                      highlightColor: ThisMusicColors.button,
+                      enabled: true,
+                      child: Image.asset(
+                        _logo,
+                        height: 80,
+                        width: 80,
+                      ),
                     ),
-                    Text(
-                      'THIS MUSIC',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Shimmer.fromColors(
+                      highlightColor: Colors.grey,
+                      baseColor: ThisMusicColors.white,
+                      enabled: true,
+                      child: Text(
+                        'THIS MUSIC',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -121,7 +138,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildSocialMediaButtons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
+      padding: const EdgeInsets.only(right: 80, left: 80, bottom: 20, top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -159,7 +176,6 @@ class _WelcomePageState extends State<WelcomePage> {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
               onPressed: () async {
-                //TODO handle login with facebook
                 await _welcomeController.facebookLogin();
                 Navigator.of(context)
                     .pushReplacementNamed(TabNavigator.routerName);
@@ -172,37 +188,33 @@ class _WelcomePageState extends State<WelcomePage> {
   }
 
   _buildRegisterAndLoginButtons() {
-    return Expanded(
-      flex: 3,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 80),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            SizedBox(
-              height: 50,
-              child: JRaisedButtonBorder(
-                onPressed: () {
-                  Navigator.pushNamed(context, RegisterPage.routerName);
-                },
-                text: AppLocalization.register,
-                color: Color(0xFFD5BD77),
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 80),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          SizedBox(
+            height: 50,
+            child: JRaisedButtonBorder(
+              onPressed: () {
+                Navigator.pushNamed(context, RegisterPage.routerName);
+              },
+              text: AppLocalization.register,
+              color: Color(0xFFD5BD77),
             ),
-            SizedBox(height: 10),
-            SizedBox(
-              height: 50,
-              child: JOutlineButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, LoginPage.routerName);
-                },
-                text: AppLocalization.login,
-                color: Color(0xFFD5BD77),
-              ),
-            )
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          SizedBox(
+            height: 50,
+            child: JOutlineButton(
+              onPressed: () {
+                Navigator.pushNamed(context, LoginPage.routerName);
+              },
+              text: AppLocalization.login,
+              color: Color(0xFFD5BD77),
+            ),
+          )
+        ],
       ),
     );
   }

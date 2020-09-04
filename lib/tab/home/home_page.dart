@@ -64,7 +64,7 @@ class _HomePageState extends State<HomePage>
                 _buildSettingsIconButton(),
                 SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -93,7 +93,7 @@ class _HomePageState extends State<HomePage>
       onTap: () => Navigator.pushNamed(context, MusicPlayerPage.routerName),
       child: SizedBox(
           height: 180.0,
-          width: double.infinity - 30,
+          width: double.infinity - 15,
           child: Carousel(
             images: [
               CachedNetworkImage(

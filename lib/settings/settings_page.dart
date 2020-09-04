@@ -1,6 +1,11 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+import 'package:this_music/profile/profile_page.dart';
+import 'package:this_music/music_player/data/models/song.dart';
 import 'package:this_music/settings/about/aboutus_page.dart';
 import 'package:this_music/settings/settings_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
@@ -21,10 +26,13 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   SettingsController _settingsController = SettingsController();
+  AudioPlayer _player;
   void initState() {
     super.initState();
     Future<void>.delayed(Duration(milliseconds: 1000), () async {
       await _settingsController.init();
+      SongModel songModel = Provider.of<SongModel>(context);
+      _player = songModel.audioPlayer;
     });
   }
 
@@ -39,12 +47,8 @@ class _SettingsPageState extends State<SettingsPage> {
           children: <Widget>[
             Container(
               height: double.infinity,
+              color: Colors.black,
               padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage('assets/jpg/app_bg.jpg'),
-                fit: BoxFit.fill,
-              )),
               child: SafeArea(
                   top: true,
                   bottom: true,
@@ -56,12 +60,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: AssetImage(
-                                "assets/jpg/ahmad.jpg",
-                              ),
-                            ),
+                            _buildAvatar(),
+                            SizedBox(height: 7),
+                            Divider(color: Colors.grey),
                             SizedBox(
                               height: 15,
                             ),
@@ -82,57 +83,87 @@ class _SettingsPageState extends State<SettingsPage> {
         ));
   }
 
+  _buildAvatar() {
+    return CircleAvatar(
+        radius: 50,
+        backgroundColor: Colors.black12,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(100),
+          child: Image.asset('assets/png/avatar.png',
+              width: 100, height: 100, fit: BoxFit.cover),
+        ));
+  }
+
   _buildAccountManagement() {
-    return Card(
-        elevation: 8,
-        child: Container(
-            padding: EdgeInsets.all(10),
-            child: Row(children: <Widget>[
-              Icon(
-                EvaIcons.personOutline,
-                size: 25,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(AppLocalization.accountManagement,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
-            ])));
+    return GestureDetector(
+      onTap: () => Navigator.pushNamed(context, ProfilePage.routerName),
+      child: Card(
+          color: Colors.white30,
+          elevation: 8,
+          child: Container(
+              padding: EdgeInsets.all(10),
+              child: Row(children: <Widget>[
+                Icon(
+                  EvaIcons.personOutline,
+                  size: 25,
+                  color: ThisMusicColors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(AppLocalization.accountManagement,
+                    style: TextStyle(
+                        color: ThisMusicColors.white,
+                        fontWeight: FontWeight.bold)),
+              ]))),
+    );
   }
 
   _buildSoundSettings() {
-    return Card(
-        elevation: 8,
-        child: Container(
-            padding: EdgeInsets.all(10),
-            child: Row(children: <Widget>[
-              Icon(
-                Icons.settings_voice,
-                size: 25,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(AppLocalization.soundSettings,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
-            ])));
+    return GestureDetector(
+      onTap: () async {
+        await AppSettings.openSoundSettings();
+      },
+      child: Card(
+          color: Colors.white30,
+          elevation: 8,
+          child: Container(
+              padding: EdgeInsets.all(10),
+              child: Row(children: <Widget>[
+                Icon(
+                  Icons.settings_voice,
+                  size: 25,
+                  color: ThisMusicColors.white,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(AppLocalization.soundSettings,
+                    style: TextStyle(
+                        color: ThisMusicColors.white,
+                        fontWeight: FontWeight.bold)),
+              ]))),
+    );
   }
 
   _buildOfflineMode() {
     return Card(
+        color: Colors.white30,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.all(10),
             child: Row(children: <Widget>[
-              Icon(EvaIcons.bellOff),
+              Icon(
+                EvaIcons.bellOff,
+                color: ThisMusicColors.white,
+              ),
               SizedBox(
                 width: 10,
               ),
               Text(AppLocalization.offlineMode,
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
+                      color: ThisMusicColors.white,
+                      fontWeight: FontWeight.bold)),
               Spacer(),
               Switch(
                 value: false,
@@ -145,17 +176,22 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildApplicationEvaluation() {
     return Card(
+        color: Colors.white30,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.all(10),
             child: Row(children: <Widget>[
-              Icon(Icons.stars),
+              Icon(
+                Icons.stars,
+                color: ThisMusicColors.white,
+              ),
               SizedBox(
                 width: 10,
               ),
               Text(AppLocalization.applicationEvaluation,
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
+                      color: ThisMusicColors.white,
+                      fontWeight: FontWeight.bold)),
             ])));
   }
 
@@ -163,17 +199,22 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AboutUsPage.routerName),
       child: Card(
+          color: Colors.white30,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
               child: Row(children: <Widget>[
-                Icon(EvaIcons.personOutline),
+                Icon(
+                  EvaIcons.personOutline,
+                  color: ThisMusicColors.white,
+                ),
                 SizedBox(
                   width: 10,
                 ),
                 Text(AppLocalization.aboutUs,
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold)),
+                        color: ThisMusicColors.white,
+                        fontWeight: FontWeight.bold)),
               ]))),
     );
   }
@@ -184,17 +225,22 @@ class _SettingsPageState extends State<SettingsPage> {
         await _settingsController.logout(context);
       },
       child: Card(
+          color: Colors.white30,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
               child: Row(children: <Widget>[
-                Icon(EvaIcons.logOut),
+                Icon(
+                  EvaIcons.logOut,
+                  color: ThisMusicColors.white,
+                ),
                 SizedBox(
                   width: 10,
                 ),
                 Text(AppLocalization.logout,
                     style: TextStyle(
-                        color: Colors.black, fontWeight: FontWeight.bold)),
+                        color: ThisMusicColors.white,
+                        fontWeight: FontWeight.bold)),
               ]))),
     );
   }
@@ -203,6 +249,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => showChangeLanguageDialog(),
       child: Card(
+          color: Colors.white30,
           elevation: 8,
           child: Observer(
             builder: (_) => Container(
@@ -214,19 +261,23 @@ class _SettingsPageState extends State<SettingsPage> {
                         ? 20
                         : 20),
                 child: Row(children: <Widget>[
-                  Icon(Icons.language),
+                  Icon(
+                    Icons.language,
+                    color: ThisMusicColors.white,
+                  ),
                   SizedBox(
                     width: 10,
                   ),
                   Text(AppLocalization.language,
                       style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold)),
+                          color: ThisMusicColors.white,
+                          fontWeight: FontWeight.bold)),
                   Spacer(),
                   Row(children: <Widget>[
                     Text(_settingsController.getCurrentLang(),
-                        style: TextStyle(color: Colors.black38)),
+                        style: TextStyle(color: ThisMusicColors.white)),
                     SizedBox(width: 5),
-                    Icon(Icons.arrow_forward_ios, color: Colors.black38)
+                    Icon(Icons.arrow_forward_ios, color: ThisMusicColors.white)
                   ])
                 ])),
           )),
@@ -235,22 +286,28 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildLinkedAccount() {
     return Card(
+        color: Colors.white30,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
             child: Row(children: <Widget>[
-              Icon(Icons.phone_android),
+              Icon(
+                Icons.phone_android,
+                color: ThisMusicColors.white,
+              ),
               SizedBox(
                 width: 10,
               ),
               Text(AppLocalization.linkedAccount,
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
+                      color: ThisMusicColors.white,
+                      fontWeight: FontWeight.bold)),
               Spacer(),
               Row(children: <Widget>[
-                Text('Facebook', style: TextStyle(color: Colors.black38)),
+                Text('Facebook',
+                    style: TextStyle(color: ThisMusicColors.white)),
                 SizedBox(width: 5),
-                Icon(Icons.arrow_forward_ios, color: Colors.black38)
+                Icon(Icons.arrow_forward_ios, color: ThisMusicColors.white)
               ])
             ])));
   }
@@ -299,7 +356,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   SizedBox(height: 10),
                   SizedBox(
-                    height: 40,
+                    height: 43,
                     width: double.infinity,
                     child: Observer(
                       builder: (_) => JRaisedButton(

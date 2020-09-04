@@ -1,15 +1,17 @@
+import 'dart:async';
 import 'dart:ui';
 import 'dart:math';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_share/flutter_share.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:this_music/music_player/music_player_controller.dart';
+import 'package:this_music/music_player/widgets/seek_bar.dart';
+import 'package:this_music/shared/localization/app_localization.dart';
 import './data/models/song.dart';
-import 'package:flutter_visualizers/Visualizers/LineBarVisualizer.dart';
-import 'package:flutter_visualizers/Visualizers/LineVisualizer.dart';
-import 'package:flutter_visualizers/visualizer.dart';
 import 'package:this_music/animations/player_anim.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/widgets/loader.dart';
@@ -23,51 +25,19 @@ class MusicPlayerPage extends StatefulWidget {
 
 class _MusicPlayerPageState extends State<MusicPlayerPage>
     with TickerProviderStateMixin {
+  MusicPlayerController _musicPlayerController = MusicPlayerController();
   AnimationController controllerPlayer;
   Animation<double> animationPlayer;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _commonTween = new Tween<double>(begin: 0.0, end: 1.0);
   AudioPlayer _player;
-  // ConcatenatingAudioSource _playlist = ConcatenatingAudioSource(children: [
-  //   LoopingAudioSource(
-  //     count: 2,
-  //     child: ClippingAudioSource(
-  //       start: Duration(seconds: 60),
-  //       end: Duration(seconds: 65),
-  //       child: AudioSource.uri(Uri.parse(
-  //           "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3")),
-  //       tag: Song(
-  //         album: "Science Friday",
-  //         title: "A Salute To Head-Scratching Science (5 seconds)",
-  //         pic:
-  //             "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-  //       ),
-  //     ),
-  //   ),
-  //   AudioSource.uri(
-  //     Uri.parse(
-  //         "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"),
-  //     tag: Song(
-  //       album: "Science Friday",
-  //       title: "A Salute To Head-Scratching Science",
-  //       pic:
-  //           "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-  //     ),
-  //   ),
-  //   AudioSource.uri(
-  //     Uri.parse("https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3"),
-  //     tag: Song(
-  //       album: "Science Friday",
-  //       title: "From Cat Rheology To Operatic Incompetence",
-  //       pic:
-  //           "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg",
-  //     ),
-  //   ),
-  // ]);
+  int playerId;
 
   @override
   void initState() {
     super.initState();
     _player = AudioPlayer();
+    playerId = _player.androidAudioSessionId;
     controllerPlayer = new AnimationController(
         duration: const Duration(milliseconds: 15000), vsync: this);
     animationPlayer =
@@ -98,6 +68,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: ThisMusicColors.BottomPanel,
       body: Container(
         height: size.height,
         decoration: BoxDecoration(
@@ -147,7 +119,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                             color: ThisMusicColors.white,
                           ),
                           onPressed: () {
-                            _showSliderDialog(
+                            _showSliderVolumeDialog(
                               context: context,
                               title: "Adjust volume",
                               divisions: 10,
@@ -167,7 +139,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                                   color: ThisMusicColors.white,
                                 )),
                             onPressed: () {
-                              _showSliderDialog(
+                              _showSliderVolumeDialog(
                                 context: context,
                                 title: "Adjust speed",
                                 divisions: 10,
@@ -183,25 +155,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     ),
                     _buildControllerButtons(context, _player),
                     /*TODO Visualizer*/
-                    // Container(
-                    //   height: MediaQuery.of(context).size.height * 0.2,
-                    //   width: MediaQuery.of(context).size.width,
-                    //   child: Visualizer(
-                    //     builder: (BuildContext context, List<int> wave) {
-                    //       return CustomPaint(
-                    //         painter: LineBarVisualizer(
-                    //           waveData: wave,
-                    //           height:
-                    //               MediaQuery.of(context).size.height * 0.2,
-                    //           width: MediaQuery.of(context).size.width,
-                    //           color: Colors.red,
-                    //         ),
-                    //         child: Container(),
-                    //       );
-                    //     },
-                    //     id: 3,
-                    //   ),
-                    // )
                   ],
                 ),
               ),
@@ -233,15 +186,124 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           ),
           IconButton(
             icon: Icon(
-              Icons.menu,
+              Icons.more_vert,
               size: 25.0,
               color: ThisMusicColors.white,
             ),
-            onPressed: () => {},
+            onPressed: () {
+              _buildShowShareFavoriteSheet();
+            },
           ),
         ],
       ),
     );
+  }
+
+  _buildShowShareFavoriteSheet() {
+    return showModalBottomSheet(
+        context: context,
+        builder: (_) => Container(
+              color: ThisMusicColors.BottomPanel,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xFF737373),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15))),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: Icon(
+                        Icons.favorite_border,
+                        color: ThisMusicColors.white,
+                      ),
+                      title: Text(
+                        AppLocalization.favorite,
+                        style: TextStyle(color: ThisMusicColors.white),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.pop(context);
+                        await FlutterShare.share(
+                            title: 'Song name',
+                            text: "Album name from This Music",
+                            linkUrl:
+                                'https://www.youtube.com/watch?v=1fYllJyZgdU');
+                      },
+                      child: ListTile(
+                        leading:
+                            Icon(EvaIcons.share, color: ThisMusicColors.white),
+                        title: Text(AppLocalization.share,
+                            style: TextStyle(color: ThisMusicColors.white)),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ));
+  }
+
+  _buildShowShareSocialSheet() {
+    return showModalBottomSheet(
+        context: context,
+        builder: (_) => Container(
+              color: ThisMusicColors.BottomPanel,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Color(0xFF737373),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15))),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () async {
+                        Navigator.pop(context);
+                      },
+                      child: ListTile(
+                        leading: Container(
+                          color: Color(0xFF737373),
+                          child: Image.asset(
+                            "assets/social/whatsapp.jpg",
+                            fit: BoxFit.contain,
+                          ),
+                        ),
+                        title: Text(
+                          'Whatsapp',
+                          style: TextStyle(color: ThisMusicColors.white),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: ListTile(
+                        leading: Image.asset('assets/social/facebook.png'),
+                        title: Text(AppLocalization.facebook,
+                            style: TextStyle(color: ThisMusicColors.white)),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage:
+                              AssetImage("assets/social/instagram.jpg"),
+                        ),
+                        title: Text('Instagram',
+                            style: TextStyle(color: ThisMusicColors.white)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ));
   }
 
   _buildPictureTitle(AudioPlayer player) {
@@ -262,18 +324,18 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 child: RotatePlayer(
                     animation: _commonTween.animate(controllerPlayer)),
               ),
-              // Text(
-              //   metadata.album ?? '',
-              //   style: TextStyle(
-              //       color: ThisMusicColors.white,
-              //       fontSize: 30,
-              //       fontWeight: FontWeight.bold),
-              // ),
-              // Text(
-              //   metadata.title ?? '',
-              //   style:
-              //       TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
-              // ),
+              Text(
+                "Song",
+                style: TextStyle(
+                    color: ThisMusicColors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+              ),
+              Text(
+                "title",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w300),
+              ),
             ],
           );
         },
@@ -394,108 +456,46 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       ],
     );
   }
-}
 
-class SeekBar extends StatefulWidget {
-  final Duration duration;
-  final Duration position;
-  final ValueChanged<Duration> onChanged;
-  final ValueChanged<Duration> onChangeEnd;
-
-  SeekBar({
-    @required this.duration,
-    @required this.position,
-    this.onChanged,
-    this.onChangeEnd,
-  });
-
-  @override
-  _SeekBarState createState() => _SeekBarState();
-}
-
-class _SeekBarState extends State<SeekBar> {
-  double _dragValue;
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Slider(
-          min: 0.0,
-          max: widget.duration.inMilliseconds.toDouble(),
-          value: min(_dragValue ?? widget.position.inMilliseconds.toDouble(),
-              widget.duration.inMilliseconds.toDouble()),
-          onChanged: (value) {
-            setState(() {
-              _dragValue = value;
-            });
-            if (widget.onChanged != null) {
-              widget.onChanged(Duration(milliseconds: value.round()));
-            }
-          },
-          onChangeEnd: (value) {
-            if (widget.onChangeEnd != null) {
-              widget.onChangeEnd(Duration(milliseconds: value.round()));
-            }
-            _dragValue = null;
-          },
-        ),
-        Positioned(
-          top: 29,
-          right: 16.0,
-          bottom: 0.0,
-          child: Text(
-              RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
-                      .firstMatch("$_remaining")
-                      ?.group(1) ??
-                  '$_remaining',
-              style: TextStyle(color: ThisMusicColors.button)),
-        ),
-      ],
-    );
-  }
-
-  Duration get _remaining => widget.duration - widget.position;
-}
-
-_showSliderDialog({
-  BuildContext context,
-  String title,
-  int divisions,
-  double min,
-  double max,
-  String valueSuffix = '',
-  Stream<double> stream,
-  ValueChanged<double> onChanged,
-}) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text(title,
-          style: TextStyle(fontFamily: "permanentmarker"),
-          textAlign: TextAlign.center),
-      content: StreamBuilder<double>(
-        stream: stream,
-        builder: (context, snapshot) => Container(
-          height: 100.0,
-          child: Column(
-            children: [
-              Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
-                  style: TextStyle(
-                      fontFamily: "permanentmarker",
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0)),
-              Slider(
-                divisions: divisions,
-                min: min,
-                max: max,
-                value: snapshot.data ?? 1.0,
-                onChanged: onChanged,
-              ),
-            ],
+  _showSliderVolumeDialog({
+    BuildContext context,
+    String title,
+    int divisions,
+    double min,
+    double max,
+    String valueSuffix = '',
+    Stream<double> stream,
+    ValueChanged<double> onChanged,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title,
+            style: TextStyle(fontFamily: "permanentmarker"),
+            textAlign: TextAlign.center),
+        content: StreamBuilder<double>(
+          stream: stream,
+          builder: (context, snapshot) => Container(
+            height: 100.0,
+            child: Column(
+              children: [
+                Text('${snapshot.data?.toStringAsFixed(1)}$valueSuffix',
+                    style: TextStyle(
+                        fontFamily: "permanentmarker",
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0)),
+                Slider(
+                  divisions: divisions,
+                  min: min,
+                  max: max,
+                  value: snapshot.data ?? 1.0,
+                  onChanged: onChanged,
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
+    );
+  }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:this_music/settings/about/aboutus_page.dart';
+import './profile/profile_page.dart';
+import './profile/edit_profile/edit_profile_page.dart';
 import 'package:this_music/settings/settings_page.dart';
 import './music_player/music_player_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
@@ -58,6 +60,8 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         MusicPlayerPage.routerName: (ctx) => MusicPlayerPage(),
         SettingsPage.routerName: (ctx) => SettingsPage(),
         AboutUsPage.routerName: (ctx) => AboutUsPage(),
+        ProfilePage.routerName: (ctx) => ProfilePage(),
+        EditProfilePage.routerName: (ctx) => EditProfilePage(),
       },
     );
   }

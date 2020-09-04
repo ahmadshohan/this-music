@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/colors.dart';
@@ -131,17 +132,27 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Image.asset(
-                      _logo,
-                      height: 80,
-                      width: 80,
+                    Shimmer.fromColors(
+                      baseColor: ThisMusicColors.white,
+                      highlightColor: ThisMusicColors.button,
+                      enabled: true,
+                      child: Image.asset(
+                        _logo,
+                        height: 80,
+                        width: 80,
+                      ),
                     ),
-                    Text(
-                      'THIS MUSIC',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                    Shimmer.fromColors(
+                      baseColor: ThisMusicColors.white,
+                      highlightColor: Colors.grey,
+                      enabled: true,
+                      child: Text(
+                        'THIS MUSIC',
+                        style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],

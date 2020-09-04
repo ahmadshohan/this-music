@@ -1,5 +1,4 @@
 import 'package:mobx/mobx.dart';
-import 'package:this_music/shared/localization/app_localization.dart';
 
 part 'music_player_controller.g.dart';
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:this_music/colors.dart';
 
@@ -25,11 +26,17 @@ class _LoaderState extends State<Loader> with TickerProviderStateMixin {
         color: widget.withBgOverlay ? Colors.black38 : Colors.transparent,
         height: widget.height ?? MediaQuery.of(context).size.height,
         child: Center(
-            child: SpinKitWave(
-                color: widget.color,
-                size: widget.size,
-                controller: AnimationController(
-                    vsync: this,
-                    duration: const Duration(milliseconds: 1200)))));
+            child: Shimmer.fromColors(
+          baseColor: Colors.red,
+          highlightColor: ThisMusicColors.button,
+          direction: ShimmerDirection.ltr,
+          enabled: true,
+          child: SpinKitWave(
+              itemCount: 5,
+              color: widget.color,
+              size: widget.size,
+              controller: AnimationController(
+                  vsync: this, duration: const Duration(milliseconds: 1200))),
+        )));
   }
 }

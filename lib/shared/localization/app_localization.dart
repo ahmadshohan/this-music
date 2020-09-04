@@ -118,9 +118,20 @@ class AppLocalization {
   static get resendMsg => 'resendMsg'.tr();
   static get hello => 'hello'.tr();
 
+  static get share => 'share'.tr();
+  static get favorite => 'favorite'.tr();
+
+  static get profile => 'profile'.tr();
+  static get personalInformation => 'personalInformation'.tr();
+  static get yourName => 'yourName'.tr();
+  static get editInformations => 'editInformations'.tr();
+
   static get yourRequestSent => 'yourRequestSent'.tr();
   static get yourRequestSentMsg => 'yourRequestSentMsg'.tr();
   static get continueLabel => 'continue'.tr();
+
+  static get versionNumber => 'versionNumber'.tr();
+  static get termsConditions => 'termsConditions'.tr();
 
   static get logout => 'logout'.tr();
 }
