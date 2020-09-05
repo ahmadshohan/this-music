@@ -15,6 +15,12 @@
     	<array>
     		<string>audio</string>
     	</array>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>WeNeedOpenPhotoLibrary</string>
+    <key>NSCameraUsageDescription</key>
+    <string>WeNeedOpenCamera</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>WeNeedOpenMicrophone</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

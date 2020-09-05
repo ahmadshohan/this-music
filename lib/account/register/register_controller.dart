@@ -10,7 +10,7 @@ import 'package:this_music/account/data/models/login.dart';
 import 'package:this_music/account/data/models/register.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'package:this_music/shared/model/user_gender.dart';
+import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/shared/constant/user_gender.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
 

@@ -8,6 +8,7 @@ import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/app_widget.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/shared/constant/user_gender.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/j_outline_button.dart';
@@ -16,10 +17,8 @@ import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/account/welcome/welcome_page_controller.dart';
 import 'package:this_music/tab/tab_navigator.dart';
 
-enum PopLanguageOption { Turkish, English, Arabic }
-
 class WelcomePage extends StatefulWidget {
-  static const routerName = '/account.welcome-page';
+  static const routerName = '/account/welcome-page';
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
@@ -57,23 +56,19 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ),
                 child: SafeArea(
-                  top: true,
-                  bottom: true,
-                  right: false,
-                  left: false,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      _buildTitleAndLogo(),
-                      Column(
+                    top: true,
+                    bottom: true,
+                    right: false,
+                    left: false,
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          _buildRegisterAndLoginButtons(),
-                          _buildSocialMediaButtons(),
-                        ],
-                      )
-                    ],
-                  ),
-                )),
+                          _buildTitleAndLogo(),
+                          Column(children: <Widget>[
+                            _buildRegisterAndLoginButtons(),
+                            _buildSocialMediaButtons()
+                          ])
+                        ]))),
             Visibility(
                 visible: _welcomeController.loading,
                 child: Center(child: Loader())),
@@ -85,55 +80,42 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildTitleAndLogo() {
     return Padding(
-      padding: const EdgeInsets.only(top: 35),
-      child: Column(
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: Row(
-                  children: <Widget>[
-                    _buildPopupMenuLanguageButton(),
-                    Shimmer.fromColors(
-                      baseColor: ThisMusicColors.white,
-                      highlightColor: ThisMusicColors.button,
-                      enabled: true,
-                      child: Image.asset(
-                        _logo,
-                        height: 80,
-                        width: 80,
-                      ),
-                    ),
-                    Shimmer.fromColors(
-                      highlightColor: Colors.grey,
-                      baseColor: ThisMusicColors.white,
-                      enabled: true,
-                      child: Text(
-                        'THIS MUSIC',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
+        padding: const EdgeInsets.only(top: 35),
+        child: Column(children: <Widget>[
+          Row(children: <Widget>[
+            Expanded(
+                child: Row(children: <Widget>[
+              _buildPopupMenuLanguageButton(),
+              Shimmer.fromColors(
+                baseColor: ThisMusicColors.white,
+                highlightColor: ThisMusicColors.button,
+                enabled: true,
+                child: Image.asset(
+                  _logo,
+                  height: 80,
+                  width: 80,
                 ),
               ),
-            ],
-          ),
-          Text(
-            AppLocalization.welcomeStart,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-            ),
-          ),
-        ],
-      ),
-    );
+              Shimmer.fromColors(
+                  highlightColor: Colors.grey,
+                  baseColor: ThisMusicColors.white,
+                  enabled: true,
+                  child: Text('THIS MUSIC',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      )))
+            ]))
+          ]),
+          Text(AppLocalization.welcomeStart,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ))
+        ]));
   }
 
   _buildSocialMediaButtons() {
@@ -148,26 +130,19 @@ class _WelcomePageState extends State<WelcomePage> {
                   .textTheme
                   .subtitle1
                   .copyWith(color: ThisMusicColors.white)),
+          SizedBox(height: 10),
           SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 50,
-            child: SignInButton(
-              Buttons.Google,
-              text: AppLocalization.googleMsg,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              onPressed: () async {
+              height: 50,
+              child: SignInButton(Buttons.Google,
+                  text: AppLocalization.googleMsg,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  onPressed: () async {
                 await _welcomeController.googleLogin();
                 Navigator.of(context)
                     .pushReplacementNamed(TabNavigator.routerName);
-              },
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
+              })),
+          SizedBox(height: 10),
           SizedBox(
             height: 50,
             child: SignInButton(
@@ -189,34 +164,30 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildRegisterAndLoginButtons() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 80),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          SizedBox(
-            height: 50,
-            child: JRaisedButtonBorder(
-              onPressed: () {
-                Navigator.pushNamed(context, RegisterPage.routerName);
-              },
-              text: AppLocalization.register,
-              color: Color(0xFFD5BD77),
-            ),
-          ),
-          SizedBox(height: 10),
-          SizedBox(
-            height: 50,
-            child: JOutlineButton(
-              onPressed: () {
-                Navigator.pushNamed(context, LoginPage.routerName);
-              },
-              text: AppLocalization.login,
-              color: Color(0xFFD5BD77),
-            ),
-          )
-        ],
-      ),
-    );
+        padding: const EdgeInsets.symmetric(horizontal: 80),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              SizedBox(
+                  height: 50,
+                  child: JRaisedButtonBorder(
+                      onPressed: () {
+                        Navigator.pushNamed(context, RegisterPage.routerName);
+                      },
+                      text: AppLocalization.register,
+                      color: Color(0xFFD5BD77))),
+              SizedBox(height: 10),
+              SizedBox(
+                height: 50,
+                child: JOutlineButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, LoginPage.routerName);
+                  },
+                  text: AppLocalization.login,
+                  color: Color(0xFFD5BD77),
+                ),
+              )
+            ]));
   }
 
   _buildPopupMenuLanguageButton() {

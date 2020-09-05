@@ -13,6 +13,9 @@ class ThisMusicColors {
   static const BottomNavigationBar = const Color(0xFF1A1A1A);
   static const BottomPanel = const Color(0xFF1A1A1A);
   static const statusBar = const Color(0x660a1617);
+  static const flexibleBarGradientLow = const Color(0xff4F504A);
+  static const flexibleBarGradientHigh = const Color(0xff1E1E1C);
+  static const songItemCard = const Color(0xff282828);
 
   static const button = const Color(0xffD5BD77);
   static const googleButton = const Color(0xffdb4437);

@@ -20,6 +20,7 @@ class JOutlineButton extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         child: Text(
           text,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(fontSize: 14),
         ));
   }

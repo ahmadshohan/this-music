@@ -5,8 +5,6 @@ class User {
   bool availability;
   dynamic dateOfBirth;
   dynamic image;
-
-  dynamic addressName;
   dynamic city;
   dynamic country;
   List<dynamic> languages;
@@ -18,7 +16,6 @@ class User {
     this.availability,
     this.dateOfBirth,
     this.image,
-    this.addressName,
     this.city,
     this.country,
     this.languages,
@@ -31,7 +28,6 @@ class User {
     availability = json['availability'];
     dateOfBirth = json['dateOfBirth'];
     image = json['image'];
-    addressName = json['addressName'];
     city = json['city'];
     country = json['country'];
   }
@@ -44,7 +40,6 @@ class User {
     data['availability'] = this.availability;
     data['dateOfBirth'] = this.dateOfBirth;
     data['image'] = this.image;
-    data['addressName'] = this.addressName;
     data['city'] = this.city;
     data['country'] = this.country;
     if (this.languages != null) {

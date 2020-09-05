@@ -4,10 +4,10 @@ import 'package:carousel_pro/carousel_pro.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/music_player/music_player_page.dart';
 import 'package:this_music/settings/settings_page.dart';
-import 'package:this_music/tab/home/special_albums_for_user.dart';
-import 'package:this_music/tab/home/special_user_playlist.dart';
+import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/home/widgets/special_albums_for_user.dart';
+import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/home/widgets/special_user_playlist.dart';
 
-import 'best_albums_weekly.dart';
+import 'widgets/best_albums_weekly.dart';
 
 class HomePage extends StatefulWidget {
   @override

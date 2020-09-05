@@ -9,7 +9,7 @@ import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'package:this_music/shared/model/user_gender.dart';
+import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/shared/constant/user_gender.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/shared/widgets/loader.dart';
@@ -60,56 +60,46 @@ class _RegisterPageState extends State<RegisterPage> {
       builder: (_) => Stack(
         children: <Widget>[
           Container(
-            height: double.infinity,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(_registerBg),
-                fit: BoxFit.fill,
+              height: double.infinity,
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(_registerBg),
+                  fit: BoxFit.fill,
+                ),
               ),
-            ),
-            child: SafeArea(
-              top: true,
-              bottom: true,
-              left: false,
-              right: false,
-              child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildTitleAndLogo(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 35,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+              child: SafeArea(
+                  top: true,
+                  bottom: true,
+                  left: false,
+                  right: false,
+                  child: SingleChildScrollView(
+                      child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 30),
-                            _buildTitles(),
-                            SizedBox(height: 10),
-                            Form(
-                              key: _formKey,
-                              autovalidate: _registerController.autoValidate,
-                              child: Column(
-                                children: <Widget>[
-                                  _buildInputs(),
-                                  _buildGenderInput(),
-                                ],
+                          children: [
+                        _buildTitleAndLogo(),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 35),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(height: 30),
+                              _buildTitles(),
+                              SizedBox(height: 10),
+                              Form(
+                                key: _formKey,
+                                autovalidate: _registerController.autoValidate,
+                                child: _buildInputs(),
                               ),
-                            ),
-                            SizedBox(height: 20),
-                            _buildRegisterButton(),
-                            SizedBox(height: 10),
-                            _buildHaveAccount(),
-                          ],
+                              SizedBox(height: 20),
+                              _buildRegisterButton(),
+                              SizedBox(height: 10),
+                              _buildHaveAccount(),
+                            ],
+                          ),
                         ),
-                      ),
-                    ]),
-              ),
-            ),
-          ),
+                      ])))),
           Visibility(
               visible: _registerController.loading,
               child: Center(child: Loader()))
@@ -194,144 +184,154 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _buildInputs() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 30),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFormField(
-              style: TextStyle(color: Colors.white),
-              focusNode: _nameFN,
-              onChanged: (value) => _registerController.model.fullName = value,
-              validator: (_) => _registerController.checkFullName(),
-              onFieldSubmitted: (_) =>
-                  FocusScope.of(context).requestFocus(_telefonNumberFN),
-              decoration: InputDecoration(
-                  labelText: AppLocalization.name,
-                  fillColor: Colors.white10,
-                  filled: true,
-                  labelStyle: TextStyle(color: Colors.white),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(10),
-                  ))),
-          SizedBox(height: 10),
-          TextFormField(
-              keyboardType: TextInputType.numberWithOptions(),
-              textInputAction: TextInputAction.next,
-              focusNode: _telefonNumberFN,
-              onChanged: (value) =>
-                  _registerController.model.phoneNumber = value,
-              validator: (_) => _registerController.checkPhoneNumber(),
-              onFieldSubmitted: (_) =>
-                  FocusScope.of(context).requestFocus(_emailFN),
-              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  labelText: AppLocalization.phoneNumber,
-                  fillColor: Colors.white10,
-                  filled: true,
-                  labelStyle: TextStyle(color: Colors.white),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(10),
-                  ))),
-          SizedBox(height: 10),
-          TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.next,
-              onChanged: (value) => _registerController.model.email = value,
-              validator: (_) => _registerController.checkEmail(),
-              focusNode: _emailFN,
-              onFieldSubmitted: (_) =>
-                  FocusScope.of(context).requestFocus(_passwordFN),
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  labelText: AppLocalization.email,
-                  fillColor: Colors.white10,
-                  filled: true,
-                  labelStyle: TextStyle(color: Colors.white),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(10),
-                  ))),
-          SizedBox(height: 10),
-          Observer(
-            builder: (_) => TextFormField(
-                style: TextStyle(color: Colors.white),
-                textInputAction: TextInputAction.next,
-                focusNode: _passwordFN,
-                onFieldSubmitted: (_) =>
-                    FocusScope.of(context).requestFocus(_userNameFN),
-                onChanged: (value) =>
-                    _registerController.model.password = value,
-                validator: (_) => _registerController.checkPassword(),
-                obscureText: !_registerController.showPassword,
-                decoration: InputDecoration(
-                    labelText: AppLocalization.password,
-                    fillColor: Colors.white10,
-                    filled: true,
-                    labelStyle: TextStyle(color: Colors.white),
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    suffixIcon: GestureDetector(
-                      onTap: () => _registerController.changeViewPassword(),
-                      child: Icon(_registerController.showPassword
-                          ? EvaIcons.eye
-                          : EvaIcons.eyeOff),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ))),
-          ),
-          SizedBox(height: 10),
-          TextFormField(
-              keyboardType: TextInputType.text,
-              textInputAction: TextInputAction.next,
-              focusNode: _userNameFN,
-              onFieldSubmitted: (_) => KeyBoard.close(context),
-              maxLines: 1,
-              style: TextStyle(color: Colors.white),
-              onChanged: (value) => _registerController.model.userName = value,
-              validator: (_) => _registerController.checkUserName(),
-              decoration: InputDecoration(
-                  labelText: AppLocalization.userName,
-                  fillColor: Colors.white10,
-                  filled: true,
-                  labelStyle: TextStyle(color: Colors.white),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                  border: OutlineInputBorder(
-                    borderRadius: new BorderRadius.circular(10),
-                  ))),
-          SizedBox(height: 10),
-          TextFormField(
-            textInputAction: TextInputAction.next,
-            focusNode: _birthFN,
-            controller: _dateBirth,
-            style: TextStyle(color: Colors.white),
-            validator: (_) => _registerController.checkdateBirth(),
-            decoration: InputDecoration(
-              labelText: AppLocalization.dateBirth,
-              fillColor: Colors.white10,
-              filled: true,
-              labelStyle: TextStyle(color: Colors.white),
-              contentPadding: EdgeInsets.symmetric(horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: new BorderRadius.circular(10),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                  style: TextStyle(color: Colors.white),
+                  focusNode: _nameFN,
+                  onChanged: (value) =>
+                      _registerController.model.fullName = value,
+                  validator: (_) => _registerController.checkFullName(),
+                  onFieldSubmitted: (_) =>
+                      FocusScope.of(context).requestFocus(_telefonNumberFN),
+                  decoration: InputDecoration(
+                      labelText: AppLocalization.name,
+                      fillColor: Colors.white10,
+                      filled: true,
+                      labelStyle: TextStyle(color: Colors.white),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ))),
+              SizedBox(height: 10),
+              TextFormField(
+                  keyboardType: TextInputType.numberWithOptions(),
+                  textInputAction: TextInputAction.next,
+                  focusNode: _telefonNumberFN,
+                  onChanged: (value) =>
+                      _registerController.model.phoneNumber = value,
+                  validator: (_) => _registerController.checkPhoneNumber(),
+                  onFieldSubmitted: (_) =>
+                      FocusScope.of(context).requestFocus(_emailFN),
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      labelText: AppLocalization.phoneNumber,
+                      fillColor: Colors.white10,
+                      filled: true,
+                      labelStyle: TextStyle(color: Colors.white),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ))),
+              SizedBox(height: 10),
+              TextFormField(
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                  onChanged: (value) => _registerController.model.email = value,
+                  validator: (_) => _registerController.checkEmail(),
+                  focusNode: _emailFN,
+                  onFieldSubmitted: (_) =>
+                      FocusScope.of(context).requestFocus(_passwordFN),
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      labelText: AppLocalization.email,
+                      fillColor: Colors.white10,
+                      filled: true,
+                      labelStyle: TextStyle(color: Colors.white),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ))),
+              SizedBox(height: 10),
+              Observer(
+                builder: (_) => TextFormField(
+                    style: TextStyle(color: Colors.white),
+                    textInputAction: TextInputAction.next,
+                    focusNode: _passwordFN,
+                    onFieldSubmitted: (_) =>
+                        FocusScope.of(context).requestFocus(_userNameFN),
+                    onChanged: (value) =>
+                        _registerController.model.password = value,
+                    validator: (_) => _registerController.checkPassword(),
+                    obscureText: !_registerController.showPassword,
+                    decoration: InputDecoration(
+                        labelText: AppLocalization.password,
+                        fillColor: Colors.white10,
+                        filled: true,
+                        labelStyle: TextStyle(color: Colors.white),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        suffixIcon: GestureDetector(
+                          onTap: () => _registerController.changeViewPassword(),
+                          child: Icon(_registerController.showPassword
+                              ? EvaIcons.eye
+                              : EvaIcons.eyeOff),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ))),
               ),
-            ),
-            onTap: () async {
-              KeyBoard.close(context);
-              _dateBirth.text = await _registerController.datePicker(context);
-            },
+              SizedBox(height: 10),
+              TextFormField(
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  focusNode: _userNameFN,
+                  onFieldSubmitted: (_) => KeyBoard.close(context),
+                  maxLines: 1,
+                  style: TextStyle(color: Colors.white),
+                  onChanged: (value) =>
+                      _registerController.model.userName = value,
+                  validator: (_) => _registerController.checkUserName(),
+                  decoration: InputDecoration(
+                      labelText: AppLocalization.userName,
+                      fillColor: Colors.white10,
+                      filled: true,
+                      labelStyle: TextStyle(color: Colors.white),
+                      contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                      border: OutlineInputBorder(
+                        borderRadius: new BorderRadius.circular(10),
+                      ))),
+              SizedBox(height: 10),
+              TextFormField(
+                textInputAction: TextInputAction.next,
+                focusNode: _birthFN,
+                controller: _dateBirth,
+                style: TextStyle(color: Colors.white),
+                validator: (_) => _registerController.checkdateBirth(),
+                decoration: InputDecoration(
+                  labelText: AppLocalization.dateBirth,
+                  fillColor: Colors.white10,
+                  filled: true,
+                  labelStyle: TextStyle(color: Colors.white),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  border: OutlineInputBorder(
+                    borderRadius: new BorderRadius.circular(10),
+                  ),
+                ),
+                onTap: () async {
+                  KeyBoard.close(context);
+                  _dateBirth.text =
+                      await _registerController.datePicker(context);
+                },
+              ),
+              SizedBox(height: 10),
+              Text(
+                AppLocalization.gender,
+                style: TextStyle(color: ThisMusicColors.white),
+              ),
+            ],
           ),
-          SizedBox(height: 10),
-          Text(
-            AppLocalization.gender,
-            style: TextStyle(color: ThisMusicColors.white),
-          ),
-        ],
-      ),
+        ),
+        _buildGenderInput(),
+      ],
     );
   }
 

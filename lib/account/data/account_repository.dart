@@ -41,7 +41,6 @@ class AccountRepository extends Repository {
     try {
       final data = model.toJson();
       var formData = FormData.fromMap(data);
-
       final response = await dio.post('${_path}register',
           data: formData, options: Options(contentType: 'multipart/form-data'));
       if (response.statusCode == 200) {
@@ -79,7 +78,7 @@ class AccountRepository extends Repository {
       final result = await FacebookLogin().logIn(['email']);
       if (result.status == FacebookLoginStatus.loggedIn) {
         final response = await dio.get(
-            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${result.accessToken.token}');
+            'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,profile_pic,gender,email&access_token=${result.accessToken.token}');
         final profile = jsonDecode(response.data);
         return _socialMediaLogin(profile['email'], profile['name'],
             SocialMedia.facebookPrefix, SocialMedia.facebookPassword);

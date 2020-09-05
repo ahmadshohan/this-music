@@ -81,10 +81,15 @@ abstract class _LoginControllerBase with Store {
   login(BuildContext context) async {
     loading = true;
     final result = await _accountRepository.login(model);
+    print(result.data);
+    print(result.errorMessage);
+    print(result.error);
     if (result.state == ResultStatus.FAIL)
       Toaster.error(msg: result.errorMessage);
     else {
       final data = result.data as LoginResult;
+      print(data.token);
+      print(data.user);
       _preferencesService.token = data.token;
       _preferencesService.user = jsonEncode(data.user);
       Navigator.pushReplacementNamed(context, TabNavigator.routerName);

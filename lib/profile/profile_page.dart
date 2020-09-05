@@ -49,9 +49,10 @@ class _ProfilePageState extends State<ProfilePage> {
               Text(AppLocalization.personalInformation,
                   style: TextStyle(
                       color: ThisMusicColors.white,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold)),
               SizedBox(height: 13),
-              _buildAvatar(),
+              _buildAvatarEmailName(),
               SizedBox(height: 13),
               _buildName(),
               SizedBox(height: 13),
@@ -65,15 +66,35 @@ class _ProfilePageState extends State<ProfilePage> {
             ]));
   }
 
-  _buildAvatar() {
-    return CircleAvatar(
-        radius: 50,
-        backgroundColor: Colors.black12,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(100),
-          child: Image.asset('assets/png/avatar.png',
-              width: 100, height: 100, fit: BoxFit.cover),
-        ));
+  _buildAvatarEmailName() {
+    return Row(
+      children: <Widget>[
+        CircleAvatar(
+            radius: 50,
+            backgroundColor: Colors.black12,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(100),
+              child: Image.asset('assets/png/avatar.png',
+                  width: 100, height: 100, fit: BoxFit.cover),
+            )),
+        SizedBox(width: 15),
+        Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              AppLocalization.yourName,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: ThisMusicColors.white),
+            ),
+            Text(AppLocalization.email,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: ThisMusicColors.white))
+          ],
+        )
+      ],
+    );
   }
 
   _buildName() {

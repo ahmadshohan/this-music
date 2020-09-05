@@ -282,7 +282,7 @@ class _LoginPageState extends State<LoginPage> {
             } else
               _loginController.autoValidate = true;
           },
-          text: AppLocalization.login),
+          text: AppLocalization.login)
     );
   }
 
@@ -298,8 +298,8 @@ class _LoginPageState extends State<LoginPage> {
               style: TextStyle(
                 color: ThisMusicColors.white,
                 fontWeight: FontWeight.w500,
-                fontSize: 17,
-              ),
+                fontSize: 17
+              )
             ),
             TextSpan(
               text: AppLocalization.register,
@@ -307,11 +307,11 @@ class _LoginPageState extends State<LoginPage> {
                 color: ThisMusicColors.button,
                 fontWeight: FontWeight.w500,
                 fontSize: 17,
-              ),
+              )
             )
-          ]),
-        ),
-      ),
+          ])
+        )
+      )
     );
   }
 }

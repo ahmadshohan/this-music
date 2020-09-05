@@ -125,6 +125,12 @@ class AppLocalization {
   static get personalInformation => 'personalInformation'.tr();
   static get yourName => 'yourName'.tr();
   static get editInformations => 'editInformations'.tr();
+  static get camera => 'camera'.tr();
+  static get gallery => 'gallery'.tr();
+  static get openCameraPermission => 'openCameraPermission'.tr();
+  static get openGalleryPermission => 'openGalleryPermission'.tr();
+
+  static get exclusiveSongsMsg => 'exclusiveSongsMsg'.tr();
 
   static get yourRequestSent => 'yourRequestSent'.tr();
   static get yourRequestSentMsg => 'yourRequestSentMsg'.tr();

@@ -35,6 +35,9 @@ dependencies:
   just_audio: ^0.4.1
   cached_network_image: ^2.2.0
   flutter_share: ^1.0.2+1
+  image_picker: ^0.6.7+7
+  flutter_svg: ^0.17.0
+  path: ^1.6.0
   flutter_visualizers: ^0.0.2
   eva_icons_flutter: ^2.0.1
   flutter_signin_button: ^1.1.0
@@ -56,9 +59,10 @@ flutter:
   assets:
     - assets/page_design/
     - assets/jpg/
-    - assets/lang/
+    - assets/svg/
     - assets/png/
     - assets/social/
+    - assets/lang/
     - assets/translations/
 
 
