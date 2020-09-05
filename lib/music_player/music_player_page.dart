@@ -4,6 +4,8 @@ import 'dart:math';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:audio_session/audio_session.dart';
+import 'package:flutter_visualizers/Visualizers/LineVisualizer.dart';
+import 'package:flutter_visualizers/visualizer.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_share/flutter_share.dart';
@@ -17,8 +19,6 @@ import 'package:this_music/colors.dart';
 import 'package:this_music/shared/widgets/loader.dart';
 
 class MusicPlayerPage extends StatefulWidget {
-  static const routerName = '/music-player/music-player-page';
-
   @override
   _MusicPlayerPageState createState() => _MusicPlayerPageState();
 }
@@ -155,6 +155,20 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     ),
                     _buildControllerButtons(context, _player),
                     /*TODO Visualizer*/
+                    // Visualizer(
+                    //   builder: (BuildContext context, List<int> wave) {
+                    //     return new CustomPaint(
+                    //       painter: new LineVisualizer(
+                    //         waveData: [10, 55],
+                    //         height: MediaQuery.of(context).size.height,
+                    //         width: MediaQuery.of(context).size.width,
+                    //         color: Colors.blueAccent,
+                    //       ),
+                    //       child: new Container(),
+                    //     );
+                    //   },
+                    //   id: _player.,
+                    // )
                   ],
                 ),
               ),

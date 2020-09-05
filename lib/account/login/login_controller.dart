@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/login.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
@@ -92,7 +93,7 @@ abstract class _LoginControllerBase with Store {
       print(data.user);
       _preferencesService.token = data.token;
       _preferencesService.user = jsonEncode(data.user);
-      Navigator.pushReplacementNamed(context, TabNavigator.routerName);
+      Navigator.pushReplacementNamed(context, AppRoute.tabRoute);
     }
     loading = false;
   }

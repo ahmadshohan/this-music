@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/profile/profile_page.dart';
 import 'package:this_music/music_player/data/models/song.dart';
 import 'package:this_music/settings/about/aboutus_page.dart';
@@ -15,7 +16,6 @@ import 'package:this_music/shared/widgets/loader.dart';
 import '../colors.dart';
 
 class SettingsPage extends StatefulWidget {
-  static const routerName = '/settings/settings-page';
   final String title;
 
   const SettingsPage({Key key, this.title = "Settings"}) : super(key: key);
@@ -96,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildAccountManagement() {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, ProfilePage.routerName),
+      onTap: () => Navigator.pushNamed(context, AppRoute.profileRoute),
       child: Card(
           color: Colors.white30,
           elevation: 8,
@@ -197,7 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildAboutUs() {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, AboutUsPage.routerName),
+      onTap: () => Navigator.pushNamed(context, AppRoute.aboutUsRoute),
       child: Card(
           color: Colors.white30,
           elevation: 8,

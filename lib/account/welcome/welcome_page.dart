@@ -6,6 +6,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_page.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/app_widget.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/constant/user_gender.dart';
@@ -18,7 +19,6 @@ import 'package:this_music/account/welcome/welcome_page_controller.dart';
 import 'package:this_music/tab/tab_navigator.dart';
 
 class WelcomePage extends StatefulWidget {
-  static const routerName = '/account/welcome-page';
   @override
   _WelcomePageState createState() => _WelcomePageState();
 }
@@ -139,8 +139,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       borderRadius: BorderRadius.circular(20)),
                   onPressed: () async {
                 await _welcomeController.googleLogin();
-                Navigator.of(context)
-                    .pushReplacementNamed(TabNavigator.routerName);
+                Navigator.of(context).pushReplacementNamed(AppRoute.tabRoute);
               })),
           SizedBox(height: 10),
           SizedBox(
@@ -152,8 +151,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   borderRadius: BorderRadius.circular(20)),
               onPressed: () async {
                 await _welcomeController.facebookLogin();
-                Navigator.of(context)
-                    .pushReplacementNamed(TabNavigator.routerName);
+                Navigator.of(context).pushReplacementNamed(AppRoute.tabRoute);
               },
             ),
           ),
@@ -172,7 +170,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   height: 50,
                   child: JRaisedButtonBorder(
                       onPressed: () {
-                        Navigator.pushNamed(context, RegisterPage.routerName);
+                        Navigator.pushNamed(context, AppRoute.registerRoute);
                       },
                       text: AppLocalization.register,
                       color: Color(0xFFD5BD77))),
@@ -181,7 +179,7 @@ class _WelcomePageState extends State<WelcomePage> {
                 height: 50,
                 child: JOutlineButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, LoginPage.routerName);
+                    Navigator.pushNamed(context, AppRoute.loginRoute);
                   },
                   text: AppLocalization.login,
                   color: Color(0xFFD5BD77),

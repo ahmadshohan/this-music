@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/music_player/music_player_page.dart';
 import 'package:this_music/settings/settings_page.dart';
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage>
 
   _buildStoryCarousel() {
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, MusicPlayerPage.routerName),
+      onTap: () => Navigator.pushNamed(context, AppRoute.musicPlayerRoute),
       child: SizedBox(
           height: 180.0,
           width: double.infinity - 15,
@@ -125,7 +126,7 @@ class _HomePageState extends State<HomePage>
           Icons.settings,
           color: ThisMusicColors.white,
         ),
-        onPressed: () => Navigator.pushNamed(context, SettingsPage.routerName),
+        onPressed: () => Navigator.pushNamed(context, AppRoute.settingsRoute),
       ),
     );
   }

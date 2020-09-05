@@ -4,6 +4,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/register/register_page.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
@@ -14,8 +15,6 @@ import '../forgot_password/forget_password_page.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {
-  static const routerName = '/account/login-page';
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -256,7 +255,7 @@ class _LoginPageState extends State<LoginPage> {
       GestureDetector(
         // onTap: () {},
         onTap: () {
-          Navigator.pushNamed(context, ForgotPasswordPage.routerName);
+          Navigator.pushNamed(context, AppRoute.forgotPasswordRoute);
         },
         child: Text(
           AppLocalization.forgotPassword,
@@ -272,46 +271,39 @@ class _LoginPageState extends State<LoginPage> {
 
   _buildLoginButton() {
     return SizedBox(
-      height: 50,
-      width: double.infinity,
-      child: JRaisedButton(
-          onPressed: () async {
-            KeyBoard.close(context);
-            if (_formKey.currentState.validate()) {
-              await _loginController.login(context);
-            } else
-              _loginController.autoValidate = true;
-          },
-          text: AppLocalization.login)
-    );
+        height: 50,
+        width: double.infinity,
+        child: JRaisedButton(
+            onPressed: () async {
+              KeyBoard.close(context);
+              if (_formKey.currentState.validate()) {
+                await _loginController.login(context);
+              } else
+                _loginController.autoValidate = true;
+            },
+            text: AppLocalization.login));
   }
 
   _buildDontHaveAccount() {
     return Center(
-      child: GestureDetector(
-        onTap: () =>
-            Navigator.pushReplacementNamed(context, RegisterPage.routerName),
-        child: RichText(
-          text: TextSpan(children: [
-            TextSpan(
-              text: AppLocalization.noAccountMsg,
-              style: TextStyle(
-                color: ThisMusicColors.white,
-                fontWeight: FontWeight.w500,
-                fontSize: 17
-              )
-            ),
-            TextSpan(
-              text: AppLocalization.register,
-              style: TextStyle(
-                color: ThisMusicColors.button,
-                fontWeight: FontWeight.w500,
-                fontSize: 17,
-              )
-            )
-          ])
-        )
-      )
-    );
+        child: GestureDetector(
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, AppRoute.registerRoute),
+            child: RichText(
+                text: TextSpan(children: [
+              TextSpan(
+                  text: AppLocalization.noAccountMsg,
+                  style: TextStyle(
+                      color: ThisMusicColors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 17)),
+              TextSpan(
+                  text: AppLocalization.register,
+                  style: TextStyle(
+                    color: ThisMusicColors.button,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ))
+            ]))));
   }
 }

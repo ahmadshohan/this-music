@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/welcome/welcome_page.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/app_widget.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
@@ -51,7 +52,7 @@ abstract class _SettingsControllerBase with Store {
   logout(BuildContext context) async {
     loading = true;
     await _accountRepository.logout();
-    Navigator.of(context).pushReplacementNamed(WelcomePage.routerName);
+    Navigator.of(context).pushReplacementNamed(AppRoute.welcomeRoute);
     loading = false;
   }
 }

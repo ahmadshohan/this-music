@@ -12,7 +12,6 @@ import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
 
 class EditProfilePage extends StatefulWidget {
-  static const routerName = '/profile/edit-profile-page';
   final String title;
   const EditProfilePage({Key key, this.title = "EditCustomerProfile"})
       : super(key: key);

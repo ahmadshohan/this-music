@@ -6,7 +6,6 @@ import 'package:this_music/shared/localization/app_localization.dart';
 import '../../colors.dart';
 
 class AboutUsPage extends StatefulWidget {
-  static const routerName = '/settings/about/aboutus-page';
   @override
   _AboutUsPageState createState() => _AboutUsPageState();
 }

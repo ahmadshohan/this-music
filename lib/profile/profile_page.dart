@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import './edit_profile/edit_profile_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  static const routerName = '/profile/profile-page';
   ProfilePage({Key key}) : super(key: key);
 
   @override
@@ -174,7 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
       width: double.infinity,
       child: JRaisedButton(
           onPressed: () =>
-              Navigator.pushNamed(context, EditProfilePage.routerName),
+              Navigator.pushNamed(context, AppRoute.editProfileRoute),
           text: AppLocalization.editInformations),
     );
   }

@@ -6,7 +6,6 @@ import 'package:this_music/shared/widgets/thismusic_logo.dart';
 import 'package:this_music/splash/splash_controller.dart';
 
 class SplashPage extends StatefulWidget {
-  static const routerName = '/splash/splash-page';
   @override
   _SplashPageState createState() => _SplashPageState();
 }

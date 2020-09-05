@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 
-import '../music_player_page.dart';
-
 class PlayListPage extends StatefulWidget {
-  static const routerName = '/music-player/play-list-page';
   @override
   _PlayListPageState createState() => _PlayListPageState();
 }
@@ -40,12 +38,15 @@ class _PlayListPageState extends State<PlayListPage> {
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate([
-                    for (int i = 0; i < 50; i++)
-                      GestureDetector(
-                        onTap: () => Navigator.pushNamed(
-                            context, MusicPlayerPage.routerName),
-                        child: _buildSongItem(),
-                      )
+                    ListView.builder(
+                        itemCount: 50,
+                        itemBuilder: (ctx, i) {
+                          return GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                                context, AppRoute.musicPlayerRoute),
+                            child: _buildSongItem(),
+                          );
+                        })
                   ]),
                 ),
               ],

@@ -12,7 +12,6 @@ import 'package:this_music/tab/search_page.dart';
 import 'home/home_page.dart';
 
 class TabNavigator extends StatefulWidget {
-  static const routerName = '/tab-page';
   @override
   _TabNavigatorState createState() => _TabNavigatorState();
 }

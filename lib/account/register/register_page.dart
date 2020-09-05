@@ -9,6 +9,7 @@ import 'package:this_music/account/login/login_page.dart';
 import 'package:this_music/account/register/register_controller.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
+import '../../app_route.dart';
 import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/shared/constant/user_gender.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
@@ -16,8 +17,6 @@ import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/tab/tab_navigator.dart';
 
 class RegisterPage extends StatefulWidget {
-  static const routerName = '/account/register/register-page';
-
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
@@ -414,7 +413,7 @@ class _RegisterPageState extends State<RegisterPage> {
             KeyBoard.close(context);
             if (_formKey.currentState.validate()) {
               await _registerController.register();
-              Navigator.pushReplacementNamed(context, TabNavigator.routerName);
+              Navigator.pushReplacementNamed(context, AppRoute.tabRoute);
             } else
               _registerController.autoValidate = true;
           },
@@ -426,7 +425,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Center(
       child: GestureDetector(
         onTap: () =>
-            Navigator.pushReplacementNamed(context, LoginPage.routerName),
+            Navigator.pushReplacementNamed(context, AppRoute.loginRoute),
         child: RichText(
           text: TextSpan(children: [
             TextSpan(

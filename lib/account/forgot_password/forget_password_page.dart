@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:this_music/account/login/login_page.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
@@ -10,7 +11,6 @@ import 'package:this_music/colors.dart';
 import 'forgot_password_controller.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
-  static const routerName = '/account/forgot-password';
   @override
   _ForgotPasswordPageState createState() => _ForgotPasswordPageState();
 }
@@ -212,7 +212,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.pushReplacementNamed(
-                              context, LoginPage.routerName);
+                              context, AppRoute.loginRoute);
                         },
                         text: AppLocalization.continueLabel))
               ]);
