@@ -37,18 +37,13 @@ class _PlayListPageState extends State<PlayListPage> {
                   flexibleSpace: _flexibleSpaceBar(),
                 ),
                 SliverList(
-                  delegate: SliverChildListDelegate([
-                    ListView.builder(
-                        itemCount: 50,
-                        itemBuilder: (ctx, i) {
-                          return GestureDetector(
-                            onTap: () => Navigator.pushNamed(
-                                context, AppRoute.musicPlayerRoute),
-                            child: _buildSongItem(),
-                          );
-                        })
-                  ]),
-                ),
+                    delegate: SliverChildBuilderDelegate(
+                        (ctx, index) => GestureDetector(
+                              onTap: () => Navigator.pushNamed(
+                                  context, AppRoute.musicPlayerRoute),
+                              child: _buildSongItem(),
+                            ),
+                        childCount: 50)),
               ],
             ),
           )),

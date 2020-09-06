@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   bool get wantKeepAlive => true;
+
   @override
   void initState() {
     super.initState();
@@ -72,13 +73,9 @@ class _HomePageState extends State<HomePage>
                       _buildStoryCarousel(),
                       SizedBox(height: 12),
                       BestAlbumsWeekly(),
-                      SizedBox(
-                        height: 12,
-                      ),
+                      SizedBox(height: 12),
                       SpecialAlbumsForUser(),
-                      SizedBox(
-                        height: 12,
-                      ),
+                      SizedBox(height: 12),
                       SpecialUserPlayLists(),
                     ],
                   ),
@@ -104,7 +101,7 @@ class _HomePageState extends State<HomePage>
                   imageUrl:
                       'https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
               ExactAssetImage("assets/page_design/home_page.jpeg"),
-              ExactAssetImage("assets/png//temp_news.png")
+              ExactAssetImage("assets/png/temp_news.png")
             ],
             dotSize: 4.0,
             dotSpacing: 15.0,
