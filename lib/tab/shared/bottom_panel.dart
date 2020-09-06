@@ -38,13 +38,13 @@ class _BottomPanelState extends State<BottomPanel> {
           changeIsExpandedView();
         },
         children: <Widget>[
-          _BuildBottomPanel(),
+          _buildBottomPanel(),
         ],
       ),
     );
   }
 
-  _BuildBottomPanel() {
+  _buildBottomPanel() {
     return Row(
       children: <Widget>[
         Expanded(

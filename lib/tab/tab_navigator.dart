@@ -2,12 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:this_music/colors.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/user_play_list/user_play_list_page.dart';
+import 'package:this_music/tab/radio/radio_page.dart';
+import 'package:this_music/tab/search/search_page.dart';
+import 'package:this_music/tab/user_play_list/user_play_list_page.dart';
 import 'shared/bottom_panel.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/music_player/play_list/play_List_page.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/radio/radio_page.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/search/search_page.dart';
 
 import 'home/home_page.dart';
 
