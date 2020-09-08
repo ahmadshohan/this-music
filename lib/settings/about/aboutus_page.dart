@@ -26,8 +26,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [
-                  ThisMusicColors.flexibleBarGradientLow,
-                  ThisMusicColors.flexibleBarGradientHigh
+                  ThisMusicColors.flexibleBarAlbumSongsGradientLow,
+                  ThisMusicColors.flexibleBarAlbumSongsGradientHigh
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topRight,
@@ -59,7 +59,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
   _buildVersionNumber() {
     return Card(
-      color: ThisMusicColors.flexibleBarGradientHigh,
+      color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
       elevation: 8,
       child: Container(
         padding: EdgeInsets.all(10),
@@ -75,7 +75,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
     return GestureDetector(
         onTap: () {},
         child: Card(
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           elevation: 8,
           child: Container(
             padding: const EdgeInsets.all(10),

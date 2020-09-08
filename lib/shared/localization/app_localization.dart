@@ -131,6 +131,7 @@ class AppLocalization {
   static get openGalleryPermission => 'openGalleryPermission'.tr();
 
   static get exclusiveSongsMsg => 'exclusiveSongsMsg'.tr();
+  static get exclusiveAlbumsMsg => 'exclusiveAlbumsMsg'.tr();
 
   static get yourRequestSent => 'yourRequestSent'.tr();
   static get yourRequestSentMsg => 'yourRequestSentMsg'.tr();

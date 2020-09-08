@@ -55,7 +55,7 @@
   "degreeRequired" : "University degree is required",
 
   "searchSuggest" : "album,artist,podcast",
-  "types": "types",
+  "types": "Types",
   "moodActivities": "Mood Activities",
 
   "settings" : "Settings",
@@ -110,6 +110,7 @@
   "gpa" : "GPA",
   "accountManagement": "Account Management",
   "exclusiveSongsMsg": "Listen to exclusive songs",
+  "exclusiveAlbumsMsg": "Listen to exclusive albums",
   "soundSettings": "Sound settings",
   "offlineMode": "offline mode",
   "applicationEvaluation": "Application evaluation",

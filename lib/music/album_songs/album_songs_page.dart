@@ -4,39 +4,37 @@ import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 
-class PlayListPage extends StatefulWidget {
+class AlbumSongsPage extends StatefulWidget {
   @override
-  _PlayListPageState createState() => _PlayListPageState();
+  _AlbumSongsPageState createState() => _AlbumSongsPageState();
 }
 
-class _PlayListPageState extends State<PlayListPage> {
+class _AlbumSongsPageState extends State<AlbumSongsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
           height: double.infinity,
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           child: SafeArea(
-            top: true,
-            bottom: true,
-            left: false,
-            right: false,
-            child: CustomScrollView(
-              slivers: <Widget>[
+              top: true,
+              bottom: true,
+              left: false,
+              right: false,
+              child: CustomScrollView(slivers: <Widget>[
                 SliverAppBar(
-                  snap: true,
-                  pinned: true,
-                  floating: true,
-                  title: Center(
-                    child: Text('Album Name',
-                        style: TextStyle(
-                            color: ThisMusicColors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700)),
-                  ),
-                  expandedHeight: MediaQuery.of(context).size.height * 0.35,
-                  flexibleSpace: _flexibleSpaceBar(),
-                ),
+                    snap: true,
+                    pinned: true,
+                    floating: true,
+                    title: Center(
+                      child: Text('Album Name',
+                          style: TextStyle(
+                              color: ThisMusicColors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700)),
+                    ),
+                    expandedHeight: MediaQuery.of(context).size.height * 0.35,
+                    flexibleSpace: _flexibleSpaceBar()),
                 SliverList(
                     delegate: SliverChildBuilderDelegate(
                         (ctx, index) => GestureDetector(
@@ -45,39 +43,34 @@ class _PlayListPageState extends State<PlayListPage> {
                               child: _buildSongItem(),
                             ),
                         childCount: 50)),
-              ],
-            ),
-          )),
+              ]))),
     );
   }
 
   _flexibleSpaceBar() {
     return FlexibleSpaceBar(
-      background: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-          colors: [
-            ThisMusicColors.flexibleBarGradientLow,
-            ThisMusicColors.flexibleBarGradientHigh
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        )),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Album Name',
-                style: TextStyle(
-                    color: ThisMusicColors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold)),
-            Text(AppLocalization.exclusiveSongsMsg,
-                style: TextStyle(color: Colors.grey, fontSize: 16))
-          ],
-        ),
-      ),
-    );
+        background: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              colors: [
+                ThisMusicColors.flexibleBarAlbumSongsGradientLow,
+                ThisMusicColors.flexibleBarAlbumSongsGradientHigh
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            )),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text('Album Name',
+                      style: TextStyle(
+                          color: ThisMusicColors.white,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold)),
+                  Text(AppLocalization.exclusiveSongsMsg,
+                      style: TextStyle(color: Colors.grey, fontSize: 16))
+                ])));
   }
 
   _buildSongItem() {
@@ -98,9 +91,7 @@ class _PlayListPageState extends State<PlayListPage> {
                           width: 60,
                           height: 60,
                           child: Image.asset('assets/lang/turkey.png')))),
-              SizedBox(
-                width: 20.0,
-              ),
+              SizedBox(width: 20.0),
               Expanded(
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,14 +121,14 @@ class _PlayListPageState extends State<PlayListPage> {
                     ]),
               ),
               IconButton(
-                icon: Icon(EvaIcons.playCircle,
-                    color: Color(0xFFE0E0E0), size: 23.0),
-                onPressed: () {},
-              ),
-              IconButton(
                   onPressed: () {},
                   icon: Icon(Icons.favorite_border,
                       color: Color(0xFFE0E0E0), size: 23.0)),
+              IconButton(
+                icon: Icon(EvaIcons.playCircle,
+                    color: Color(0xFFE0E0E0), size: 23.0),
+                onPressed: () {},
+              )
             ])));
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/music/album_songs/album_songs_page.dart';
+import 'package:this_music/music/category_albums/category_albums_page.dart';
 import 'package:this_music/music/player/music_player_page.dart';
 import 'package:this_music/settings/about/aboutus_page.dart';
 import 'package:this_music/splash/splash_page.dart';
@@ -64,7 +65,8 @@ class ThisMusicAppState extends State<ThisMusicApp> {
         AppRoute.aboutUsRoute: (ctx) => AboutUsPage(),
         AppRoute.profileRoute: (ctx) => ProfilePage(),
         AppRoute.editProfileRoute: (ctx) => EditProfilePage(),
-        AppRoute.playListRoute: (ctx) => PlayListPage(),
+        AppRoute.albumSongsRoute: (ctx) => AlbumSongsPage(),
+        AppRoute.categoryAlbumsRoute: (ctx) => CategoryAlbumsPage(),
       },
     );
   }

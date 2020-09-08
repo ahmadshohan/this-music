@@ -37,8 +37,8 @@ class _BestAlbumsWeeklyState extends State<BestAlbumsWeekly> {
                   itemCount: 4,
                   itemBuilder: (BuildContext context, int index) {
                     return GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoute.playListRoute),
+                      onTap: () => Navigator.pushNamed(
+                          context, AppRoute.albumSongsRoute),
                       child: Container(
                         width: 140,
                         // margin: index == widget.alubums.length - 1

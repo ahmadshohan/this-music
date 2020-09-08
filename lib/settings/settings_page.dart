@@ -46,8 +46,8 @@ class _SettingsPageState extends State<SettingsPage> {
               decoration: BoxDecoration(
                   gradient: LinearGradient(
                 colors: [
-                  ThisMusicColors.flexibleBarGradientLow,
-                  ThisMusicColors.flexibleBarGradientHigh
+                  ThisMusicColors.flexibleBarAlbumSongsGradientLow,
+                  ThisMusicColors.flexibleBarAlbumSongsGradientHigh
                 ],
                 begin: Alignment.bottomCenter,
                 end: Alignment.topRight,
@@ -99,7 +99,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoute.profileRoute),
       child: Card(
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -124,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
         await AppSettings.openSoundSettings();
       },
       child: Card(
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -147,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildOfflineMode() {
     return Card(
-        color: ThisMusicColors.flexibleBarGradientHigh,
+        color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.all(10),
@@ -175,7 +175,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildApplicationEvaluation() {
     return Card(
-        color: ThisMusicColors.flexibleBarGradientHigh,
+        color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.all(10),
@@ -198,7 +198,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoute.aboutUsRoute),
       child: Card(
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -224,7 +224,7 @@ class _SettingsPageState extends State<SettingsPage> {
         await _settingsController.logout(context);
       },
       child: Card(
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -248,7 +248,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => showChangeLanguageDialog(),
       child: Card(
-          color: ThisMusicColors.flexibleBarGradientHigh,
+          color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
           elevation: 8,
           child: Observer(
             builder: (_) => Container(
@@ -285,7 +285,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildLinkedAccount() {
     return Card(
-        color: ThisMusicColors.flexibleBarGradientHigh,
+        color: ThisMusicColors.flexibleBarAlbumSongsGradientHigh,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),

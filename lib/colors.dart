@@ -6,6 +6,10 @@ class ThisMusicColors {
 
   static const playerGradientLow = const Color(0xff252527);
   static const playerGradientHigh = const Color(0xff060606);
+  static const flexibleBarAlbumSongsGradientLow = const Color(0xff4F504A);
+  static const flexibleBarAlbumSongsGradientHigh = const Color(0xff1E1E1C);
+  static const flexibleBarCategoryAlbumsGradientLow = const Color(0xff31574C);
+  static const flexibleBarCategoryAlbumsGradientHigh = const Color(0xff1E1E1C);
 
   static const tabBackGround = const Color(0xff333333);
 
@@ -13,8 +17,6 @@ class ThisMusicColors {
   static const BottomNavigationBar = const Color(0xFF1A1A1A);
   static const BottomPanel = const Color(0xFF1A1A1A);
   static const statusBar = const Color(0x660a1617);
-  static const flexibleBarGradientLow = const Color(0xff4F504A);
-  static const flexibleBarGradientHigh = const Color(0xff1E1E1C);
   static const songItemCard = const Color(0xff282828);
 
   static const button = const Color(0xffD5BD77);

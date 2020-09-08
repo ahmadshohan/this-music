@@ -7,8 +7,9 @@ class AppRoute {
   static const tabRoute = '/tab';
   static const musicPlayerRoute = '/music-player';
   static const settingsRoute = '/settings';
-  static const playListRoute = '/play-list';
+  static const albumSongsRoute = '/album-songs';
   static const editProfileRoute = '/edit-profile';
   static const aboutUsRoute = '/aboutus';
   static const profileRoute = '/profile';
+  static const categoryAlbumsRoute = '/category-albums';
 }

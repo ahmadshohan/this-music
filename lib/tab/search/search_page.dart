@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
@@ -33,7 +34,7 @@ class _HomePageState extends State<SearchPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                   _buildSearchBar(),
-                  _buildAlbumTypesAndMoodActivity()
+                  _buildCategoryTypesAndMoodActivity()
                 ]))));
   }
 
@@ -73,9 +74,9 @@ class _HomePageState extends State<SearchPage> {
         ]));
   }
 
-  _buildAlbumTypesAndMoodActivity() {
+  _buildCategoryTypesAndMoodActivity() {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -84,42 +85,45 @@ class _HomePageState extends State<SearchPage> {
                       color: ThisMusicColors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold)),
-              _buildAllAlbumType(),
+              SizedBox(height: 10),
+              _buildCategoryType(),
               Divider(color: Colors.white60),
               Text(AppLocalization.moodActivities,
                   style: TextStyle(
                       color: ThisMusicColors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.bold)),
+              SizedBox(height: 10),
               _buildMoodActivity(),
               Divider(color: Colors.white60),
             ]));
   }
 
-  _buildAllAlbumType() {
+  _buildCategoryType() {
     return Container(
         height: MediaQuery.of(context).size.height * 0.3,
         child: Column(children: <Widget>[
-          Expanded(flex: 1, child: _buildListAlbumType()),
-          Expanded(flex: 1, child: _buildListAlbumType())
+          Expanded(flex: 1, child: _buildListCategoryType()),
+          Expanded(flex: 1, child: _buildListCategoryType())
         ]));
   }
 
-  _buildListAlbumType() {
+  _buildListCategoryType() {
     return Container(
       width: double.infinity,
       child: ListView.builder(
         reverse: true,
         itemCount: 5,
         scrollDirection: Axis.horizontal,
-        itemBuilder: (ctx, i) => _buildSingleAlbumItem(),
+        itemBuilder: (ctx, i) => _buildSingleCategoryItem(),
       ),
     );
   }
 
-  _buildSingleAlbumItem() {
+  _buildSingleCategoryItem() {
     return GestureDetector(
-      onTap: () {/*todo navigate to Play List Page*/},
+      onTap: () =>
+          Navigator.of(context).pushNamed(AppRoute.categoryAlbumsRoute),
       child: Column(
         children: <Widget>[
           CircleAvatar(
@@ -147,26 +151,26 @@ class _HomePageState extends State<SearchPage> {
 
   _buildMoodActivity() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.4,
+      height: MediaQuery.of(context).size.height * 0.3,
       child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
         Expanded(
           flex: 1,
           child: Row(children: <Widget>[
             _buildMoodActivityType(),
-            SizedBox(width: 5),
+            SizedBox(width: 10),
             _buildMoodActivityType(),
-            SizedBox(width: 5),
+            SizedBox(width: 10),
             _buildMoodActivityType(),
           ]),
         ),
-        SizedBox(height: 5),
+        SizedBox(height: 10),
         Expanded(
           flex: 1,
           child: Row(children: <Widget>[
             _buildMoodActivityType(),
-            SizedBox(width: 5),
+            SizedBox(width: 10),
             _buildMoodActivityType(),
-            SizedBox(width: 5),
+            SizedBox(width: 10),
             _buildMoodActivityType(),
           ]),
         )
@@ -178,37 +182,32 @@ class _HomePageState extends State<SearchPage> {
     return Expanded(
         flex: 1,
         child: GestureDetector(
-          onTap: () {},
-          child: Stack(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset('assets/png/app_logo.png',
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.cover),
-              ),
-              Container(
+          onTap: () =>
+              Navigator.pushNamed(context, AppRoute.categoryAlbumsRoute),
+          child: Stack(children: <Widget>[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Image.asset('assets/png/temp_news.png',
                   height: double.infinity,
                   width: double.infinity,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text('Album Name',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold)),
-                        SizedBox(
-                            width: 30,
-                            child: Divider(thickness: 2, color: Colors.white))
-                      ]))
-            ],
-          ),
+                  fit: BoxFit.cover),
+            ),
+            Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text('Mood Name',
+                        style: Theme.of(context).textTheme.bodyText1.copyWith(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                        width: 30,
+                        child: Divider(thickness: 2, color: Colors.white))
+                  ]),
+            )
+          ]),
         ));
   }
 }
