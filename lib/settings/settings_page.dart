@@ -3,14 +3,12 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:provider/provider.dart';
 import 'package:this_music/app_route.dart';
+import 'package:this_music/colors.dart';
 import 'package:this_music/settings/settings_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/shared/widgets/loader.dart';
-
-import '../colors.dart';
 
 class SettingsPage extends StatefulWidget {
   final String title;

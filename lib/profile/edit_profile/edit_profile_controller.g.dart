@@ -39,11 +39,165 @@ mixin _$EditProfileController on _EditProfileControllerBase, Store {
     });
   }
 
+  final _$pictureFileAtom =
+      Atom(name: '_EditProfileControllerBase.pictureFile');
+
+  @override
+  File get pictureFile {
+    _$pictureFileAtom.reportRead();
+    return super.pictureFile;
+  }
+
+  @override
+  set pictureFile(File value) {
+    _$pictureFileAtom.reportWrite(value, super.pictureFile, () {
+      super.pictureFile = value;
+    });
+  }
+
+  final _$autoValidateAtom =
+      Atom(name: '_EditProfileControllerBase.autoValidate');
+
+  @override
+  bool get autoValidate {
+    _$autoValidateAtom.reportRead();
+    return super.autoValidate;
+  }
+
+  @override
+  set autoValidate(bool value) {
+    _$autoValidateAtom.reportWrite(value, super.autoValidate, () {
+      super.autoValidate = value;
+    });
+  }
+
+  final _$showPasswordAtom =
+      Atom(name: '_EditProfileControllerBase.showPassword');
+
+  @override
+  bool get showPassword {
+    _$showPasswordAtom.reportRead();
+    return super.showPassword;
+  }
+
+  @override
+  set showPassword(bool value) {
+    _$showPasswordAtom.reportWrite(value, super.showPassword, () {
+      super.showPassword = value;
+    });
+  }
+
+  final _$modelAtom = Atom(name: '_EditProfileControllerBase.model');
+
+  @override
+  ProfileModel get model {
+    _$modelAtom.reportRead();
+    return super.model;
+  }
+
+  @override
+  set model(ProfileModel value) {
+    _$modelAtom.reportWrite(value, super.model, () {
+      super.model = value;
+    });
+  }
+
+  final _$updateAsyncAction = AsyncAction('_EditProfileControllerBase.update');
+
+  @override
+  Future update() {
+    return _$updateAsyncAction.run(() => super.update());
+  }
+
+  final _$_EditProfileControllerBaseActionController =
+      ActionController(name: '_EditProfileControllerBase');
+
+  @override
+  bool isRtl() {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.isRtl');
+    try {
+      return super.isRtl();
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String checkUserName() {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.checkUserName');
+    try {
+      return super.checkUserName();
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String checkEmail() {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.checkEmail');
+    try {
+      return super.checkEmail();
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String checkPassword() {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.checkPassword');
+    try {
+      return super.checkPassword();
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  String checkPhoneNumber() {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.checkPhoneNumber');
+    try {
+      return super.checkPhoneNumber();
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeViewPassword() {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.changeViewPassword');
+    try {
+      return super.changeViewPassword();
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic updateProfilePicture(PickedFile picture) {
+    final _$actionInfo = _$_EditProfileControllerBaseActionController
+        .startAction(name: '_EditProfileControllerBase.updateProfilePicture');
+    try {
+      return super.updateProfilePicture(picture);
+    } finally {
+      _$_EditProfileControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
 loading: ${loading},
-lang: ${lang}
+lang: ${lang},
+pictureFile: ${pictureFile},
+autoValidate: ${autoValidate},
+showPassword: ${showPassword},
+model: ${model}
     ''';
   }
 }

@@ -1,12 +1,16 @@
 import 'dart:io';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/profile/edit_profile/edit_profile_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
+import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -19,7 +23,7 @@ class EditProfilePage extends StatefulWidget {
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  File pictureFile;
+  EditProfileController _editProfileController = EditProfileController();
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -29,22 +33,35 @@ class _EditProfilePageState extends State<EditProfilePage> {
             backgroundColor: ThisMusicColors.button,
             title: Text(AppLocalization.profile,
                 style: TextStyle(color: Colors.white))),
-        body: SafeArea(
-            top: true,
-            bottom: true,
-            left: false,
-            right: false,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: SingleChildScrollView(
-                  child: Column(children: <Widget>[
-                Form(key: _formKey, child: _buildPersonalInfo()),
-                SizedBox(height: 10),
-                _buildUpdate(),
-                SizedBox(height: 10),
-                _buildThisMusicLogo(),
-              ])),
-            )));
+        body: Observer(
+            builder: (context) => Stack(
+                  children: [
+                    Container(
+                        height: double.infinity,
+                        child: SafeArea(
+                            top: true,
+                            bottom: true,
+                            left: false,
+                            right: false,
+                            child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: SingleChildScrollView(
+                                    child: Column(children: <Widget>[
+                                  Form(
+                                      key: _formKey,
+                                      autovalidate:
+                                          _editProfileController.autoValidate,
+                                      child: _buildPersonalInfo()),
+                                  SizedBox(height: 10),
+                                  _buildUpdateButton(),
+                                  SizedBox(height: 10),
+                                  _buildThisMusicLogo(),
+                                ]))))),
+                    Visibility(
+                        visible: _editProfileController.loading,
+                        child: Center(child: Loader()))
+                  ],
+                )));
   }
 
   _buildPersonalInfo() {
@@ -61,7 +78,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               SizedBox(height: 13),
               _buildAvatar(),
               SizedBox(height: 13),
-              _buildName(),
+              _buildUserName(),
               SizedBox(height: 13),
               _buildPhoneNumber(),
               SizedBox(height: 13),
@@ -78,14 +95,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
         CircleAvatar(
             radius: 50,
             backgroundColor: Colors.black12,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(100),
-              child: pictureFile == null
-                  ? Image.asset('assets/png/avatar.png',
-                      width: 100, height: 100, fit: BoxFit.cover)
-                  : Image.file(pictureFile,
-                      width: 100, height: 100, fit: BoxFit.cover),
-            )),
+            child: Observer(
+                builder: (_) => ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: _editProfileController.pictureFile == null
+                          ? Image.asset('assets/png/avatar.png',
+                              width: 100, height: 100, fit: BoxFit.cover)
+                          : Image.file(_editProfileController.pictureFile,
+                              width: 100, height: 100, fit: BoxFit.cover),
+                    ))),
         Positioned(
             right: 3,
             bottom: 10,
@@ -100,17 +118,18 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  _buildName() {
+  _buildUserName() {
     return TextFormField(
         style: TextStyle(color: ThisMusicColors.white),
+        onChanged: (value) => _editProfileController.model.userName = value,
+        validator: (_) => _editProfileController.checkUserName(),
+        onFieldSubmitted: (_) => KeyBoard.close(context),
         decoration: InputDecoration(
             labelText: AppLocalization.yourName,
             fillColor: Colors.white30,
             filled: true,
             labelStyle: TextStyle(color: ThisMusicColors.white),
             contentPadding: EdgeInsets.all(16),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ThisMusicColors.button)),
             border: OutlineInputBorder(
                 borderRadius: new BorderRadius.circular(5))));
   }
@@ -118,14 +137,15 @@ class _EditProfilePageState extends State<EditProfilePage> {
   _buildPhoneNumber() {
     return TextFormField(
         style: TextStyle(color: ThisMusicColors.white),
+        onChanged: (value) => _editProfileController.model.phoneNumber = value,
+        validator: (_) => _editProfileController.checkPhoneNumber(),
+        onFieldSubmitted: (_) => KeyBoard.close(context),
         decoration: InputDecoration(
             labelText: AppLocalization.phoneNumber,
             filled: true,
             fillColor: Colors.white30,
             labelStyle: TextStyle(color: ThisMusicColors.white),
             contentPadding: EdgeInsets.all(16),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ThisMusicColors.button)),
             border: OutlineInputBorder(
               borderRadius: new BorderRadius.circular(5),
             )));
@@ -134,43 +154,60 @@ class _EditProfilePageState extends State<EditProfilePage> {
   _buildEmail() {
     return TextFormField(
         style: TextStyle(color: ThisMusicColors.white),
+        onChanged: (value) => _editProfileController.model.phoneNumber = value,
+        validator: (_) => _editProfileController.checkEmail(),
+        onFieldSubmitted: (_) => KeyBoard.close(context),
         decoration: InputDecoration(
             labelText: AppLocalization.email,
             fillColor: Colors.white30,
             filled: true,
             labelStyle: TextStyle(color: ThisMusicColors.white),
             contentPadding: EdgeInsets.all(16),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ThisMusicColors.button)),
             border: OutlineInputBorder(
               borderRadius: new BorderRadius.circular(5),
             )));
   }
 
   _buildPassword() {
-    return TextFormField(
-        style: TextStyle(color: ThisMusicColors.white),
-        decoration: InputDecoration(
-            labelText: AppLocalization.password,
-            fillColor: Colors.white30,
-            filled: true,
-            labelStyle: TextStyle(color: ThisMusicColors.white),
-            contentPadding: EdgeInsets.all(16),
-            enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: ThisMusicColors.button)),
-            border: OutlineInputBorder(
-              borderRadius: new BorderRadius.circular(5),
-            )));
+    return Observer(
+      builder: (_) => TextFormField(
+          style: TextStyle(color: ThisMusicColors.white),
+          onChanged: (value) => _editProfileController.model.password = value,
+          validator: (_) => _editProfileController.checkPassword(),
+          obscureText: !_editProfileController.showPassword,
+          onFieldSubmitted: (_) => KeyBoard.close(context),
+          decoration: InputDecoration(
+              labelText: AppLocalization.password,
+              fillColor: Colors.white30,
+              filled: true,
+              labelStyle: TextStyle(color: ThisMusicColors.white),
+              suffixIcon: GestureDetector(
+                onTap: () => _editProfileController.changeViewPassword(),
+                child: Icon(_editProfileController.showPassword
+                    ? EvaIcons.eye
+                    : EvaIcons.eyeOff),
+              ),
+              contentPadding: EdgeInsets.all(16),
+              border: OutlineInputBorder(
+                borderRadius: new BorderRadius.circular(5),
+              ))),
+    );
   }
 
-  _buildUpdate() {
+  _buildUpdateButton() {
     return SizedBox(
-      height: 50,
-      width: double.infinity,
-      child: JRaisedButton(
-          onPressed: () => Navigator.pop(context),
-          text: AppLocalization.update),
-    );
+        height: 50,
+        width: double.infinity,
+        child: JRaisedButton(
+            onPressed: () async {
+              KeyBoard.close(context);
+              if (_formKey.currentState.validate()) {
+                await _editProfileController.update();
+                Navigator.pop(context);
+              } else
+                _editProfileController.autoValidate = true;
+            },
+            text: AppLocalization.update));
   }
 
   _buildThisMusicLogo() {
@@ -247,10 +284,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ImagePicker()
         .getImage(source: ImageSource.camera, maxHeight: 200)
         .then((picture) {
-      setState(() {
-        pictureFile = File(picture.path);
-        print(picture.path);
-      });
+      _editProfileController.updateProfilePicture(picture);
     }).catchError((e) {
       Toaster.warning(AppLocalization.openCameraPermission);
     });
@@ -261,9 +295,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     ImagePicker()
         .getImage(source: ImageSource.gallery, maxHeight: 200)
         .then((picture) {
-      setState(() {
-        pictureFile = File(picture.path);
-      });
+      _editProfileController.updateProfilePicture(picture);
     }).catchError((e) {
       Toaster.warning(AppLocalization.openGalleryPermission);
     });
