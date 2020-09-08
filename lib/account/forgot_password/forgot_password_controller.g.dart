@@ -9,6 +9,52 @@ part of 'forgot_password_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
+  final _$autoValidateAtom =
+      Atom(name: '_ForgotPasswordControllerBase.autoValidate');
+
+  @override
+  bool get autoValidate {
+    _$autoValidateAtom.reportRead();
+    return super.autoValidate;
+  }
+
+  @override
+  set autoValidate(bool value) {
+    _$autoValidateAtom.reportWrite(value, super.autoValidate, () {
+      super.autoValidate = value;
+    });
+  }
+
+  final _$showTimerAtom = Atom(name: '_ForgotPasswordControllerBase.showTimer');
+
+  @override
+  bool get showTimer {
+    _$showTimerAtom.reportRead();
+    return super.showTimer;
+  }
+
+  @override
+  set showTimer(bool value) {
+    _$showTimerAtom.reportWrite(value, super.showTimer, () {
+      super.showTimer = value;
+    });
+  }
+
+  final _$modelAtom = Atom(name: '_ForgotPasswordControllerBase.model');
+
+  @override
+  ForgotPasswordModel get model {
+    _$modelAtom.reportRead();
+    return super.model;
+  }
+
+  @override
+  set model(ForgotPasswordModel value) {
+    _$modelAtom.reportWrite(value, super.model, () {
+      super.model = value;
+    });
+  }
+
   final _$timerAtom = Atom(name: '_ForgotPasswordControllerBase.timer');
 
   @override
@@ -108,6 +154,17 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   }
 
   @override
+  String checkEmail() {
+    final _$actionInfo = _$_ForgotPasswordControllerBaseActionController
+        .startAction(name: '_ForgotPasswordControllerBase.checkEmail');
+    try {
+      return super.checkEmail();
+    } finally {
+      _$_ForgotPasswordControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void resend() {
     final _$actionInfo = _$_ForgotPasswordControllerBaseActionController
         .startAction(name: '_ForgotPasswordControllerBase.resend');
@@ -121,6 +178,9 @@ mixin _$ForgotPasswordController on _ForgotPasswordControllerBase, Store {
   @override
   String toString() {
     return '''
+autoValidate: ${autoValidate},
+showTimer: ${showTimer},
+model: ${model},
 timer: ${timer},
 rememberMe: ${rememberMe},
 showPassword: ${showPassword},

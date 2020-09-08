@@ -11,11 +11,11 @@ class TokenInterceptor extends Interceptor {
       options.headers.addAll({_authorizationHeader: 'Bearer $token'});
   }
 
-  // @override
-  // Future onResponse(Response response) async {
-  //   if (response.statusCode == 401) {
-  //     (await SharedPreferences.getInstance()).setString('token', null);
-  //   }
-  //   return super.onResponse(response);
-  // }
+  @override
+  Future onResponse(Response response) async {
+    if (response.statusCode == 401) {
+      (await SharedPreferences.getInstance()).setString('token', null);
+    }
+    return super.onResponse(response);
+  }
 }

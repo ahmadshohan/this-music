@@ -4,8 +4,8 @@ import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
-import 'package:this_music/music_player/AudioPlayerTask.dart';
-import 'package:this_music/music_player/data/models/song.dart';
+import 'package:this_music/music/player/AudioPlayerTask.dart';
+import 'package:this_music/music/data/models/song.dart';
 
 part 'music_player_controller.g.dart';
 

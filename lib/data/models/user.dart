@@ -42,9 +42,6 @@ class User {
     data['image'] = this.image;
     data['city'] = this.city;
     data['country'] = this.country;
-    if (this.languages != null) {
-      data['languages'] = this.languages.map((v) => v.toJson()).toList();
-    }
 
     return data;
   }

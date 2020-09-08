@@ -1,15 +1,11 @@
-import 'package:animations/animations.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/music_player/music_player_page.dart';
-import 'package:this_music/settings/settings_page.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/home/widgets/special_albums_for_user.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/tab/home/widgets/special_user_playlist.dart';
-
-import 'widgets/best_albums_weekly.dart';
+import 'package:this_music/tab/home/widgets/best_albums_weekly.dart';
+import 'package:this_music/tab/home/widgets/special_albums_for_user.dart';
+import 'package:this_music/tab/home/widgets/special_user_playlist.dart';
 
 class HomePage extends StatefulWidget {
   @override

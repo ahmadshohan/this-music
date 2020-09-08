@@ -5,7 +5,6 @@ import 'package:animations/animations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:provider/provider.dart';
 import 'package:this_music/app_route.dart';
-import 'package:this_music/music_player/data/models/song.dart';
 import 'package:this_music/settings/settings_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
@@ -28,7 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
     Future<void>.delayed(Duration(milliseconds: 1000), () async {
       await _settingsController.init();
-      SongModel songModel = Provider.of<SongModel>(context);
+      // SongModel songModel = Provider.of<SongModel>(context);
     });
   }
 

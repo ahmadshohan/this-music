@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:this_music/music_player/music_player_controller.dart';
+import 'package:this_music/music/player/music_player_controller.dart';
 
 MediaControl playControl = MediaControl(
   androidIcon: 'mipmap/ic_action_play_arrow',

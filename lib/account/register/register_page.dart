@@ -294,7 +294,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       focusNode: _birthFN,
                       controller: _dateBirth,
                       style: TextStyle(color: Colors.white),
-                      validator: (_) => _registerController.checkdateBirth(),
+                      validator: (_) => _registerController.checkDateBirth(),
                       decoration: InputDecoration(
                           labelText: AppLocalization.dateBirth,
                           fillColor: Colors.white10,

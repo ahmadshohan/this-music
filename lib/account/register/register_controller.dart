@@ -9,12 +9,11 @@ import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/login.dart';
 import 'package:this_music/account/data/models/register.dart';
 import 'package:this_music/data/models/result.dart';
+import 'package:this_music/data_picker.dart';
+import 'package:this_music/shared/constant/user_gender.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'file:///C:/Users/ASUS/Desktop/this_music/this_music/lib/shared/constant/user_gender.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
-
-import '../../data_picker.dart';
 
 part 'register_controller.g.dart';
 
@@ -114,7 +113,7 @@ abstract class _RegisterControllerBase with Store {
   }
 
   @action
-  String checkdateBirth() {
+  String checkDateBirth() {
     if (model.dateBirth.isEmpty) return AppLocalization.dateBirth;
     if (model.dateBirth.length < 6)
       return AppLocalization.dateBirth;

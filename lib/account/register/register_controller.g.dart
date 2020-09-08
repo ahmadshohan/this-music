@@ -222,11 +222,11 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
   }
 
   @override
-  String checkdateBirth() {
+  String checkDateBirth() {
     final _$actionInfo = _$_RegisterControllerBaseActionController.startAction(
-        name: '_RegisterControllerBase.checkdateBirth');
+        name: '_RegisterControllerBase.checkDateBirth');
     try {
-      return super.checkdateBirth();
+      return super.checkDateBirth();
     } finally {
       _$_RegisterControllerBaseActionController.endAction(_$actionInfo);
     }
