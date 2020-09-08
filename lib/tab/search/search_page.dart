@@ -120,29 +120,27 @@ class _HomePageState extends State<SearchPage> {
   _buildSingleAlbumItem() {
     return GestureDetector(
       onTap: () {/*todo navigate to Play List Page*/},
-      child: Expanded(
-        child: Column(
-          children: <Widget>[
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              backgroundImage: AssetImage(
-                "assets/lang/turkey.png",
-              ),
+      child: Column(
+        children: <Widget>[
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            backgroundImage: AssetImage(
+              "assets/lang/turkey.png",
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'category',
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Colors.white),
-              ),
-            )
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'category',
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: Colors.white),
+            ),
+          )
+        ],
       ),
     );
   }

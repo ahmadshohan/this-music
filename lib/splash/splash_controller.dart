@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:this_music/account/welcome/welcome_page.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
-import 'package:this_music/tab/tab_navigator.dart';
 
 part 'splash_controller.g.dart';
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:this_music/account/welcome/welcome_page.dart';
@@ -23,12 +24,11 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width / 4),
-      decoration: BoxDecoration(
-        color: Colors.white,
-      ),
-      child: ThisMusicLogo(),
-    );
+        padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width / 4),
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: ThisMusicLogo());
   }
 }

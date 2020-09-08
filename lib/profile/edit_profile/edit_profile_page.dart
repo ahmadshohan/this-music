@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart' as path;
@@ -190,7 +188,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             color: ThisMusicColors.BottomPanel,
             child: Container(
                 decoration: BoxDecoration(
-                    color: Color(0xFF737373),
+                    color: ThisMusicColors.songItemCard,
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         topRight: Radius.circular(15))),

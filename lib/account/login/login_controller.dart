@@ -10,7 +10,6 @@ import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
-import 'package:this_music/tab/tab_navigator.dart';
 
 part 'login_controller.g.dart';
 
@@ -68,7 +67,7 @@ abstract class _LoginControllerBase with Store {
   String checkPassword() {
     if (model.password.isEmpty) return AppLocalization.passwordRequired;
     if (model.password.length < 6 || model.password.length > 30)
-      AppLocalization.passwordNotValid;
+      return AppLocalization.passwordNotValid;
     else
       return null;
   }

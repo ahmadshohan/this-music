@@ -21,8 +21,17 @@ class _AboutUsPageState extends State<AboutUsPage> {
         body: Stack(
           children: <Widget>[
             Container(
-              color: Colors.black,
               height: double.infinity,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [
+                  ThisMusicColors.flexibleBarGradientLow,
+                  ThisMusicColors.flexibleBarGradientHigh
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topRight,
+              )),
               padding: EdgeInsets.all(10),
               child: SafeArea(
                   top: true,
@@ -36,9 +45,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                             _buildVersionNumber(),
-                            Divider(thickness: 1, color: ThisMusicColors.white),
                             _buildUsingRules(),
-                            Divider(thickness: 1, color: ThisMusicColors.white),
                             // _buildUsingRules(),
                             // Divider(thickness: 2),
                             // _buildUsingRules(),
@@ -52,12 +59,13 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
   _buildVersionNumber() {
     return Card(
+      color: ThisMusicColors.flexibleBarGradientHigh,
       elevation: 8,
       child: Container(
         padding: EdgeInsets.all(10),
         child: Text(
           AppLocalization.versionNumber,
-          style: TextStyle(color: Colors.black, fontSize: 18),
+          style: TextStyle(color: ThisMusicColors.white, fontSize: 18),
         ),
       ),
     );
@@ -67,11 +75,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
     return GestureDetector(
         onTap: () {},
         child: Card(
+          color: ThisMusicColors.flexibleBarGradientHigh,
           elevation: 8,
           child: Container(
             padding: const EdgeInsets.all(10),
             child: Text(AppLocalization.termsConditions,
-                style: TextStyle(fontSize: 18)),
+                style: TextStyle(fontSize: 18, color: ThisMusicColors.white)),
           ),
         ));
   }

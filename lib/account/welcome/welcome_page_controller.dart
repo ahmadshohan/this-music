@@ -1,15 +1,10 @@
 import 'dart:convert';
-
-import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/login.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
-import 'package:this_music/shared/widgets/toaster.dart';
-import 'package:this_music/tab/tab_navigator.dart';
 
 part 'welcome_page_controller.g.dart';
 

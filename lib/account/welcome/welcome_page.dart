@@ -4,8 +4,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:this_music/account/login/login_page.dart';
-import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/app_widget.dart';
 import 'package:this_music/colors.dart';
@@ -16,7 +14,6 @@ import 'package:this_music/shared/widgets/j_outline_button.dart';
 import 'package:this_music/shared/widgets/j_raised_buttonborder.dart';
 import 'package:this_music/shared/widgets/loader.dart';
 import 'package:this_music/account/welcome/welcome_page_controller.dart';
-import 'package:this_music/tab/tab_navigator.dart';
 
 class WelcomePage extends StatefulWidget {
   @override
@@ -29,7 +26,6 @@ class _WelcomePageState extends State<WelcomePage> {
   String _logo = 'assets/png/welcome_logo.png';
   PreferencesService _preferencesService = PreferencesService();
   String _selectedLang = 'TR';
-  static Locale locale;
   @override
   void initState() {
     super.initState();
@@ -44,38 +40,34 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Observer(
-        builder: (_) => Stack(
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(_welcomeBg),
-                    fit: BoxFit.fill,
-                  ),
-                ),
-                child: SafeArea(
-                    top: true,
-                    bottom: true,
-                    right: false,
-                    left: false,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          _buildTitleAndLogo(),
-                          Column(children: <Widget>[
-                            _buildRegisterAndLoginButtons(),
-                            _buildSocialMediaButtons()
-                          ])
-                        ]))),
-            Visibility(
-                visible: _welcomeController.loading,
-                child: Center(child: Loader())),
-          ],
-        ),
-      ),
-    );
+        body: Observer(
+            builder: (_) => Stack(children: <Widget>[
+                  Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(_welcomeBg),
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      child: SafeArea(
+                          top: true,
+                          bottom: true,
+                          right: false,
+                          left: false,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                _buildTitleAndLogo(),
+                                Column(children: <Widget>[
+                                  _buildRegisterAndLoginButtons(),
+                                  _buildSocialMediaButtons()
+                                ])
+                              ]))),
+                  Visibility(
+                      visible: _welcomeController.loading,
+                      child: Center(child: Loader()))
+                ])));
   }
 
   _buildTitleAndLogo() {
@@ -120,44 +112,42 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildSocialMediaButtons() {
     return Padding(
-      padding: const EdgeInsets.only(right: 80, left: 80, bottom: 20, top: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Text(AppLocalization.socialMediaMsg,
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .subtitle1
-                  .copyWith(color: ThisMusicColors.white)),
-          SizedBox(height: 10),
-          SizedBox(
-              height: 50,
-              child: SignInButton(Buttons.Google,
-                  text: AppLocalization.googleMsg,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  onPressed: () async {
-                await _welcomeController.googleLogin();
-                Navigator.of(context).pushReplacementNamed(AppRoute.tabRoute);
-              })),
-          SizedBox(height: 10),
-          SizedBox(
-            height: 50,
-            child: SignInButton(
-              Buttons.Facebook,
-              text: AppLocalization.facebookMsg,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              onPressed: () async {
-                await _welcomeController.facebookLogin();
-                Navigator.of(context).pushReplacementNamed(AppRoute.tabRoute);
-              },
-            ),
-          ),
-        ],
-      ),
-    );
+        padding:
+            const EdgeInsets.only(right: 80, left: 80, bottom: 20, top: 10),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Text(AppLocalization.socialMediaMsg,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .copyWith(color: ThisMusicColors.white)),
+              SizedBox(height: 10),
+              SizedBox(
+                  height: 50,
+                  child: SignInButton(Buttons.Google,
+                      text: AppLocalization.googleMsg,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      onPressed: () async {
+                    await _welcomeController.googleLogin();
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppRoute.tabRoute);
+                  })),
+              SizedBox(height: 10),
+              SizedBox(
+                  height: 50,
+                  child: SignInButton(Buttons.Facebook,
+                      text: AppLocalization.facebookMsg,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      onPressed: () async {
+                    await _welcomeController.facebookLogin();
+                    Navigator.of(context)
+                        .pushReplacementNamed(AppRoute.tabRoute);
+                  }))
+            ]));
   }
 
   _buildRegisterAndLoginButtons() {

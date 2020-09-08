@@ -71,7 +71,7 @@ abstract class _RegisterControllerBase with Store {
   String checkFullName() {
     if (model.fullName.isEmpty) return AppLocalization.userNameRequired;
     if (model.fullName.length < 7)
-      AppLocalization.userNameNotValid;
+      return AppLocalization.userNameNotValid;
     else
       return null;
   }
@@ -90,7 +90,7 @@ abstract class _RegisterControllerBase with Store {
   String checkPassword() {
     if (model.password.isEmpty) return AppLocalization.passwordRequired;
     if (model.password.length < 6 || model.password.length > 30)
-      AppLocalization.passwordNotValid;
+      return AppLocalization.passwordNotValid;
     else
       return null;
   }
@@ -99,7 +99,7 @@ abstract class _RegisterControllerBase with Store {
   String checkUserName() {
     if (model.userName.isEmpty) return AppLocalization.userNameRequired;
     if (model.userName.length < 4)
-      AppLocalization.userNameNotValid;
+      return AppLocalization.userNameNotValid;
     else
       return null;
   }
@@ -108,7 +108,7 @@ abstract class _RegisterControllerBase with Store {
   String checkPhoneNumber() {
     if (model.phoneNumber.isEmpty) return AppLocalization.phoneNumberRequired;
     if (model.phoneNumber.length < 10)
-      AppLocalization.phoneNumberNotValid;
+      return AppLocalization.phoneNumberNotValid;
     else
       return null;
   }
@@ -117,7 +117,7 @@ abstract class _RegisterControllerBase with Store {
   String checkdateBirth() {
     if (model.dateBirth.isEmpty) return AppLocalization.dateBirth;
     if (model.dateBirth.length < 6)
-      AppLocalization.dateBirth;
+      return AppLocalization.dateBirth;
     else
       return null;
   }

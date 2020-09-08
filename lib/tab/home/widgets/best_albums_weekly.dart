@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/music_player/play_list/play_List_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 
 class BestAlbumsWeekly extends StatefulWidget {

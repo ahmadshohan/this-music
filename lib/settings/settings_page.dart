@@ -1,13 +1,11 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'package:this_music/app_route.dart';
-import 'package:this_music/profile/profile_page.dart';
 import 'package:this_music/music_player/data/models/song.dart';
-import 'package:this_music/settings/about/aboutus_page.dart';
 import 'package:this_music/settings/settings_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
@@ -26,13 +24,11 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   SettingsController _settingsController = SettingsController();
-  AudioPlayer _player;
   void initState() {
     super.initState();
     Future<void>.delayed(Duration(milliseconds: 1000), () async {
       await _settingsController.init();
       SongModel songModel = Provider.of<SongModel>(context);
-      _player = songModel.audioPlayer;
     });
   }
 
@@ -47,8 +43,16 @@ class _SettingsPageState extends State<SettingsPage> {
           children: <Widget>[
             Container(
               height: double.infinity,
-              color: Colors.black,
               padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                colors: [
+                  ThisMusicColors.flexibleBarGradientLow,
+                  ThisMusicColors.flexibleBarGradientHigh
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topRight,
+              )),
               child: SafeArea(
                   top: true,
                   bottom: true,
@@ -63,9 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             _buildAvatar(),
                             SizedBox(height: 7),
                             Divider(color: Colors.grey),
-                            SizedBox(
-                              height: 15,
-                            ),
+                            SizedBox(height: 15),
                             _buildAccountManagement(),
                             _buildSoundSettings(),
                             _buildOfflineMode(),
@@ -98,7 +100,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoute.profileRoute),
       child: Card(
-          color: Colors.white30,
+          color: ThisMusicColors.flexibleBarGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -108,9 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   size: 25,
                   color: ThisMusicColors.white,
                 ),
-                SizedBox(
-                  width: 10,
-                ),
+                SizedBox(width: 10),
                 Text(AppLocalization.accountManagement,
                     style: TextStyle(
                         color: ThisMusicColors.white,
@@ -125,7 +125,7 @@ class _SettingsPageState extends State<SettingsPage> {
         await AppSettings.openSoundSettings();
       },
       child: Card(
-          color: Colors.white30,
+          color: ThisMusicColors.flexibleBarGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -148,7 +148,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildOfflineMode() {
     return Card(
-        color: Colors.white30,
+        color: ThisMusicColors.flexibleBarGradientHigh,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.all(10),
@@ -176,7 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildApplicationEvaluation() {
     return Card(
-        color: Colors.white30,
+        color: ThisMusicColors.flexibleBarGradientHigh,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.all(10),
@@ -199,7 +199,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(context, AppRoute.aboutUsRoute),
       child: Card(
-          color: Colors.white30,
+          color: ThisMusicColors.flexibleBarGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -225,7 +225,7 @@ class _SettingsPageState extends State<SettingsPage> {
         await _settingsController.logout(context);
       },
       child: Card(
-          color: Colors.white30,
+          color: ThisMusicColors.flexibleBarGradientHigh,
           elevation: 8,
           child: Container(
               padding: EdgeInsets.all(10),
@@ -249,7 +249,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return GestureDetector(
       onTap: () => showChangeLanguageDialog(),
       child: Card(
-          color: Colors.white30,
+          color: ThisMusicColors.flexibleBarGradientHigh,
           elevation: 8,
           child: Observer(
             builder: (_) => Container(
@@ -286,7 +286,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   _buildLinkedAccount() {
     return Card(
-        color: Colors.white30,
+        color: ThisMusicColors.flexibleBarGradientHigh,
         elevation: 8,
         child: Container(
             padding: EdgeInsets.only(left: 10, right: 10, top: 20, bottom: 20),
@@ -313,7 +313,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   showChangeLanguageDialog() {
-    showDialog(
+    showModal(
+        configuration: FadeScaleTransitionConfiguration(
+            transitionDuration: Duration(milliseconds: 400),
+            reverseTransitionDuration: Duration(milliseconds: 400)),
         context: context,
         builder: (_) => new SimpleDialog(
                 shape: RoundedRectangleBorder(

@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:this_music/account/data/account_repository.dart';
-import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/shared/widgets/loader.dart';
-import 'package:this_music/tab/tab_navigator.dart';
-import '../forgot_password/forget_password_page.dart';
 import 'login_controller.dart';
 
 class LoginPage extends StatefulWidget {

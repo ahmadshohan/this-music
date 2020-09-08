@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -51,7 +52,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
             iconTheme: IconThemeData(color: Colors.white)),
         fontFamily: _fontFamily,
       ),
-      initialRoute: AppRoute.splashRoute,
+      home: AudioServiceWidget(child: SplashPage()),
       routes: {
         AppRoute.splashRoute: (ctx) => SplashPage(),
         AppRoute.welcomeRoute: (ctx) => WelcomePage(),

@@ -1,8 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-
-import '../../colors.dart';
+import 'package:this_music/colors.dart';
 
 class SeekBar extends StatefulWidget {
   final Duration duration;

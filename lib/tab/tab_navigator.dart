@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,21 +38,27 @@ class _TabNavigatorState extends State<TabNavigator> {
         ])));
   }
 
-  List<Widget> _buildAllPagesList() {
-    return [
-      HomePage(),
-      SearchPage(),
-      RadioPage(),
-      UserPlayListPage(),
-    ];
-  }
+  List<Widget> allPages = [
+    HomePage(),
+    SearchPage(),
+    RadioPage(),
+    UserPlayListPage(),
+  ];
 
   _buildPageViewBuilder() {
     return PageView.builder(
-      itemBuilder: (ctx, index) => _buildAllPagesList()[index],
-      itemCount: _buildAllPagesList().length,
+      itemBuilder: (ctx, index) => PageTransitionSwitcher(
+        transitionBuilder: (child, primaryAnimatio, seconderyAnimation) {
+          return FadeThroughTransition(
+              fillColor: ThisMusicColors.tabBackGround,
+              child: child,
+              animation: primaryAnimatio,
+              secondaryAnimation: seconderyAnimation);
+        },
+        child: allPages[index],
+      ),
+      itemCount: allPages.length,
       controller: _pageController,
-      physics: NeverScrollableScrollPhysics(),
       onPageChanged: (index) {
         setState(() {
           _selectedIndex = index;
