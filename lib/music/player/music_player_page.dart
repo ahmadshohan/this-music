@@ -171,10 +171,8 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                                                           _musicPlayerController
                                                               .audioPlayer
                                                               .speedStream,
-                                                      onChanged:
-                                                          _musicPlayerController
-                                                              .audioPlayer
-                                                              .setSpeed);
+                                                      onChanged: AudioService
+                                                          .setSpeed);
                                                 }))
                                   ]),
                               _buildControllerButtons(
@@ -311,11 +309,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   size: 30,
                   color: ThisMusicColors.white,
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (mediaItem == queue.first) {
                     return;
                   }
-                  AudioService.skipToPrevious();
+                  await AudioService.skipToPrevious();
                 },
               )),
       StreamBuilder<ProcessingState>(
@@ -328,46 +326,46 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
               list.add(m);
             }
             var params = {"data": list};
-            if (playerState == ProcessingState.none) {
+            if (processingState == AudioProcessingState.none)
               return IconButton(
                   iconSize: 50,
                   icon:
                       Icon(EvaIcons.playCircle, color: ThisMusicColors.button),
                   onPressed: () async {
                     if (AudioService.running)
-                      AudioService.play();
+                      _musicPlayerController.audioServicePlay();
                     else
                       _musicPlayerController.startAudioServiceWithData(
                           data: params);
                   });
-            } else {
-              if (playing) {
-                return IconButton(
-                    iconSize: 50,
-                    icon: Icon(
-                      EvaIcons.playCircle,
-                      color: ThisMusicColors.button,
-                    ),
-                    onPressed: () => AudioService.play);
-              } else {
-                return IconButton(
-                    icon: Icon(EvaIcons.pauseCircle,
-                        color: ThisMusicColors.button),
-                    iconSize: 64.0,
-                    onPressed: () => AudioService.pause);
-              }
-            }
+            else
+              return SizedBox(
+                  child: playing
+                      ? IconButton(
+                          icon: Icon(EvaIcons.pauseCircle,
+                              color: ThisMusicColors.button),
+                          iconSize: 50,
+                          onPressed: () =>
+                              _musicPlayerController.audioServicePause())
+                      : IconButton(
+                          iconSize: 50,
+                          icon: Icon(
+                            EvaIcons.playCircle,
+                            color: ThisMusicColors.button,
+                          ),
+                          onPressed: () =>
+                              _musicPlayerController.audioServicePlay()));
           }),
       StreamBuilder<SequenceState>(
           stream: player.sequenceStateStream,
           builder: (context, snapshot) => IconButton(
                 icon: Icon(EvaIcons.skipForward,
                     size: 30, color: ThisMusicColors.white),
-                onPressed: () {
-                  if (mediaItem == queue.first) {
+                onPressed: () async {
+                  if (mediaItem == queue.last) {
                     return;
                   }
-                  AudioService.skipToNext();
+                  await AudioService.skipToNext();
                 },
               )),
       StreamBuilder<bool>(

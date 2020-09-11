@@ -45,11 +45,11 @@ class AudioPlayerTask extends BackgroundAudioTask {
 
   MediaItem get mediaItem => _queueIndex == null ? null : _queue[_queueIndex];
 
+  var _playerStateSubscription;
   var _eventSubscription;
 
   @override
   Future<void> onStart(Map<String, dynamic> params) async {
-    Completer _completer = Completer();
     final session = await AudioSession.instance;
     await session.configure(AudioSessionConfiguration.music());
     _queue.clear();
@@ -63,35 +63,52 @@ class AudioPlayerTask extends BackgroundAudioTask {
         children:
             _queue.map((item) => AudioSource.uri(Uri.parse(item.id))).toList(),
       ));
-      // In this example, we automatically start playing on start.
-      _musicPlayerController.audioPlayer.currentIndexStream.listen((index) {
-        if (index != null) AudioServiceBackground.setMediaItem(_queue[index]);
-        _musicPlayerController.audioPlayer.processingStateStream
-            .listen((state) {
-          switch (state) {
-            case ProcessingState.completed:
-              _handlePlaybackCompleted();
-              break;
-            case ProcessingState.ready:
-              _skipState = null;
-              break;
-            default:
-              break;
-          }
-        });
-        _eventSubscription = _musicPlayerController
-            .audioPlayer.playbackEventStream
-            .listen((event) {
-          _broadcastState();
-        });
-
-        AudioServiceBackground.setQueue(_queue);
-      });
-      onPlay();
     } catch (e) {
       print("Error: $e");
       onStop();
     }
+
+    _playerStateSubscription = _musicPlayerController
+        .audioPlayer.processingStateStream
+        .where((state) => state == ProcessingState.completed)
+        .listen((event) {
+      _handlePlaybackCompleted();
+    });
+    _eventSubscription =
+        _musicPlayerController.audioPlayer.playbackEventStream.listen((event) {
+      final bufferingState =
+          event.bufferedPosition ?? AudioProcessingState.buffering ?? null;
+      switch (event.processingState) {
+        case ProcessingState.none:
+          _broadcastState(
+              processingState: bufferingState ?? AudioProcessingState.none,
+              position: event.updatePosition);
+          break;
+        case ProcessingState.loading:
+          _broadcastState(
+              processingState: _skipState ?? AudioProcessingState.connecting,
+              position: event.updatePosition);
+          break;
+        case ProcessingState.buffering:
+          _broadcastState(
+              processingState: _skipState ?? AudioProcessingState.buffering,
+              position: event.updatePosition);
+          break;
+        case ProcessingState.ready:
+          _broadcastState(
+              processingState: _skipState ?? AudioProcessingState.ready,
+              position: event.updatePosition);
+          break;
+        case ProcessingState.completed:
+          _broadcastState(
+              processingState: _skipState ?? AudioProcessingState.completed,
+              position: event.updatePosition);
+          break;
+        default:
+      }
+    });
+    AudioServiceBackground.setQueue(_queue);
+    onSkipToNext();
   }
 
   @override
@@ -150,6 +167,7 @@ class AudioPlayerTask extends BackgroundAudioTask {
     _playing = false;
     await _musicPlayerController.audioPlayer.pause();
     await _musicPlayerController.audioPlayer.dispose();
+    _playerStateSubscription.cancel();
     _eventSubscription.cancel();
     await _broadcastState();
     await super.onStop();
@@ -276,11 +294,17 @@ class AudioPlayerTask extends BackgroundAudioTask {
         MediaAction.seekBackward,
       ],
       processingState: _getProcessingState(),
-      playing: _musicPlayerController.audioPlayer.playing,
-      position: _musicPlayerController.audioPlayer.position,
-      bufferedPosition: _musicPlayerController.audioPlayer.bufferedPosition,
+      playing: _playing ?? _musicPlayerController.audioPlayer.playing,
+      position: position ?? _musicPlayerController.audioPlayer.position,
+      bufferedPosition: bufferedPosition ??
+          _musicPlayerController.audioPlayer.bufferedPosition,
       speed: _musicPlayerController.audioPlayer.speed,
     );
+  }
+
+  @override
+  Future<Function> onSetSpeed(double speed) async {
+    return _musicPlayerController.audioPlayer.setSpeed;
   }
 }
 

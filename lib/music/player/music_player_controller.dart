@@ -124,4 +124,6 @@ abstract class _MusicPlayerControllerBase with Store {
         params: data);
   }
 
+  audioServicePlay() async => await AudioService.play();
+  audioServicePause() async => await AudioService.pause();
 }
