@@ -33,7 +33,7 @@ dependencies:
   email_validator: ^1.0.5
   audio_service: ^0.14.1
   just_audio: ^0.4.3
-  audio_session: ^0.0.5
+  audio_session: ^0.0.6
   cached_network_image: ^2.2.0
   flutter_share: ^1.0.2+1
   image_picker: ^0.6.7+7
@@ -42,7 +42,6 @@ dependencies:
   flutter_visualizers: ^0.0.2
   animations: ^1.1.2
   eva_icons_flutter: ^2.0.1
-  flutter_signin_button: ^1.1.0
   flutter_launcher_icons: ^0.7.5
 
 dev_dependencies:

@@ -1,10 +1,9 @@
 import 'dart:math';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
-import 'package:this_music/music/player/AudioPlayerTask.dart';
+import 'package:this_music/main.dart';
 import 'package:this_music/music/data/models/song.dart';
 
 part 'music_player_controller.g.dart';
@@ -13,8 +12,11 @@ class MusicPlayerController = _MusicPlayerControllerBase
     with _$MusicPlayerController;
 
 abstract class _MusicPlayerControllerBase with Store {
+  @observable
+  bool loading = false;
+
   AudioPlayer _audioPlayer = AudioPlayer();
-  get audioPlayer => _audioPlayer;
+  AudioPlayer get audioPlayer => _audioPlayer;
 
   String _url =
       "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3";
@@ -110,18 +112,16 @@ abstract class _MusicPlayerControllerBase with Store {
     _duration = duration;
   }
 
-  init() async {
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration.music());
-    try {
-      await _audioPlayer.setUrl(_url);
-    } catch (e) {
-      // catch load errors: 404, invalid url ...
-      print("An error occured $e");
-    }
+  startAudioServiceWithData({dynamic data}) async {
+    await AudioService.start(
+        backgroundTaskEntrypoint: audioPlayerTaskEntryPoint,
+        androidNotificationChannelName: 'This Music',
+        androidNotificationColor: 0xFF083838,
+        androidNotificationIcon: 'mipmap/launcher_icon',
+        androidNotificationClickStartsActivity: true,
+        androidStopForegroundOnPause: true,
+        androidEnableQueue: true,
+        params: data);
   }
 
-  void audioPlayerTaskEntrypoint() async {
-    AudioServiceBackground.run(() => AudioPlayerTask());
-  }
 }

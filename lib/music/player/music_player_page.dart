@@ -6,13 +6,14 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_share/flutter_share.dart';
-import 'package:this_music/music/data/models/song.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:this_music/main.dart';
+import 'package:this_music/music/player/music_player_background_task.dart';
 import 'package:this_music/music/player/music_player_controller.dart';
 import 'package:this_music/music/widgets/seek_bar.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/animations/player_anim.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/shared/widgets/loader.dart';
 
 class MusicPlayerPage extends StatefulWidget {
   @override
@@ -21,11 +22,34 @@ class MusicPlayerPage extends StatefulWidget {
 
 class _MusicPlayerPageState extends State<MusicPlayerPage>
     with TickerProviderStateMixin {
+  final BehaviorSubject<double> _dragPositionSubject =
+      BehaviorSubject.seeded(null);
+
   MusicPlayerController _musicPlayerController = MusicPlayerController();
   AnimationController controllerPlayer;
   Animation<double> animationPlayer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _commonTween = new Tween<double>(begin: 0.0, end: 1.0);
+
+  final _queue = <MediaItem>[
+    MediaItem(
+        id:
+            "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3",
+        album: "Science Friday",
+        title: "A Salute To Head-Scratching Science",
+        artist: "Science Friday and WNYC Studios",
+        duration: Duration(milliseconds: 5739820),
+        artUri:
+            "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg"),
+    MediaItem(
+        id: "https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3",
+        album: "Science satrday",
+        title: "From Cat Rheology To Operatic Incompetence",
+        artist: "Science Friday and WNYC Studios",
+        duration: Duration(milliseconds: 2856950),
+        artUri:
+            "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg"),
+  ];
 
   @override
   void initState() {
@@ -41,7 +65,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         controllerPlayer.forward();
       }
     });
-    _musicPlayerController.init();
   }
 
   @override
@@ -49,91 +72,122 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: ThisMusicColors.BottomPanel,
-        body: Container(
-            height: double.infinity,
-            decoration: BoxDecoration(
-                gradient: RadialGradient(colors: [
-              ThisMusicColors.playerGradientLow,
-              ThisMusicColors.playerGradientHigh
-            ], focal: Alignment.center, focalRadius: 0.3, radius: 0.9)),
-            child: SafeArea(
-                child: Column(children: <Widget>[
-              Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                    _buildAppBar(),
-                    _buildPictureTitle(_musicPlayerController.audioPlayer),
-                    StreamBuilder<Duration>(
-                        stream:
-                            _musicPlayerController.audioPlayer.durationStream,
-                        builder: (context, snapshot) {
-                          final duration = snapshot.data ?? Duration.zero;
-                          return StreamBuilder<Duration>(
-                              stream: _musicPlayerController
-                                  .audioPlayer.positionStream,
-                              builder: (context, snapshot) {
-                                var position = snapshot.data ?? Duration.zero;
-                                if (position > duration) {
-                                  position = duration;
-                                }
-                                return SeekBar(
-                                    duration: duration,
-                                    position: position,
-                                    onChangeEnd: (newPosition) {
-                                      _musicPlayerController.audioPlayer
-                                          .seek(newPosition);
-                                    });
-                              });
-                        }),
-                    SizedBox(height: 8.0),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                              icon: Icon(EvaIcons.volumeUp,
-                                  color: ThisMusicColors.white),
-                              onPressed: () {
-                                _showSliderVolumeDialog(
-                                    context: context,
-                                    title: "Adjust volume",
-                                    divisions: 10,
-                                    min: 0.0,
-                                    max: 1.0,
-                                    stream: _musicPlayerController
-                                        .audioPlayer.volumeStream,
-                                    onChanged: _musicPlayerController
-                                        .audioPlayer.setVolume);
-                              }),
-                          StreamBuilder<double>(
-                              stream: _musicPlayerController
-                                  .audioPlayer.speedStream,
-                              builder: (context, snapshot) => IconButton(
-                                  icon: Text(
-                                      "${snapshot.data?.toStringAsFixed(1)}x",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: ThisMusicColors.white,
-                                      )),
-                                  onPressed: () {
-                                    _showSliderVolumeDialog(
-                                        context: context,
-                                        title: "Adjust speed",
-                                        divisions: 10,
-                                        min: 0.5,
-                                        max: 1.5,
+        body: Stack(children: [
+          Container(
+              height: double.infinity,
+              decoration: BoxDecoration(
+                  gradient: RadialGradient(colors: [
+                ThisMusicColors.playerGradientLow,
+                ThisMusicColors.playerGradientHigh
+              ], focal: Alignment.center, focalRadius: 0.3, radius: 0.9)),
+              child: SafeArea(
+                  top: true,
+                  bottom: true,
+                  right: false,
+                  left: false,
+                  child: StreamBuilder<AudioState>(
+                      stream: _audioStateStream,
+                      builder: (context, snapshot) {
+                        final audioState = snapshot.data;
+                        final queue = audioState?.queue;
+                        final mediaItem = audioState?.mediaItem;
+                        final playbackState = audioState?.playbackState;
+                        final processingState =
+                            playbackState?.processingState ??
+                                AudioProcessingState.none;
+                        final playing = playbackState?.playing ?? false;
+                        return Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              _buildAppBar(),
+                              _buildPictureTitle(mediaItem),
+                              StreamBuilder<Duration>(
+                                  stream: _musicPlayerController
+                                      .audioPlayer.durationStream,
+                                  builder: (context, snapshot) {
+                                    final duration =
+                                        snapshot.data ?? Duration.zero;
+                                    return StreamBuilder<Duration>(
+                                        stream: _musicPlayerController
+                                            .audioPlayer.positionStream,
+                                        builder: (context, snapshot) {
+                                          var position =
+                                              snapshot.data ?? Duration.zero;
+                                          if (position > duration) {
+                                            position = duration;
+                                          }
+                                          return SeekBar(
+                                              duration: duration,
+                                              position: position,
+                                              onChangeEnd: (newPosition) {
+                                                _musicPlayerController
+                                                    .audioPlayer
+                                                    .seek(newPosition);
+                                              });
+                                        });
+                                  }),
+                              SizedBox(height: 8.0),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    IconButton(
+                                        icon: Icon(EvaIcons.volumeUp,
+                                            color: ThisMusicColors.white),
+                                        onPressed: () {
+                                          _showSliderVolumeDialog(
+                                              context: context,
+                                              title: "Adjust volume",
+                                              divisions: 10,
+                                              min: 0.0,
+                                              max: 1.0,
+                                              stream: _musicPlayerController
+                                                  .audioPlayer.volumeStream,
+                                              onChanged: _musicPlayerController
+                                                  .audioPlayer.setVolume);
+                                        }),
+                                    StreamBuilder<double>(
                                         stream: _musicPlayerController
                                             .audioPlayer.speedStream,
-                                        onChanged: _musicPlayerController
-                                            .audioPlayer.setSpeed);
-                                  }))
-                        ]),
-                    _buildControllerButtons(
-                        context, _musicPlayerController.audioPlayer),
-                    /*TODO Visualizer*/
-                  ]))
-            ]))));
+                                        builder: (context, snapshot) =>
+                                            IconButton(
+                                                icon: Text(
+                                                    "${snapshot.data?.toStringAsFixed(1)}x",
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          ThisMusicColors.white,
+                                                    )),
+                                                onPressed: () {
+                                                  _showSliderVolumeDialog(
+                                                      context: context,
+                                                      title: "Adjust speed",
+                                                      divisions: 10,
+                                                      min: 0.5,
+                                                      max: 1.5,
+                                                      stream:
+                                                          _musicPlayerController
+                                                              .audioPlayer
+                                                              .speedStream,
+                                                      onChanged:
+                                                          _musicPlayerController
+                                                              .audioPlayer
+                                                              .setSpeed);
+                                                }))
+                                  ]),
+                              _buildControllerButtons(
+                                  context,
+                                  _musicPlayerController.audioPlayer,
+                                  mediaItem,
+                                  queue,
+                                  processingState,
+                                  playing),
+                              /*TODO Visualizer*/
+                            ]);
+                      })))
+        ]));
   }
 
   _buildAppBar() {
@@ -143,18 +197,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               IconButton(
-                icon: Icon(
-                  Icons.arrow_back_ios,
-                  size: 25.0,
-                  color: ThisMusicColors.white,
-                ),
-                onPressed: () async {
-                  if (_musicPlayerController.audioPlayer.playing) {
-                    await _musicPlayerController.audioPlayer.pause();
-                  }
-                  Navigator.pop(context, true);
-                },
-              ),
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    size: 25.0,
+                    color: ThisMusicColors.white,
+                  ),
+                  onPressed: () => Navigator.pop(context, true)),
               IconButton(
                   icon: Icon(
                     Icons.more_vert,
@@ -202,37 +250,36 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                 ]))));
   }
 
-  _buildPictureTitle(AudioPlayer player) {
+  _buildPictureTitle(MediaItem mediaItem) {
     return Expanded(
-        child: StreamBuilder<SequenceState>(
-            stream: player.sequenceStateStream,
-            builder: (context, snapshot) {
-              final state = snapshot.data;
-              if (state?.sequence?.isEmpty ?? true) return SizedBox();
-              final metadata = state.currentSource.tag as Song;
-              return Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      padding: const EdgeInsets.all(8.0),
-                      child: RotatePlayer(
-                          animation: _commonTween.animate(controllerPlayer)),
-                    ),
-                    Text("Song",
-                        style: TextStyle(
-                            color: ThisMusicColors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold)),
-                    Text("title",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w300))
-                  ]);
-            }));
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Container(
+            height: MediaQuery.of(context).size.height * 0.25,
+            padding: const EdgeInsets.all(8.0),
+            child: RotatePlayer(
+                animation: _commonTween.animate(controllerPlayer),
+                image: mediaItem?.artUri ?? null)),
+        Text(mediaItem?.title ?? "Song",
+            maxLines: 1,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: ThisMusicColors.white,
+                fontSize: 30,
+                fontWeight: FontWeight.bold)),
+        Text(mediaItem?.album ?? "title",
+            maxLines: 1,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w300))
+      ]),
+    );
   }
 
-  _buildControllerButtons(BuildContext context, AudioPlayer player) {
+  _buildControllerButtons(
+      BuildContext context,
+      AudioPlayer player,
+      MediaItem mediaItem,
+      List<MediaItem> queue,
+      AudioProcessingState processingState,
+      bool playing) {
     return Row(mainAxisSize: MainAxisSize.min, children: [
       StreamBuilder<LoopMode>(
           stream: player.loopModeStream,
@@ -264,58 +311,51 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                   size: 30,
                   color: ThisMusicColors.white,
                 ),
-                onPressed: player.hasPrevious ? player.seekToPrevious : null,
+                onPressed: () {
+                  if (mediaItem == queue.first) {
+                    return;
+                  }
+                  AudioService.skipToPrevious();
+                },
               )),
-      StreamBuilder<PlayerState>(
-          stream: player.playerStateStream,
+      StreamBuilder<ProcessingState>(
+          stream: player.processingStateStream,
           builder: (context, snapshot) {
             final playerState = snapshot.data;
-            final processingState = playerState?.processingState;
-            final playing = playerState?.playing;
-            if (processingState == ProcessingState.loading ||
-                processingState == ProcessingState.buffering) {
-              return Container(
-                  margin: EdgeInsets.all(8.0),
-                  width: 64.0,
-                  height: 64.0,
-                  child: Loader(
-                    withBgOverlay: false,
-                  ));
-            } else if (playing != true) {
+            List<dynamic> list = List();
+            for (int i = 0; i < 2; i++) {
+              var m = _queue[i].toJson();
+              list.add(m);
+            }
+            var params = {"data": list};
+            if (playerState == ProcessingState.none) {
               return IconButton(
-                icon: Icon(
-                  EvaIcons.playCircle,
-                  color: ThisMusicColors.button,
-                ),
-                iconSize: 64.0,
-                onPressed: () async {
-                  await AudioService.start(
-                      backgroundTaskEntrypoint:
-                          _musicPlayerController.audioPlayerTaskEntrypoint,
-                      androidNotificationChannelName: 'This Music',
-                      androidNotificationColor: 0xFF2196f3,
-                      androidNotificationIcon: 'mipmap/ic_launcher',
-                      params: {
-                        'url':
-                            "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3"
-                      });
-                  player.play();
-                },
-              );
-            } else if (processingState != ProcessingState.completed) {
-              return IconButton(
+                  iconSize: 50,
                   icon:
-                      Icon(EvaIcons.pauseCircle, color: ThisMusicColors.button),
-                  iconSize: 64.0,
-                  onPressed: player.pause);
+                      Icon(EvaIcons.playCircle, color: ThisMusicColors.button),
+                  onPressed: () async {
+                    if (AudioService.running)
+                      AudioService.play();
+                    else
+                      _musicPlayerController.startAudioServiceWithData(
+                          data: params);
+                  });
             } else {
-              return IconButton(
-                  icon: Icon(
-                    Icons.replay,
-                    color: ThisMusicColors.white,
-                  ),
-                  iconSize: 64.0,
-                  onPressed: () => player.seek(Duration.zero, index: 0));
+              if (playing) {
+                return IconButton(
+                    iconSize: 50,
+                    icon: Icon(
+                      EvaIcons.playCircle,
+                      color: ThisMusicColors.button,
+                    ),
+                    onPressed: () => AudioService.play);
+              } else {
+                return IconButton(
+                    icon: Icon(EvaIcons.pauseCircle,
+                        color: ThisMusicColors.button),
+                    iconSize: 64.0,
+                    onPressed: () => AudioService.pause);
+              }
             }
           }),
       StreamBuilder<SequenceState>(
@@ -323,7 +363,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
           builder: (context, snapshot) => IconButton(
                 icon: Icon(EvaIcons.skipForward,
                     size: 30, color: ThisMusicColors.white),
-                onPressed: player.hasNext ? player.seekToNext : null,
+                onPressed: () {
+                  if (mediaItem == queue.first) {
+                    return;
+                  }
+                  AudioService.skipToNext();
+                },
               )),
       StreamBuilder<bool>(
           stream: player.shuffleModeEnabledStream,
@@ -380,4 +425,18 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       )
                     ])))));
   }
+}
+
+Stream<AudioState> get _audioStateStream {
+  return Rx.combineLatest3<List<MediaItem>, MediaItem, PlaybackState,
+      AudioState>(
+    AudioService.queueStream,
+    AudioService.currentMediaItemStream,
+    AudioService.playbackStateStream,
+    (queue, mediaItem, playbackState) => AudioState(
+      queue,
+      mediaItem,
+      playbackState,
+    ),
+  );
 }

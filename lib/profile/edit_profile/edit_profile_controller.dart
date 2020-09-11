@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:email_validator/email_validator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobx/mobx.dart';
-import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/profile/edit_profile/data/models/profile.dart';
 import 'package:this_music/profile/edit_profile/data/profile_repository.dart';
@@ -59,9 +58,8 @@ abstract class _EditProfileControllerBase with Store {
 
   @action
   String checkEmail() {
-    if (model.email.isEmpty)
-      return AppLocalization.emailRequired;
-    else if (EmailValidator.validate(model.email))
+    if (model.email.isEmpty) return AppLocalization.emailRequired;
+    if (EmailValidator.validate(model.email))
       return null;
     else
       return AppLocalization.emailNotValid;

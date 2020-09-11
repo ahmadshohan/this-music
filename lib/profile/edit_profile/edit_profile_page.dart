@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -154,7 +153,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   _buildEmail() {
     return TextFormField(
         style: TextStyle(color: ThisMusicColors.white),
-        onChanged: (value) => _editProfileController.model.phoneNumber = value,
+        onChanged: (value) => _editProfileController.model.email = value,
         validator: (_) => _editProfileController.checkEmail(),
         onFieldSubmitted: (_) => KeyBoard.close(context),
         decoration: InputDecoration(
@@ -290,7 +289,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     });
   }
 
-  _openGallery() async {
+  _openGallery() {
     KeyBoard.close(context);
     ImagePicker()
         .getImage(source: ImageSource.gallery, maxHeight: 200)

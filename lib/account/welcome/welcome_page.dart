@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:flutter_signin_button/button_list.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/app_widget.dart';
@@ -10,6 +8,7 @@ import 'package:this_music/colors.dart';
 import 'package:this_music/shared/constant/user_gender.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
+import 'package:this_music/shared/widgets/j_icon_raised_social_button.dart';
 import 'package:this_music/shared/widgets/j_outline_button.dart';
 import 'package:this_music/shared/widgets/j_raised_buttonborder.dart';
 import 'package:this_music/shared/widgets/loader.dart';
@@ -43,7 +42,7 @@ class _WelcomePageState extends State<WelcomePage> {
         body: Observer(
             builder: (_) => Stack(children: <Widget>[
                   Container(
-                      padding: EdgeInsets.all(10),
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(_welcomeBg),
@@ -112,8 +111,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   _buildSocialMediaButtons() {
     return Padding(
-        padding:
-            const EdgeInsets.only(right: 80, left: 80, bottom: 20, top: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 45, vertical: 10),
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
@@ -126,27 +124,31 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(height: 10),
               SizedBox(
                   height: 50,
-                  child: SignInButton(Buttons.Google,
+                  child: JIconRaisedSocialButton(
+                      color: ThisMusicColors.white,
                       text: AppLocalization.googleMsg,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                      textColor: Colors.black,
+                      icon: "assets/png/google.png",
+                      iconColor: ThisMusicColors.black,
                       onPressed: () async {
-                    await _welcomeController.googleLogin();
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppRoute.tabRoute);
-                  })),
+                        await _welcomeController.googleLogin();
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoute.tabRoute);
+                      })),
               SizedBox(height: 10),
               SizedBox(
                   height: 50,
-                  child: SignInButton(Buttons.Facebook,
+                  child: JIconRaisedSocialButton(
+                      color: ThisMusicColors.facebookButton,
                       text: AppLocalization.facebookMsg,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
+                      textColor: ThisMusicColors.white,
+                      icon: "assets/png/facebook.png",
+                      iconColor: ThisMusicColors.white,
                       onPressed: () async {
-                    await _welcomeController.facebookLogin();
-                    Navigator.of(context)
-                        .pushReplacementNamed(AppRoute.tabRoute);
-                  }))
+                        // await _welcomeController.facebookLogin();
+                        Navigator.of(context)
+                            .pushReplacementNamed(AppRoute.tabRoute);
+                      })),
             ]));
   }
 

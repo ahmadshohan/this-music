@@ -22,6 +22,7 @@ class JRaisedButtonBorder extends StatelessWidget {
         ),
         child: Text(
           text,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(fontSize: 14),
         ));
   }
