@@ -12,7 +12,7 @@ abstract class _SplashControllerBase with Store {
 
   Future init(BuildContext context) async {
     if ((await _preferencesService.token)?.isNotEmpty == true)
-      Navigator.pushReplacementNamed(context, AppRoute.tabRoute);
+      Navigator.pushReplacementNamed(context, AppRoute.mainRoute);
     else
       await Future.delayed(Duration(milliseconds: 1000),
           () => Navigator.pushReplacementNamed(context, AppRoute.welcomeRoute));

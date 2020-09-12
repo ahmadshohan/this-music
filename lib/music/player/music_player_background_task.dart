@@ -306,6 +306,15 @@ class AudioPlayerTask extends BackgroundAudioTask {
   Future<Function> onSetSpeed(double speed) async {
     return _musicPlayerController.audioPlayer.setSpeed;
   }
+
+  @override
+  Future<Function> onSetShuffleMode(AudioServiceShuffleMode shuffleMode) {
+    if (shuffleMode == AudioServiceShuffleMode.none) {
+      return _musicPlayerController.audioPlayer.setShuffleModeEnabled(false);
+    } else {
+      return _musicPlayerController.audioPlayer.setShuffleModeEnabled(true);
+    }
+  }
 }
 
 class AudioState {

@@ -4,7 +4,7 @@ class AppRoute {
   static const registerRoute = '/register';
   static const loginRoute = '/login';
   static const forgotPasswordRoute = '/forgot';
-  static const tabRoute = '/tab';
+  static const mainRoute = '/main';
   static const musicPlayerRoute = '/music-player';
   static const settingsRoute = '/settings';
   static const albumSongsRoute = '/album-songs';

@@ -3,20 +3,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:this_music/colors.dart';
-import 'package:this_music/tab/radio/radio_page.dart';
-import 'package:this_music/tab/search/search_page.dart';
-import 'package:this_music/tab/user_play_list/user_play_list_page.dart';
+import 'package:this_music/main/radio/radio_page.dart';
+import 'package:this_music/main/search/search_page.dart';
+import 'package:this_music/main/user_play_list/user_play_list_page.dart';
 import 'shared/bottom_panel.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 
 import 'home/home_page.dart';
 
-class TabNavigator extends StatefulWidget {
+class MainNavigator extends StatefulWidget {
   @override
-  _TabNavigatorState createState() => _TabNavigatorState();
+  _MainNavigatorState createState() => _MainNavigatorState();
 }
 
-class _TabNavigatorState extends State<TabNavigator> {
+class _MainNavigatorState extends State<MainNavigator> {
   var _pageController = PageController();
   int _selectedIndex = 0;
 
@@ -48,11 +48,11 @@ class _TabNavigatorState extends State<TabNavigator> {
   _buildPageViewBuilder() {
     return PageView.builder(
       itemBuilder: (ctx, index) => PageTransitionSwitcher(
-        transitionBuilder: (child, primaryAnimatio, seconderyAnimation) {
+        transitionBuilder: (child, primaryAnimation, seconderyAnimation) {
           return FadeThroughTransition(
               fillColor: ThisMusicColors.tabBackGround,
               child: child,
-              animation: primaryAnimatio,
+              animation: primaryAnimation,
               secondaryAnimation: seconderyAnimation);
         },
         child: allPages[index],

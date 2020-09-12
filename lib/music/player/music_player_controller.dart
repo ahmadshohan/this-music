@@ -112,6 +112,19 @@ abstract class _MusicPlayerControllerBase with Store {
     _duration = duration;
   }
 
+  run(List<MediaItem> dataArray) async {
+    List<dynamic> list = List();
+    for (int i = 0; i < dataArray.length; i++) {
+      var m = dataArray[i].toJson();
+      list.add(m);
+    }
+    var params = {"data": list};
+    if (AudioService.running)
+      await audioServicePlay();
+    else
+      await startAudioServiceWithData(data: params);
+  }
+
   startAudioServiceWithData({dynamic data}) async {
     await AudioService.start(
         backgroundTaskEntrypoint: audioPlayerTaskEntryPoint,

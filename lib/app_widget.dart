@@ -7,6 +7,7 @@ import 'package:this_music/account/register/register_page.dart';
 import 'package:this_music/account/welcome/welcome_page.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/main/main_navigator.dart';
 import 'package:this_music/music/album_songs/album_songs_page.dart';
 import 'package:this_music/music/category_albums/category_albums_page.dart';
 import 'package:this_music/music/player/music_player_page.dart';
@@ -16,7 +17,7 @@ import 'package:this_music/settings/about/aboutus_page.dart';
 import 'package:this_music/splash/splash_page.dart';
 import 'package:this_music/settings/settings_page.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'package:this_music/tab/tab_navigator.dart';
+
 
 class ThisMusicApp extends StatefulWidget {
   @override
@@ -58,7 +59,7 @@ class ThisMusicAppState extends State<ThisMusicApp> {
           AppRoute.registerRoute: (ctx) => RegisterPage(),
           AppRoute.loginRoute: (ctx) => LoginPage(),
           AppRoute.forgotPasswordRoute: (ctx) => ForgotPasswordPage(),
-          AppRoute.tabRoute: (ctx) => TabNavigator(),
+          AppRoute.mainRoute: (ctx) => MainNavigator(),
           AppRoute.musicPlayerRoute: (ctx) => MusicPlayerPage(),
           AppRoute.settingsRoute: (ctx) => SettingsPage(),
           AppRoute.aboutUsRoute: (ctx) => AboutUsPage(),

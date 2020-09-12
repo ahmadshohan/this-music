@@ -133,7 +133,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       onPressed: () async {
                         await _welcomeController.googleLogin();
                         Navigator.of(context)
-                            .pushReplacementNamed(AppRoute.tabRoute);
+                            .pushReplacementNamed(AppRoute.mainRoute);
                       })),
               SizedBox(height: 10),
               SizedBox(
@@ -147,7 +147,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       onPressed: () async {
                         // await _welcomeController.facebookLogin();
                         Navigator.of(context)
-                            .pushReplacementNamed(AppRoute.tabRoute);
+                            .pushReplacementNamed(AppRoute.mainRoute);
                       })),
             ]));
   }
