@@ -145,7 +145,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       icon: "assets/png/facebook.png",
                       iconColor: ThisMusicColors.white,
                       onPressed: () async {
-                        // await _welcomeController.facebookLogin();
+                        await _welcomeController.facebookLogin();
                         Navigator.of(context)
                             .pushReplacementNamed(AppRoute.mainRoute);
                       })),

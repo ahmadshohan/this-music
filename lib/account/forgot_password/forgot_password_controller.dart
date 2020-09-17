@@ -1,11 +1,17 @@
 import 'dart:async';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:sprintf/sprintf.dart';
+import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/forgotPassword.dart';
+import 'package:this_music/account/forgot_password/dialogs/send_email_dialog.dart';
+import 'package:this_music/account/forgot_password/forget_password_page.dart';
+import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
+import 'package:this_music/shared/widgets/toaster.dart';
 
 part 'forgot_password_controller.g.dart';
 
@@ -16,6 +22,7 @@ abstract class _ForgotPasswordControllerBase with Store {
   Timer _timer;
   int _start = 60;
   PreferencesService _preferencesService = PreferencesService();
+  AccountRepository _accountRepository = AccountRepository();
 
   _ForgotPasswordControllerBase() {
     _startTimer();
@@ -28,6 +35,9 @@ abstract class _ForgotPasswordControllerBase with Store {
       lang = value;
     });
   }
+
+  @observable
+  bool loading = false;
 
   @observable
   bool autoValidate = false;
@@ -93,5 +103,19 @@ abstract class _ForgotPasswordControllerBase with Store {
         timer = '00:${sprintf("%02i", [_start])}';
       }
     });
+  }
+
+  @action
+  forgotPassword(BuildContext context) async {
+    loading = true;
+    final result = await _accountRepository.forgotPassword(model);
+
+    if (result.state == ResultStatus.FAIL)
+      Toaster.error(msg: result.errorMessage);
+    else {
+      final data = result.data;
+      SendEmailNoticeDialog.showSendEmailDialog(context);
+    }
+    loading = false;
   }
 }

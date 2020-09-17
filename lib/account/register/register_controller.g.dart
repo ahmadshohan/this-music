@@ -126,8 +126,8 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
   final _$registerAsyncAction = AsyncAction('_RegisterControllerBase.register');
 
   @override
-  Future register() {
-    return _$registerAsyncAction.run(() => super.register());
+  Future register(BuildContext context) {
+    return _$registerAsyncAction.run(() => super.register(context));
   }
 
   final _$_RegisterControllerBaseActionController =

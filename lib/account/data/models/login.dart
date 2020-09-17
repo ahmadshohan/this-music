@@ -20,21 +20,25 @@ class LoginModel {
 }
 
 class LoginResult {
-  String token;
   User user;
+  Response response;
 
-  LoginResult({this.token, this.user});
+  LoginResult({this.user, this.response});
 
   LoginResult.fromJson(Map<String, dynamic> json) {
-    token = json['token'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
+    response = json['response'] != null
+        ? new Response.fromJson(json['response'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['token'] = this.token;
     if (this.user != null) {
       data['user'] = this.user.toJson();
+    }
+    if (this.response != null) {
+      data['response'] = this.response.toJson();
     }
     return data;
   }

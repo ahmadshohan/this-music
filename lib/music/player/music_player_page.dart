@@ -107,36 +107,37 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                               _buildPictureTitle(mediaItem),
                               SizedBox(height: 8.0),
                               _buildSeekBarIndicator(mediaItem, playbackState),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    StreamBuilder<double>(
-                                        stream: _musicPlayerController
-                                            .audioPlayer.speedStream,
-                                        builder: (context, snapshot) =>
-                                            IconButton(
-                                                icon: Text(
-                                                    "${snapshot.data?.toStringAsFixed(1)}x",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color:
-                                                          ThisMusicColors.white,
-                                                    )),
-                                                onPressed: () {
-                                                  _showSliderVolumeDialog(
-                                                      context: context,
-                                                      title: "Adjust speed",
-                                                      currentValue: speed,
-                                                      divisions: 15,
-                                                      min: 0,
-                                                      max: 15,
-                                                      onChanged: (speed) async {
-                                                        await AudioService
-                                                            .setSpeed(speed);
-                                                      });
-                                                }))
-                                  ]),
+                              /*TODO Visualizer*/
+                              // Row(
+                              //     mainAxisAlignment: MainAxisAlignment.end,
+                              //     children: [
+                              //       StreamBuilder<double>(
+                              //           stream: _musicPlayerController
+                              //               .audioPlayer.speedStream,
+                              //           builder: (context, snapshot) =>
+                              //               IconButton(
+                              //                   icon: Text(
+                              //                       "${snapshot.data?.toStringAsFixed(1)}x",
+                              //                       style: TextStyle(
+                              //                         fontWeight:
+                              //                             FontWeight.bold,
+                              //                         color:
+                              //                             ThisMusicColors.white,
+                              //                       )),
+                              //                   onPressed: () {
+                              //                     _showSliderVolumeDialog(
+                              //                         context: context,
+                              //                         title: "Adjust speed",
+                              //                         currentValue: speed,
+                              //                         divisions: 15,
+                              //                         min: 0,
+                              //                         max: 15,
+                              //                         onChanged: (speed) async {
+                              //                           await AudioService
+                              //                               .setSpeed(speed);
+                              //                         });
+                              //                   }))
+                              //     ]),
                               _buildControllerButtons(
                                   context,
                                   _musicPlayerController.audioPlayer,
@@ -144,7 +145,6 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                                   queue,
                                   processingState,
                                   playing),
-                              /*TODO Visualizer*/
                             ]);
                       })))
         ]));
@@ -308,6 +308,13 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
             return IconButton(
                 icon: icons[index],
                 onPressed: () {
+                  // if (loopMode == LoopMode.off) {
+                  //   AudioService.setRepeatMode(AudioServiceRepeatMode.none);
+                  // } else if (loopMode == LoopMode.one) {
+                  //   AudioService.setRepeatMode(AudioServiceRepeatMode.one);
+                  // } else if (loopMode == LoopMode.all) {
+                  //   AudioService.setRepeatMode(AudioServiceRepeatMode.all);
+                  // }
                   player.setLoopMode(cycleModes[
                       (cycleModes.indexOf(loopMode) + 1) % cycleModes.length]);
                 });

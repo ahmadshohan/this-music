@@ -6,6 +6,7 @@ import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/widgets/closable.dart';
 import 'package:this_music/shared/widgets/j_raised_button.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/shared/widgets/loader.dart';
 
 import 'forgot_password_controller.dart';
 
@@ -32,46 +33,54 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Observer(
-        builder: (_) => Container(
-            height: double.infinity,
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage(_forgetPasswordBg), fit: BoxFit.fill)),
-            child: SafeArea(
-                top: true,
-                bottom: true,
-                left: false,
-                right: false,
-                child: SingleChildScrollView(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildTitleAndLogo(),
-                    SizedBox(height: 150),
-                    ..._buildTitles(),
-                    SizedBox(height: 20),
-                    Form(
-                      key: _formKey,
-                      autovalidate: _forgotPasswordController.autoValidate,
-                      child: _buildInputs(),
-                    ),
-                    Observer(
-                      builder: (_) => Visibility(
-                        visible: _forgotPasswordController.showTimer,
-                        child: Text('${_forgotPasswordController.timer}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyText1
-                                .copyWith(color: Colors.white)),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    _buildSendButton(),
-                    SizedBox(height: 20),
-                    _buildResend()
-                  ],
-                )))),
+        builder: (_) => Stack(
+          children: [
+            Container(
+                height: double.infinity,
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(_forgetPasswordBg),
+                        fit: BoxFit.fill)),
+                child: SafeArea(
+                    top: true,
+                    bottom: true,
+                    left: false,
+                    right: false,
+                    child: SingleChildScrollView(
+                        child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _buildTitleAndLogo(),
+                        SizedBox(height: 150),
+                        ..._buildTitles(),
+                        SizedBox(height: 20),
+                        Form(
+                          key: _formKey,
+                          autovalidate: _forgotPasswordController.autoValidate,
+                          child: _buildInputs(),
+                        ),
+                        Observer(
+                          builder: (_) => Visibility(
+                            visible: _forgotPasswordController.showTimer,
+                            child: Text('${_forgotPasswordController.timer}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    .copyWith(color: Colors.white)),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        _buildSendButton(),
+                        SizedBox(height: 20),
+                        _buildResend()
+                      ],
+                    )))),
+            Visibility(
+                visible: _forgotPasswordController.loading,
+                child: Center(child: Loader()))
+          ],
+        ),
       ),
     );
   }
@@ -154,9 +163,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           onPressed: () async {
             KeyBoard.close(context);
             if (_formKey.currentState.validate()) {
-              _showSendEmailDialog();
-              /*todo handle send email api*/
-
+              await _forgotPasswordController.forgotPassword(context);
             } else
               _forgotPasswordController.autoValidate = true;
           },
@@ -173,8 +180,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               .copyWith(color: Colors.white)),
       SizedBox(width: 10),
       GestureDetector(
-        onTap: () {
-          _forgotPasswordController.resend();
+        onTap: () async {
+          KeyBoard.close(context);
+          if (_formKey.currentState.validate()) {
+            _forgotPasswordController.resend();
+            await _forgotPasswordController.forgotPassword(context);
+          } else
+            _forgotPasswordController.autoValidate = true;
         },
         child: Text(AppLocalization.resend,
             style: Theme.of(context).textTheme.bodyText1.copyWith(
@@ -182,39 +194,5 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 decoration: TextDecoration.underline)),
       )
     ]);
-  }
-
-  _showSendEmailDialog() {
-    showDialog(
-        barrierDismissible: false,
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-              contentPadding: EdgeInsets.all(16),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
-              children: <Widget>[
-                SizedBox(
-                    child: Image.asset('assets/png/sendCase.png',
-                        width: 50, height: 50)),
-                SizedBox(height: 10),
-                Text(AppLocalization.yourRequestSent,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14)),
-                SizedBox(height: 10),
-                SizedBox(
-                    height: 40,
-                    child: JRaisedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacementNamed(
-                              context, AppRoute.loginRoute);
-                        },
-                        text: AppLocalization.continueLabel))
-              ]);
-        });
   }
 }

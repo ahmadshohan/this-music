@@ -6,7 +6,7 @@ import '../shared/localization/app_localization.dart';
 
 class Repository {
   Dio _dio;
-  final _baseUrl = 'https://justice2020.azurewebsites.net/';
+  final _baseUrl = 'http://api-ahmat.thismusic.com.tr/';
   final _apiUrl = 'api/';
 
   get baseUrl {

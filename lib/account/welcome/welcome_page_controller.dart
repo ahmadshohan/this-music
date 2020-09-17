@@ -36,7 +36,7 @@ abstract class _WelcomeControllerBase with Store {
     final result = await _accountRepository.googleSignIn();
     if (result.state == ResultStatus.SUCCESS) {
       final data = result.data as LoginResult;
-      _preferencesService.token = data.token;
+      _preferencesService.token = data.response.token;
       _preferencesService.user = jsonEncode(data.user);
     }
     loading = false;
@@ -48,7 +48,7 @@ abstract class _WelcomeControllerBase with Store {
     final result = await _accountRepository.facebookSignIn();
     if (result.state == ResultStatus.SUCCESS) {
       final data = result.data as LoginResult;
-      _preferencesService.token = data.token;
+      _preferencesService.token = data.response.token;
       _preferencesService.user = jsonEncode(data.user);
     }
     loading = false;

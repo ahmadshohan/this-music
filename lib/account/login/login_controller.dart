@@ -88,7 +88,7 @@ abstract class _LoginControllerBase with Store {
       Toaster.error(msg: result.errorMessage);
     else {
       final data = result.data as LoginResult;
-      _preferencesService.token = data.token;
+      _preferencesService.token = data.response.token;
       _preferencesService.user = jsonEncode(data.user);
       Navigator.pushReplacementNamed(context, AppRoute.mainRoute);
     }

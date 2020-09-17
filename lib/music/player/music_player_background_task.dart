@@ -315,6 +315,13 @@ class AudioPlayerTask extends BackgroundAudioTask {
       return _musicPlayerController.audioPlayer.setShuffleModeEnabled(true);
     }
   }
+
+  @override
+  Future<Function> onSetRepeatMode(AudioServiceRepeatMode repeatMode) {
+    if (repeatMode == AudioServiceRepeatMode.none) {
+      return _musicPlayerController.audioPlayer.setLoopMode(LoopMode.off);
+    }
+  }
 }
 
 class AudioState {

@@ -385,8 +385,7 @@ class _RegisterPageState extends State<RegisterPage> {
           onPressed: () async {
             KeyBoard.close(context);
             if (_formKey.currentState.validate()) {
-              await _registerController.register();
-              Navigator.pushReplacementNamed(context, AppRoute.mainRoute);
+              await _registerController.register(context);
             } else
               _registerController.autoValidate = true;
           },

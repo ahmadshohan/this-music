@@ -8,6 +8,7 @@ import 'package:mobx/mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/login.dart';
 import 'package:this_music/account/data/models/register.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/data_picker.dart';
 import 'package:this_music/shared/constant/user_gender.dart';
@@ -69,7 +70,7 @@ abstract class _RegisterControllerBase with Store {
   @action
   String checkFullName() {
     if (model.fullName.isEmpty) return AppLocalization.userNameRequired;
-    if (model.fullName.length < 7)
+    if (model.fullName.length < 4)
       return AppLocalization.userNameNotValid;
     else
       return null;
@@ -106,7 +107,7 @@ abstract class _RegisterControllerBase with Store {
   @action
   String checkPhoneNumber() {
     if (model.phoneNumber.isEmpty) return AppLocalization.phoneNumberRequired;
-    if (model.phoneNumber.length < 10)
+    if (model.phoneNumber.length < 11)
       return AppLocalization.phoneNumberNotValid;
     else
       return null;
@@ -133,15 +134,16 @@ abstract class _RegisterControllerBase with Store {
   }
 
   @action
-  register() async {
+  register(BuildContext context) async {
     loading = true;
     final result = await _accountRepository.register(model);
     if (result.state == ResultStatus.FAIL)
       Toaster.error(msg: result.errorMessage);
     else {
       final data = result.data as LoginResult;
-      _preferencesService.token = data.token;
+      _preferencesService.token = data.response.token;
       _preferencesService.user = jsonEncode(data.user);
+      Navigator.pushReplacementNamed(context, AppRoute.mainRoute);
     }
     loading = false;
   }
