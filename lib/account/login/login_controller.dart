@@ -81,9 +81,6 @@ abstract class _LoginControllerBase with Store {
   login(BuildContext context) async {
     loading = true;
     final result = await _accountRepository.login(model);
-    print(result.data);
-    print(result.errorMessage);
-    print(result.error);
     if (result.state == ResultStatus.FAIL)
       Toaster.error(msg: result.errorMessage);
     else {

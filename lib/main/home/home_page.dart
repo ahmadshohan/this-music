@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_pro/carousel_pro.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/main/home/home_page_controller.dart';
 import 'package:this_music/main/home/widgets/best_albums_weekly.dart';
 import 'package:this_music/main/home/widgets/special_albums_for_user.dart';
 import 'package:this_music/main/home/widgets/special_user_playlist.dart';
+import 'package:this_music/shared/widgets/loader.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  HomePageController _homePageController = HomePageController();
   AnimationController controllerRecord;
   Animation<double> animationRecord;
   final _inputController = TextEditingController();
@@ -36,6 +40,10 @@ class _HomePageState extends State<HomePage>
         controllerRecord.forward();
       }
     });
+
+    Future<void>.delayed(Duration(milliseconds: 1000), () async {
+      await _homePageController.init();
+    });
   }
 
   @override
@@ -48,39 +56,48 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Container(
-        height: double.infinity,
-        padding: EdgeInsets.all(10),
-        child: SafeArea(
-          top: true,
-          bottom: true,
-          left: false,
-          right: false,
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                _buildSettingsIconButton(),
-                SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+    return Observer(
+      builder: (_) => Stack(
+        children: [
+          Container(
+              height: double.infinity,
+              padding: EdgeInsets.all(10),
+              child: SafeArea(
+                top: true,
+                bottom: true,
+                left: false,
+                right: false,
+                child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      _buildStoryCarousel(),
-                      SizedBox(height: 12),
-                      BestAlbumsWeekly(),
-                      SizedBox(height: 12),
-                      SpecialAlbumsForUser(),
-                      SizedBox(height: 12),
-                      SpecialUserPlayLists(),
+                      _buildSettingsIconButton(),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            _buildStoryCarousel(),
+                            SizedBox(height: 12),
+                            BestAlbumsWeekly(),
+                            SizedBox(height: 12),
+                            SpecialAlbumsForUser(),
+                            SizedBox(height: 12),
+                            SpecialUserPlayLists(),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ));
+              )),
+          Visibility(
+              visible: _homePageController.loading,
+              child: Center(child: Loader()))
+        ],
+      ),
+    );
   }
 
   _buildStoryCarousel() {
@@ -116,10 +133,7 @@ class _HomePageState extends State<HomePage>
     return Align(
       alignment: Alignment.topRight,
       child: IconButton(
-        icon: Icon(
-          Icons.settings,
-          color: ThisMusicColors.white,
-        ),
+        icon: Icon(Icons.settings, color: ThisMusicColors.white),
         onPressed: () => Navigator.pushNamed(context, AppRoute.settingsRoute),
       ),
     );

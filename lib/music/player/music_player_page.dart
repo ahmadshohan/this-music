@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:this_music/common/player_anim.dart';
 import 'package:this_music/music/player/music_player_background_task.dart';
 import 'package:this_music/music/player/music_player_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
-import 'package:this_music/animations/player_anim.dart';
 import 'package:this_music/colors.dart';
 
 class MusicPlayerPage extends StatefulWidget {
