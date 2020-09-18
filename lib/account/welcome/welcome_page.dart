@@ -131,9 +131,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       icon: "assets/png/google.png",
                       iconColor: ThisMusicColors.black,
                       onPressed: () async {
-                        await _welcomeController.googleLogin();
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRoute.mainRoute);
+                        await _welcomeController.googleLogin(context);
                       })),
               SizedBox(height: 10),
               SizedBox(
@@ -145,9 +143,7 @@ class _WelcomePageState extends State<WelcomePage> {
                       icon: "assets/png/facebook.png",
                       iconColor: ThisMusicColors.white,
                       onPressed: () async {
-                        await _welcomeController.facebookLogin();
-                        Navigator.of(context)
-                            .pushReplacementNamed(AppRoute.mainRoute);
+                        await _welcomeController.facebookLogin(context);
                       })),
             ]));
   }

@@ -3,8 +3,10 @@ import 'package:mobx/mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/app_widget.dart';
+import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
+import 'package:this_music/shared/widgets/toaster.dart';
 
 part 'settings_controller.g.dart';
 
@@ -50,8 +52,14 @@ abstract class _SettingsControllerBase with Store {
   @action
   logout(BuildContext context) async {
     loading = true;
-    await _accountRepository.logout();
-    Navigator.of(context).pushReplacementNamed(AppRoute.welcomeRoute);
+    final result = await _accountRepository.logout();
+    if (result.state == ResultStatus.FAIL)
+      Toaster.error(msg: result.errorMessage);
+    else {
+      _preferencesService.user = null;
+      _preferencesService.token = null;
+      Navigator.of(context).pushReplacementNamed(AppRoute.welcomeRoute);
+    }
     loading = false;
   }
 }

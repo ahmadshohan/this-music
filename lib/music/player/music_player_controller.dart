@@ -4,7 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mobx/mobx.dart';
 import 'package:this_music/main.dart';
-import 'package:this_music/music/data/models/song.dart';
+import 'package:this_music/main/data/models/song.dart';
 
 part 'music_player_controller.g.dart';
 

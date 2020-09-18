@@ -1,6 +1,9 @@
 import 'package:mobx/mobx.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/main/data/homepage_repository.dart';
+import 'package:this_music/main/data/models/album.dart';
+import 'package:this_music/main/data/models/slider.dart';
+import 'package:this_music/main/data/models/song.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
@@ -12,11 +15,20 @@ class HomePageController = _HomePageControllerBase with _$HomePageController;
 abstract class _HomePageControllerBase with Store {
   PreferencesService _preferencesService = PreferencesService();
   MusicRepository _musicRepository = MusicRepository();
-  dynamic sliderData;
-  dynamic lastAlbumsData;
-  dynamic bestSongsData;
+
+  @observable
+  SliderResult sliderData = SliderResult();
+
+  @observable
+  AlbumsResult lastAlbumsData = AlbumsResult();
+
+  // @observable
+  // SongResult bestSongsData = SongResult();
+
+  @observable
   dynamic playListHomeData;
 
+  @action
   Future init() async {
     lang = await _preferencesService.lang;
     AppLocalization.langStream.listen((value) {
@@ -24,7 +36,6 @@ abstract class _HomePageControllerBase with Store {
     });
     sliderData = await sliderHomePage();
     lastAlbumsData = await lastAlbumsHomePage();
-    bestSongsData = await bestSongsHomePage();
     playListHomeData = await playListHomePage();
   }
 

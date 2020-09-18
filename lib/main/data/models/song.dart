@@ -30,50 +30,6 @@ class SongResult {
 class Song {
   int id;
   String name;
-  int languageId;
-  int songsId;
-  String createdAt;
-  String updatedAt;
-  SongModel songs;
-
-  Song(
-      {this.id,
-      this.name,
-      this.languageId,
-      this.songsId,
-      this.createdAt,
-      this.updatedAt,
-      this.songs});
-
-  Song.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    languageId = json['language_id'];
-    songsId = json['songs_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-    songs =
-        json['songs'] != null ? new SongModel.fromJson(json['songs']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['language_id'] = this.languageId;
-    data['songs_id'] = this.songsId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
-    if (this.songs != null) {
-      data['songs'] = this.songs.toJson();
-    }
-    return data;
-  }
-}
-
-class SongModel {
-  int id;
-  String name;
   String avatar;
   String file;
   int languageId;
@@ -82,7 +38,7 @@ class SongModel {
   String createdAt;
   String updatedAt;
 
-  SongModel(
+  Song(
       {this.id,
       this.name,
       this.avatar,
@@ -93,7 +49,7 @@ class SongModel {
       this.createdAt,
       this.updatedAt});
 
-  SongModel.fromJson(Map<String, dynamic> json) {
+  Song.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     avatar = json['avatar'];

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
-import './interceptors/token_interceptor.dart';
-import './models/result.dart';
-import '../shared/localization/app_localization.dart';
+import 'package:this_music/data/interceptors/token_interceptor.dart';
+import 'package:this_music/data/models/result.dart';
+import 'package:this_music/shared/localization/app_localization.dart';
 
 class Repository {
   Dio _dio;

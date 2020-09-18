@@ -7,6 +7,7 @@ import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/login.dart';
 import 'package:this_music/app_route.dart';
 import 'package:this_music/data/models/result.dart';
+import 'package:this_music/data/models/user.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
 import 'package:this_music/shared/widgets/toaster.dart';
@@ -86,7 +87,9 @@ abstract class _LoginControllerBase with Store {
     else {
       final data = result.data as LoginResult;
       _preferencesService.token = data.response.token;
+      // var a = await _preferencesService.token;
       _preferencesService.user = jsonEncode(data.user);
+      // var b = User.fromJson(jsonDecode(await _preferencesService.user));
       Navigator.pushReplacementNamed(context, AppRoute.mainRoute);
     }
     loading = false;

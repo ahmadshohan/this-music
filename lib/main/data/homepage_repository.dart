@@ -37,7 +37,7 @@ class MusicRepository extends Repository {
 
   Future<Result<dynamic>> getLastAlbumsHomePage(String lang) async {
     try {
-      final langData = jsonEncode({'lang': lang});
+      final langData = jsonEncode({'lang': 'en'});
       final response =
           await dio.post('${_path}home_page_last_album', data: langData);
       if (response.statusCode == 200) {

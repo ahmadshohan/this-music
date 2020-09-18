@@ -6,7 +6,7 @@ import 'package:this_music/app_route.dart';
 import 'package:this_music/colors.dart';
 import 'package:this_music/main/home/home_page_controller.dart';
 import 'package:this_music/main/home/widgets/best_albums_weekly.dart';
-import 'package:this_music/main/home/widgets/special_albums_for_user.dart';
+import 'package:this_music/main/home/widgets/special_song_for_user.dart';
 import 'package:this_music/main/home/widgets/special_user_playlist.dart';
 import 'package:this_music/shared/widgets/loader.dart';
 
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage>
                             SizedBox(height: 12),
                             BestAlbumsWeekly(),
                             SizedBox(height: 12),
-                            SpecialAlbumsForUser(),
+                            SpecialSongsForUser(),
                             SizedBox(height: 12),
                             SpecialUserPlayLists(),
                           ],

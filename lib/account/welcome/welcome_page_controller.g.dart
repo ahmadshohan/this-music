@@ -43,16 +43,16 @@ mixin _$WelcomeController on _WelcomeControllerBase, Store {
       AsyncAction('_WelcomeControllerBase.googleLogin');
 
   @override
-  Future googleLogin() {
-    return _$googleLoginAsyncAction.run(() => super.googleLogin());
+  Future googleLogin(BuildContext context) {
+    return _$googleLoginAsyncAction.run(() => super.googleLogin(context));
   }
 
   final _$facebookLoginAsyncAction =
       AsyncAction('_WelcomeControllerBase.facebookLogin');
 
   @override
-  Future facebookLogin() {
-    return _$facebookLoginAsyncAction.run(() => super.facebookLogin());
+  Future facebookLogin(BuildContext context) {
+    return _$facebookLoginAsyncAction.run(() => super.facebookLogin(context));
   }
 
   final _$_WelcomeControllerBaseActionController =

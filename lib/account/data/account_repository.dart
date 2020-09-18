@@ -41,8 +41,7 @@ class AccountRepository extends Repository {
     try {
       final data = model.toJson();
       var formData = FormData.fromMap(data);
-      final response = await dio.post('${_path}register',
-          data: formData, options: Options(contentType: 'multipart/form-data'));
+      final response = await dio.post('${_path}register', data: formData);
       if (response.statusCode == 200) {
         final data = response.data['data'];
         return Result(ResultStatus.SUCCESS, data: LoginResult.fromJson(data));
@@ -85,7 +84,8 @@ class AccountRepository extends Repository {
         return _socialMediaLogin(
             result.email,
             result.displayName,
-            result.photoUrl,
+            SocialMedia.googleType,
+            // result.photoUrl,
             SocialMedia.googlePrefix,
             SocialMedia.googlePassword);
       }
@@ -106,7 +106,8 @@ class AccountRepository extends Repository {
         return _socialMediaLogin(
             profile['email'],
             profile['name'],
-            profile['picture'],
+            SocialMedia.facebookType,
+            // profile['picture'],
             SocialMedia.facebookPrefix,
             SocialMedia.facebookPassword);
       }
@@ -118,21 +119,32 @@ class AccountRepository extends Repository {
   }
 
   logout() async {
+    await FacebookLogin().logOut();
+    await GoogleSignIn().signOut();
     try {
-      await FacebookLogin().logOut();
-      await GoogleSignIn().signOut();
-      // final response = await dio.post('${_path}log_out');
+      final response = await dio.post('${_path}log_out');
+      if (response.statusCode == 200) {
+        return Result(ResultStatus.SUCCESS);
+      } else {
+        return getError(response);
+      }
     } catch (e) {
       print(e);
+      if (e is DioError)
+        return getError(e.response);
+      else
+        return Result(ResultStatus.FAIL,
+            errorMessage: AppLocalization.someError);
     }
   }
 
   Future<Result<dynamic>> _socialMediaLogin(String email, String name,
-      String avatar, String prefix, String password) async {
+      String type, String prefix, String password) async {
     //try login
     final loginModel = LoginModel();
     loginModel.email = prefix + email;
     loginModel.password = password;
+    loginModel.type = type;
     final loginResult = await login(loginModel);
     if (loginResult.state == ResultStatus.SUCCESS)
       return Result(ResultStatus.SUCCESS, data: loginResult.data);
@@ -140,7 +152,7 @@ class AccountRepository extends Repository {
     //try register
     final registerModel = RegisterModel();
     registerModel.email = prefix + email;
-    registerModel.userName = name;
+    registerModel.fullName = name;
     // registerModel.avatar = avatar;
     registerModel.password = password;
     final registerResult = await register(registerModel);

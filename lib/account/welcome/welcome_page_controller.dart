@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:mobx/mobx.dart';
 import 'package:this_music/account/data/account_repository.dart';
 import 'package:this_music/account/data/models/login.dart';
+import 'package:this_music/app_route.dart';
 import 'package:this_music/data/models/result.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/shared/services/preferences_service.dart';
@@ -31,25 +33,27 @@ abstract class _WelcomeControllerBase with Store {
   bool isRtl() => lang == AppLocalization.ar;
 
   @action
-  googleLogin() async {
+  googleLogin(BuildContext context) async {
     loading = true;
     final result = await _accountRepository.googleSignIn();
     if (result.state == ResultStatus.SUCCESS) {
       final data = result.data as LoginResult;
       _preferencesService.token = data.response.token;
       _preferencesService.user = jsonEncode(data.user);
+      Navigator.of(context).pushReplacementNamed(AppRoute.mainRoute);
     }
     loading = false;
   }
 
   @action
-  facebookLogin() async {
+  facebookLogin(BuildContext context) async {
     loading = true;
     final result = await _accountRepository.facebookSignIn();
     if (result.state == ResultStatus.SUCCESS) {
       final data = result.data as LoginResult;
       _preferencesService.token = data.response.token;
       _preferencesService.user = jsonEncode(data.user);
+      Navigator.of(context).pushReplacementNamed(AppRoute.mainRoute);
     }
     loading = false;
   }

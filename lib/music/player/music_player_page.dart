@@ -9,6 +9,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:this_music/common/player_anim.dart';
+import 'package:this_music/main/data/models/song.dart';
 import 'package:this_music/music/player/music_player_background_task.dart';
 import 'package:this_music/music/player/music_player_controller.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
@@ -25,21 +26,21 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
       BehaviorSubject.seeded(null);
   double _dragValue;
   Duration _remaining;
-
   MusicPlayerController _musicPlayerController = MusicPlayerController();
   AnimationController controllerPlayer;
   Animation<double> animationPlayer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _commonTween = new Tween<double>(begin: 0.0, end: 1.0);
+  Song songItem;
 
   final _queue = <MediaItem>[
     MediaItem(
         id:
-            "https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3",
+            "http://api-ahmat.thismusic.com.tr/public/upload/songs_file/1598614744.mp3",
         album: "Science Friday",
         title: "A Salute To Head-Scratching Science",
         artist: "Science Friday and WNYC Studios",
-        duration: Duration(milliseconds: 5739820),
+        duration: Duration(minutes: 4),
         artUri:
             "https://media.wnyc.org/i/1400/1400/l/80/1/ScienceFriday_WNYCStudios_1400.jpg"),
     MediaItem(
