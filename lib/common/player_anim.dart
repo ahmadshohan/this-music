@@ -13,12 +13,14 @@ class RotatePlayer extends AnimatedWidget {
         onTap: () {},
         child: RotationTransition(
             turns: animation,
-            child: Container(
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: image != null
-                            ? CachedNetworkImageProvider(image)
-                            : AssetImage('assets/lang/turkey.png'))))));
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image(
+                  height: 120.0,
+                  width: 120.0,
+                  image: image != null
+                      ? CachedNetworkImageProvider(image)
+                      : AssetImage('assets/lang/turkey.png'),
+                ))));
   }
 }

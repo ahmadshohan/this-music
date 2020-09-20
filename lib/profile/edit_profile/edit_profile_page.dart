@@ -33,7 +33,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             title: Text(AppLocalization.profile,
                 style: TextStyle(color: Colors.white))),
         body: Observer(
-            builder: (context) => Stack(
+            builder: (_) => Stack(
                   children: [
                     Container(
                         height: double.infinity,

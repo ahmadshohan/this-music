@@ -17,16 +17,16 @@ abstract class _HomePageControllerBase with Store {
   MusicRepository _musicRepository = MusicRepository();
 
   @observable
-  SliderResult sliderData = SliderResult();
+  List<Slider> sliderData = List();
 
   @observable
-  AlbumsResult lastAlbumsData = AlbumsResult();
+  List<Album> lastAlbumsData = List();
+
+  @observable
+  List<Song> bestSongsData = List();
 
   // @observable
-  // SongResult bestSongsData = SongResult();
-
-  @observable
-  dynamic playListHomeData;
+  // dynamic playListHomeData;
 
   @action
   Future init() async {
@@ -34,9 +34,6 @@ abstract class _HomePageControllerBase with Store {
     AppLocalization.langStream.listen((value) {
       lang = value;
     });
-    sliderData = await sliderHomePage();
-    lastAlbumsData = await lastAlbumsHomePage();
-    playListHomeData = await playListHomePage();
   }
 
   @observable
@@ -52,40 +49,40 @@ abstract class _HomePageControllerBase with Store {
   bool isRtl() => lang == AppLocalization.ar;
 
   @action
-  dynamic sliderHomePage() async {
+  Future<List<Slider>> sliderHomePage() async {
     loading = true;
     final result = await _musicRepository.getSliderHomePage(lang);
-    if (result.state == ResultStatus.FAIL)
+    if (result.state == ResultStatus.FAIL) {
       Toaster.error(msg: AppLocalization.someError);
-    else {
+    } else {
       final data = result.data;
-      return data;
+      sliderData = data.data as List<Slider>;
     }
     loading = false;
   }
 
   @action
-  dynamic lastAlbumsHomePage() async {
+  Future<List<Album>> lastAlbumsHomePage() async {
     loading = true;
     final result = await _musicRepository.getLastAlbumsHomePage(lang);
-    if (result.state == ResultStatus.FAIL)
+    if (result.state == ResultStatus.FAIL) {
       Toaster.error(msg: AppLocalization.someError);
-    else {
+    } else {
       final data = result.data;
-      return data;
+      lastAlbumsData = data.data as List<Album>;
     }
     loading = false;
   }
 
   @action
-  dynamic bestSongsHomePage() async {
+  Future<List<Song>> bestSongsHomePage() async {
     loading = true;
     final result = await _musicRepository.getBestSongsHomePage(lang);
-    if (result.state == ResultStatus.FAIL)
+    if (result.state == ResultStatus.FAIL) {
       Toaster.error(msg: AppLocalization.someError);
-    else {
+    } else {
       final data = result.data;
-      return data;
+      bestSongsData = data.data as List<Song>;
     }
     loading = false;
   }

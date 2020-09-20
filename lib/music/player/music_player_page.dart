@@ -12,6 +12,7 @@ import 'package:this_music/common/player_anim.dart';
 import 'package:this_music/main/data/models/song.dart';
 import 'package:this_music/music/player/music_player_background_task.dart';
 import 'package:this_music/music/player/music_player_controller.dart';
+import 'package:this_music/shared/constant/social_media.dart';
 import 'package:this_music/shared/localization/app_localization.dart';
 import 'package:this_music/colors.dart';
 
@@ -31,8 +32,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   Animation<double> animationPlayer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
   final _commonTween = new Tween<double>(begin: 0.0, end: 1.0);
-  Song songItem;
-
+  Song songItem = Song();
   final _queue = <MediaItem>[
     MediaItem(
         id:
@@ -72,6 +72,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
 
   @override
   Widget build(BuildContext context) {
+    songItem = ModalRoute.of(context).settings.arguments as Song;
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: ThisMusicColors.BottomPanel,
@@ -171,7 +172,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                     color: ThisMusicColors.white,
                   ),
                   onPressed: () {
-                    _buildShowShareFavoriteSheet();
+                    _buildShowShareFavoriteSheet(songItem);
                   })
             ]));
   }
@@ -225,7 +226,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
         });
   }
 
-  _buildShowShareFavoriteSheet() {
+  _buildShowShareFavoriteSheet(Song songItem) {
     return showModalBottomSheet(
         context: context,
         builder: (_) => Container(
@@ -247,10 +248,10 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                       onTap: () async {
                         Navigator.pop(context);
                         await FlutterShare.share(
-                            title: 'Song name',
+                            title: songItem?.name,
                             text: "Album name from This Music",
                             linkUrl:
-                                'https://www.youtube.com/watch?v=1fYllJyZgdU');
+                                'http://api-ahmat.thismusic.com.tr/${songItem?.file}');
                       },
                       child: ListTile(
                           leading: Icon(EvaIcons.share,
@@ -264,12 +265,12 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Expanded(
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.30,
             padding: const EdgeInsets.all(8.0),
             child: RotatePlayer(
                 animation: _commonTween.animate(controllerPlayer),
                 image: mediaItem?.artUri ?? null)),
-        Text(mediaItem?.title ?? "Song",
+        Text(songItem?.name ?? "Song",
             maxLines: 1,
             textAlign: TextAlign.center,
             style: TextStyle(

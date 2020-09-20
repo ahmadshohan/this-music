@@ -142,6 +142,8 @@
   "myOffers" : "عروضي",
   "newsFeed" : " الأخبار",
   "settings" : "الإعدادات",
+  "openCameraPermission": "االرجاء السماح بفتح الكاميرا",
+  "openGalleryPermission": "الرجاء السماح بفتح المعرض",
   "termsAndConditions" : "الشروط والأحكام",
   "aboutApp" : "عن التطبيق",
   "logout" : "تسجيل خروج",

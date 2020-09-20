@@ -9,6 +9,53 @@ part of 'home_page_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomePageController on _HomePageControllerBase, Store {
+  final _$sliderDataAtom = Atom(name: '_HomePageControllerBase.sliderData');
+
+  @override
+  List<Slider> get sliderData {
+    _$sliderDataAtom.reportRead();
+    return super.sliderData;
+  }
+
+  @override
+  set sliderData(List<Slider> value) {
+    _$sliderDataAtom.reportWrite(value, super.sliderData, () {
+      super.sliderData = value;
+    });
+  }
+
+  final _$lastAlbumsDataAtom =
+      Atom(name: '_HomePageControllerBase.lastAlbumsData');
+
+  @override
+  List<Album> get lastAlbumsData {
+    _$lastAlbumsDataAtom.reportRead();
+    return super.lastAlbumsData;
+  }
+
+  @override
+  set lastAlbumsData(List<Album> value) {
+    _$lastAlbumsDataAtom.reportWrite(value, super.lastAlbumsData, () {
+      super.lastAlbumsData = value;
+    });
+  }
+
+  final _$bestSongsDataAtom =
+      Atom(name: '_HomePageControllerBase.bestSongsData');
+
+  @override
+  List<Song> get bestSongsData {
+    _$bestSongsDataAtom.reportRead();
+    return super.bestSongsData;
+  }
+
+  @override
+  set bestSongsData(List<Song> value) {
+    _$bestSongsDataAtom.reportWrite(value, super.bestSongsData, () {
+      super.bestSongsData = value;
+    });
+  }
+
   final _$loadingAtom = Atom(name: '_HomePageControllerBase.loading');
 
   @override
@@ -54,11 +101,18 @@ mixin _$HomePageController on _HomePageControllerBase, Store {
     });
   }
 
+  final _$initAsyncAction = AsyncAction('_HomePageControllerBase.init');
+
+  @override
+  Future<dynamic> init() {
+    return _$initAsyncAction.run(() => super.init());
+  }
+
   final _$sliderHomePageAsyncAction =
       AsyncAction('_HomePageControllerBase.sliderHomePage');
 
   @override
-  Future sliderHomePage() {
+  Future<List<Slider>> sliderHomePage() {
     return _$sliderHomePageAsyncAction.run(() => super.sliderHomePage());
   }
 
@@ -66,7 +120,7 @@ mixin _$HomePageController on _HomePageControllerBase, Store {
       AsyncAction('_HomePageControllerBase.lastAlbumsHomePage');
 
   @override
-  Future lastAlbumsHomePage() {
+  Future<List<Album>> lastAlbumsHomePage() {
     return _$lastAlbumsHomePageAsyncAction
         .run(() => super.lastAlbumsHomePage());
   }
@@ -75,7 +129,7 @@ mixin _$HomePageController on _HomePageControllerBase, Store {
       AsyncAction('_HomePageControllerBase.bestSongsHomePage');
 
   @override
-  Future bestSongsHomePage() {
+  Future<List<Song>> bestSongsHomePage() {
     return _$bestSongsHomePageAsyncAction.run(() => super.bestSongsHomePage());
   }
 
@@ -104,6 +158,9 @@ mixin _$HomePageController on _HomePageControllerBase, Store {
   @override
   String toString() {
     return '''
+sliderData: ${sliderData},
+lastAlbumsData: ${lastAlbumsData},
+bestSongsData: ${bestSongsData},
 loading: ${loading},
 autoValidate: ${autoValidate},
 lang: ${lang}

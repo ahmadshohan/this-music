@@ -17,7 +17,7 @@ class MusicRepository extends Repository {
 
   Future<Result<dynamic>> getSliderHomePage(String lang) async {
     try {
-      final langData = jsonEncode({'lang': lang});
+      final langData = jsonEncode({'lang': 'en'});
       final response =
           await dio.post('${_path}home_page_slider', data: langData);
       if (response.statusCode == 200) {
@@ -57,7 +57,7 @@ class MusicRepository extends Repository {
 
   Future<Result<dynamic>> getBestSongsHomePage(String lang) async {
     try {
-      final langData = jsonEncode({'lang': lang});
+      final langData = jsonEncode({'lang': 'tr'});
       final response =
           await dio.post('${_path}home_page_best_songs', data: langData);
       if (response.statusCode == 200) {

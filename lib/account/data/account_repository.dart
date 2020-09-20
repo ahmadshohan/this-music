@@ -86,8 +86,7 @@ class AccountRepository extends Repository {
             result.displayName,
             SocialMedia.googleType,
             // result.photoUrl,
-            SocialMedia.googlePrefix,
-            SocialMedia.googlePassword);
+            SocialMedia.socialPassword);
       }
       return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
     } catch (error) {
@@ -108,8 +107,7 @@ class AccountRepository extends Repository {
             profile['name'],
             SocialMedia.facebookType,
             // profile['picture'],
-            SocialMedia.facebookPrefix,
-            SocialMedia.facebookPassword);
+            SocialMedia.socialPassword);
       }
       return Result(ResultStatus.FAIL, errorMessage: AppLocalization.someError);
     } catch (error) {
@@ -138,11 +136,11 @@ class AccountRepository extends Repository {
     }
   }
 
-  Future<Result<dynamic>> _socialMediaLogin(String email, String name,
-      String type, String prefix, String password) async {
+  Future<Result<dynamic>> _socialMediaLogin(
+      String email, String name, String type, String password) async {
     //try login
     final loginModel = LoginModel();
-    loginModel.email = prefix + email;
+    loginModel.email = email;
     loginModel.password = password;
     loginModel.type = type;
     final loginResult = await login(loginModel);
@@ -151,10 +149,11 @@ class AccountRepository extends Repository {
 
     //try register
     final registerModel = RegisterModel();
-    registerModel.email = prefix + email;
+    registerModel.email = email;
     registerModel.fullName = name;
     // registerModel.avatar = avatar;
     registerModel.password = password;
+    registerModel.type = type;
     final registerResult = await register(registerModel);
     if (registerResult.state == ResultStatus.SUCCESS)
       return Result(ResultStatus.SUCCESS, data: registerResult.data);

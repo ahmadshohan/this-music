@@ -59,6 +59,8 @@
   "moodActivities": "Mood Activities",
 
   "settings" : "Settings",
+  "openCameraPermission": "Open camera permission denied",
+  "openGalleryPermission": "Open gallery permission denied",
 
   "idNumber" : "Id number",
   "universityDegree" : "University Degree",

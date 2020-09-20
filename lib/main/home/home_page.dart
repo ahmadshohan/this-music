@@ -8,6 +8,7 @@ import 'package:this_music/main/home/home_page_controller.dart';
 import 'package:this_music/main/home/widgets/best_albums_weekly.dart';
 import 'package:this_music/main/home/widgets/special_song_for_user.dart';
 import 'package:this_music/main/home/widgets/special_user_playlist.dart';
+import 'package:this_music/shared/constant/social_media.dart';
 import 'package:this_music/shared/widgets/loader.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  HomePageController _homePageController = HomePageController();
+  HomePageController _controller = HomePageController();
   AnimationController controllerRecord;
   Animation<double> animationRecord;
   final _inputController = TextEditingController();
@@ -42,8 +43,9 @@ class _HomePageState extends State<HomePage>
     });
 
     Future<void>.delayed(Duration(milliseconds: 1000), () async {
-      await _homePageController.init();
+      await _controller.init();
     });
+    _controller.sliderHomePage();
   }
 
   @override
@@ -57,16 +59,16 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     super.build(context);
     return Observer(
-      builder: (_) => Stack(
-        children: [
-          Container(
-              height: double.infinity,
-              padding: EdgeInsets.all(10),
-              child: SafeArea(
-                top: true,
-                bottom: true,
-                left: false,
-                right: false,
+      builder: (_) => SafeArea(
+        top: true,
+        bottom: true,
+        left: false,
+        right: false,
+        child: Stack(
+          children: [
+            Container(
+                height: double.infinity,
+                padding: EdgeInsets.all(10),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,12 +92,11 @@ class _HomePageState extends State<HomePage>
                       ),
                     ],
                   ),
-                ),
-              )),
-          Visibility(
-              visible: _homePageController.loading,
-              child: Center(child: Loader()))
-        ],
+                )),
+            Visibility(
+                visible: _controller.loading, child: Center(child: Loader()))
+          ],
+        ),
       ),
     );
   }
@@ -110,13 +111,26 @@ class _HomePageState extends State<HomePage>
             images: [
               CachedNetworkImage(
                   imageUrl:
-                      'https://cdn-images-1.medium.com/max/2000/1*GqdzzfB_BHorv7V2NV7Jgg.jpeg'),
-              CachedNetworkImage(
-                  imageUrl:
                       'https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
               ExactAssetImage("assets/page_design/home_page.jpeg"),
-              ExactAssetImage("assets/png/temp_news.png")
+              ExactAssetImage("assets/png/temp_news.png"),
             ],
+            // images: _controller.sliderData
+            //     .map((slider) => GestureDetector(
+            //         onTap: () => Navigator.of(context).pushNamed(
+            //             AppRoute.musicPlayerRoute,
+            //             arguments: slider),
+            //         child: slider.contents?.avatar1 != null
+            //             ? CachedNetworkImage(
+            //                 imageUrl:
+            //                     "${SocialMedia.urlPrefix + slider.contents.avatar1}")
+            //             : AssetImage("assets/png/temp_news.png")
+            // CachedNetworkImage(
+            //     imageUrl:
+            //     'https://cdn-images-1.medium.com/max/2000/1*wnIEgP1gNMrK5gZU7QS0-A.jpeg'),
+            // ExactAssetImage("assets/page_design/home_page.jpeg"),
+            // ))
+            // .toList(),
             dotSize: 4.0,
             dotSpacing: 15.0,
             dotColor: Colors.lightGreenAccent,

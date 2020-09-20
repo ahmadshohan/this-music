@@ -139,6 +139,8 @@
   "myOffers" : "Tekliflerim",
   "newsFeed" : "Haber akışı",
   "settings" : "Ayarlar",
+  "openCameraPermission": "Açık kamera izni reddedildi",
+  "openGalleryPermission": "Galeriyi açma izni reddedildi",
   "termsAndConditions" : "şartlar & koşullar",
   "aboutApp" : "Uygulama Hakkında",
   "logout" : "Çıkış Yap",
