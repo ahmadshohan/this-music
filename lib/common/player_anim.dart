@@ -1,6 +1,7 @@
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:this_music/shared/constant/social_media.dart';
 
 class RotatePlayer extends AnimatedWidget {
   final image;
@@ -13,14 +14,13 @@ class RotatePlayer extends AnimatedWidget {
         onTap: () {},
         child: RotationTransition(
             turns: animation,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Image(
-                  height: 120.0,
-                  width: 120.0,
-                  image: image != null
-                      ? CachedNetworkImageProvider(image)
-                      : AssetImage('assets/lang/turkey.png'),
-                ))));
+            child: CircleAvatar(
+              radius: 100,
+              backgroundColor: Colors.transparent,
+              backgroundImage: image != null
+                  ? CachedNetworkImageProvider(
+                      '${SocialMedia.urlPrefix + image}')
+                  : AssetImage('assets/lang/turkey.png'),
+            )));
   }
 }

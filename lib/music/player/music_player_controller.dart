@@ -15,6 +15,12 @@ abstract class _MusicPlayerControllerBase with Store {
   @observable
   bool loading = false;
 
+  @observable
+  bool isFavorite = false;
+
+  @observable
+  bool isExpanded = false;
+
   AudioPlayer _audioPlayer = AudioPlayer();
   AudioPlayer get audioPlayer => _audioPlayer;
 
@@ -139,4 +145,14 @@ abstract class _MusicPlayerControllerBase with Store {
 
   audioServicePlay() async => await AudioService.play();
   audioServicePause() async => await AudioService.pause();
+
+  @action
+  void changeViewIsFavourite() {
+    isFavorite = !isFavorite;
+  }
+
+  @action
+  changeIsExpandedView() {
+    isExpanded = !isExpanded;
+  }
 }

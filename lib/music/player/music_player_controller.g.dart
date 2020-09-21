@@ -24,10 +24,67 @@ mixin _$MusicPlayerController on _MusicPlayerControllerBase, Store {
     });
   }
 
+  final _$isFavoriteAtom = Atom(name: '_MusicPlayerControllerBase.isFavorite');
+
+  @override
+  bool get isFavorite {
+    _$isFavoriteAtom.reportRead();
+    return super.isFavorite;
+  }
+
+  @override
+  set isFavorite(bool value) {
+    _$isFavoriteAtom.reportWrite(value, super.isFavorite, () {
+      super.isFavorite = value;
+    });
+  }
+
+  final _$isExpandedAtom = Atom(name: '_MusicPlayerControllerBase.isExpanded');
+
+  @override
+  bool get isExpanded {
+    _$isExpandedAtom.reportRead();
+    return super.isExpanded;
+  }
+
+  @override
+  set isExpanded(bool value) {
+    _$isExpandedAtom.reportWrite(value, super.isExpanded, () {
+      super.isExpanded = value;
+    });
+  }
+
+  final _$_MusicPlayerControllerBaseActionController =
+      ActionController(name: '_MusicPlayerControllerBase');
+
+  @override
+  void changeViewIsFavourite() {
+    final _$actionInfo = _$_MusicPlayerControllerBaseActionController
+        .startAction(name: '_MusicPlayerControllerBase.changeViewIsFavourite');
+    try {
+      return super.changeViewIsFavourite();
+    } finally {
+      _$_MusicPlayerControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic changeIsExpandedView() {
+    final _$actionInfo = _$_MusicPlayerControllerBaseActionController
+        .startAction(name: '_MusicPlayerControllerBase.changeIsExpandedView');
+    try {
+      return super.changeIsExpandedView();
+    } finally {
+      _$_MusicPlayerControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-loading: ${loading}
+loading: ${loading},
+isFavorite: ${isFavorite},
+isExpanded: ${isExpanded}
     ''';
   }
 }

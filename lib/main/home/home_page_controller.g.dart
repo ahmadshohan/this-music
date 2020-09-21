@@ -71,6 +71,21 @@ mixin _$HomePageController on _HomePageControllerBase, Store {
     });
   }
 
+  final _$isFavoriteAtom = Atom(name: '_HomePageControllerBase.isFavorite');
+
+  @override
+  bool get isFavorite {
+    _$isFavoriteAtom.reportRead();
+    return super.isFavorite;
+  }
+
+  @override
+  set isFavorite(bool value) {
+    _$isFavoriteAtom.reportWrite(value, super.isFavorite, () {
+      super.isFavorite = value;
+    });
+  }
+
   final _$autoValidateAtom = Atom(name: '_HomePageControllerBase.autoValidate');
 
   @override
@@ -162,6 +177,7 @@ sliderData: ${sliderData},
 lastAlbumsData: ${lastAlbumsData},
 bestSongsData: ${bestSongsData},
 loading: ${loading},
+isFavorite: ${isFavorite},
 autoValidate: ${autoValidate},
 lang: ${lang}
     ''';

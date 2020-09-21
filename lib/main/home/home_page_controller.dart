@@ -40,6 +40,9 @@ abstract class _HomePageControllerBase with Store {
   bool loading = false;
 
   @observable
+  bool isFavorite = false;
+
+  @observable
   bool autoValidate = false;
 
   @observable

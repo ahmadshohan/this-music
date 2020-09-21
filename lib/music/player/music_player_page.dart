@@ -5,11 +5,13 @@ import 'package:animations/animations.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:this_music/common/player_anim.dart';
 import 'package:this_music/main/data/models/song.dart';
+import 'package:this_music/main/home/home_page_controller.dart';
 import 'package:this_music/music/player/music_player_background_task.dart';
 import 'package:this_music/music/player/music_player_controller.dart';
 import 'package:this_music/shared/constant/social_media.dart';
@@ -28,6 +30,7 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
   double _dragValue;
   Duration _remaining;
   MusicPlayerController _musicPlayerController = MusicPlayerController();
+  HomePageController _controller = HomePageController();
   AnimationController controllerPlayer;
   Animation<double> animationPlayer;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
@@ -76,80 +79,83 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Scaffold(
         key: _scaffoldKey,
         backgroundColor: ThisMusicColors.BottomPanel,
-        body: Stack(children: [
-          Container(
-              height: double.infinity,
-              decoration: BoxDecoration(
-                  gradient: RadialGradient(colors: [
-                ThisMusicColors.playerGradientLow,
-                ThisMusicColors.playerGradientHigh
-              ], focal: Alignment.center, focalRadius: 0.3, radius: 0.9)),
-              child: SafeArea(
-                  top: true,
-                  bottom: true,
-                  right: false,
-                  left: false,
-                  child: StreamBuilder<AudioState>(
-                      stream: _audioStateStream,
-                      builder: (context, snapshot) {
-                        final audioState = snapshot.data;
-                        final queue = audioState?.queue;
-                        final speed = audioState?.playbackState?.speed ?? 0.0;
-                        final mediaItem = audioState?.mediaItem;
-                        final playbackState = audioState?.playbackState;
-                        final processingState =
-                            playbackState?.processingState ??
-                                AudioProcessingState.none;
-                        final playing = playbackState?.playing ?? false;
-                        return Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              _buildAppBar(),
-                              _buildPictureTitle(mediaItem),
-                              SizedBox(height: 8.0),
-                              _buildSeekBarIndicator(mediaItem, playbackState),
-                              /*TODO Visualizer*/
-                              // Row(
-                              //     mainAxisAlignment: MainAxisAlignment.end,
-                              //     children: [
-                              //       StreamBuilder<double>(
-                              //           stream: _musicPlayerController
-                              //               .audioPlayer.speedStream,
-                              //           builder: (context, snapshot) =>
-                              //               IconButton(
-                              //                   icon: Text(
-                              //                       "${snapshot.data?.toStringAsFixed(1)}x",
-                              //                       style: TextStyle(
-                              //                         fontWeight:
-                              //                             FontWeight.bold,
-                              //                         color:
-                              //                             ThisMusicColors.white,
-                              //                       )),
-                              //                   onPressed: () {
-                              //                     _showSliderVolumeDialog(
-                              //                         context: context,
-                              //                         title: "Adjust speed",
-                              //                         currentValue: speed,
-                              //                         divisions: 15,
-                              //                         min: 0,
-                              //                         max: 15,
-                              //                         onChanged: (speed) async {
-                              //                           await AudioService
-                              //                               .setSpeed(speed);
-                              //                         });
-                              //                   }))
-                              //     ]),
-                              _buildControllerButtons(
-                                  context,
-                                  _musicPlayerController.audioPlayer,
-                                  mediaItem,
-                                  queue,
-                                  processingState,
-                                  playing),
-                            ]);
-                      })))
-        ]));
+        body: Observer(
+          builder: (_) => Stack(children: [
+            Container(
+                height: double.infinity,
+                decoration: BoxDecoration(
+                    gradient: RadialGradient(colors: [
+                  ThisMusicColors.playerGradientLow,
+                  ThisMusicColors.playerGradientHigh
+                ], focal: Alignment.center, focalRadius: 0.3, radius: 0.9)),
+                child: SafeArea(
+                    top: true,
+                    bottom: true,
+                    right: false,
+                    left: false,
+                    child: StreamBuilder<AudioState>(
+                        stream: _audioStateStream,
+                        builder: (context, snapshot) {
+                          final audioState = snapshot.data;
+                          final queue = audioState?.queue;
+                          final speed = audioState?.playbackState?.speed ?? 0.0;
+                          final mediaItem = audioState?.mediaItem;
+                          final playbackState = audioState?.playbackState;
+                          final processingState =
+                              playbackState?.processingState ??
+                                  AudioProcessingState.none;
+                          final playing = playbackState?.playing ?? false;
+                          return Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                _buildAppBar(),
+                                _buildPictureTitle(mediaItem),
+                                SizedBox(height: 8.0),
+                                _buildSeekBarIndicator(
+                                    mediaItem, playbackState),
+                                /*TODO Visualizer*/
+                                // Row(
+                                //     mainAxisAlignment: MainAxisAlignment.end,
+                                //     children: [
+                                //       StreamBuilder<double>(
+                                //           stream: _musicPlayerController
+                                //               .audioPlayer.speedStream,
+                                //           builder: (context, snapshot) =>
+                                //               IconButton(
+                                //                   icon: Text(
+                                //                       "${snapshot.data?.toStringAsFixed(1)}x",
+                                //                       style: TextStyle(
+                                //                         fontWeight:
+                                //                             FontWeight.bold,
+                                //                         color:
+                                //                             ThisMusicColors.white,
+                                //                       )),
+                                //                   onPressed: () {
+                                //                     _showSliderVolumeDialog(
+                                //                         context: context,
+                                //                         title: "Adjust speed",
+                                //                         currentValue: speed,
+                                //                         divisions: 15,
+                                //                         min: 0,
+                                //                         max: 15,
+                                //                         onChanged: (speed) async {
+                                //                           await AudioService
+                                //                               .setSpeed(speed);
+                                //                         });
+                                //                   }))
+                                //     ]),
+                                _buildControllerButtons(
+                                    context,
+                                    _musicPlayerController.audioPlayer,
+                                    mediaItem,
+                                    queue,
+                                    processingState,
+                                    playing),
+                              ]);
+                        })))
+          ]),
+        ));
   }
 
   _buildAppBar() {
@@ -239,16 +245,26 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
                         topRight: Radius.circular(15))),
                 child:
                     Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  ListTile(
-                      leading: Icon(Icons.favorite_border,
-                          color: ThisMusicColors.white),
-                      title: Text(AppLocalization.favorite,
-                          style: TextStyle(color: ThisMusicColors.white))),
+                  Observer(
+                    builder: (_) => ListTile(
+                        leading: InkWell(
+                          onTap: () {
+                            _musicPlayerController.changeViewIsFavourite();
+                          },
+                          child: Icon(
+                              _musicPlayerController.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: ThisMusicColors.white),
+                        ),
+                        title: Text(AppLocalization.favorite,
+                            style: TextStyle(color: ThisMusicColors.white))),
+                  ),
                   GestureDetector(
                       onTap: () async {
                         Navigator.pop(context);
                         await FlutterShare.share(
-                            title: songItem?.name,
+                            title: songItem?.name ?? '',
                             text: "Album name from This Music",
                             linkUrl:
                                 'http://api-ahmat.thismusic.com.tr/${songItem?.file}');
@@ -265,12 +281,11 @@ class _MusicPlayerPageState extends State<MusicPlayerPage>
     return Expanded(
       child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
         Container(
-            height: MediaQuery.of(context).size.height * 0.30,
-            padding: const EdgeInsets.all(8.0),
+            height: MediaQuery.of(context).size.height * 0.22,
             child: RotatePlayer(
                 animation: _commonTween.animate(controllerPlayer),
-                image: mediaItem?.artUri ?? null)),
-        Text(songItem?.name ?? "Song",
+                image: songItem?.avatar ?? null)),
+        Text(songItem?.name ?? "Song name",
             maxLines: 1,
             textAlign: TextAlign.center,
             style: TextStyle(

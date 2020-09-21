@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:this_music/colors.dart';
+import 'package:this_music/music/player/music_player_controller.dart';
 
 class BottomPanel extends StatefulWidget {
   @override
@@ -8,50 +10,44 @@ class BottomPanel extends StatefulWidget {
 }
 
 class _BottomPanelState extends State<BottomPanel> {
-  bool isExpanded = false;
-  bool _isFav = false;
-  changeIsExpandedView() {
-    setState(() {
-      isExpanded = !isExpanded;
-    });
-  }
+  MusicPlayerController _controller = MusicPlayerController();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ThisMusicColors.BottomPanel,
-      width: double.infinity,
-      alignment: Alignment.bottomCenter,
-      child: ExpansionTile(
-        title: Text('song', style: TextStyle(color: ThisMusicColors.white)),
-        initiallyExpanded: isExpanded,
-        trailing: isExpanded
-            ? Icon(
-                Icons.arrow_drop_down,
-                color: Colors.white,
-              )
-            : Icon(
-                Icons.arrow_drop_up,
-                color: Colors.white,
-              ),
-        onExpansionChanged: (_) {
-          changeIsExpandedView();
-        },
-        children: <Widget>[
-          _buildBottomPanel(),
-        ],
+    return Observer(
+      builder: (_) => Container(
+        color: ThisMusicColors.BottomPanel,
+        width: double.infinity,
+        alignment: Alignment.bottomCenter,
+        child: ExpansionTile(
+          title: Text('song', style: TextStyle(color: ThisMusicColors.white)),
+          initiallyExpanded: _controller.isExpanded,
+          trailing: _controller.isExpanded
+              ? Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.white,
+                )
+              : Icon(
+                  Icons.arrow_drop_up,
+                  color: Colors.white,
+                ),
+          onExpansionChanged: (_) {
+            _controller.changeIsExpandedView();
+          },
+          children: <Widget>[
+            _buildBottomPanel(),
+          ],
+        ),
       ),
     );
   }
 
   _buildBottomPanel() {
-    return Row(
-      children: <Widget>[
-        Expanded(
+    return Row(children: <Widget>[
+      Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(right: 16, left: 7, bottom: 5),
-            child: Row(
-              children: <Widget>[
+              padding: const EdgeInsets.only(right: 16, left: 7, bottom: 5),
+              child: Row(children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(right: 20, left: 5, bottom: 5),
                   child: Image.asset("assets/lang/turkey.png", height: 60),
@@ -79,11 +75,9 @@ class _BottomPanelState extends State<BottomPanel> {
                 Spacer(),
                 InkWell(
                     onTap: () {
-                      setState(() {
-                        _isFav = !_isFav;
-                      });
+                      _controller.changeViewIsFavourite();
                     },
-                    child: _isFav
+                    child: _controller.isFavorite
                         ? Icon(Icons.favorite, color: ThisMusicColors.white)
                         : Icon(Icons.favorite_border,
                             color: ThisMusicColors.white)),
@@ -91,17 +85,12 @@ class _BottomPanelState extends State<BottomPanel> {
                   width: 20,
                 ),
                 InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    Icons.play_arrow,
-                    color: ThisMusicColors.white,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+                    onTap: () {},
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: ThisMusicColors.white,
+                    ))
+              ])))
+    ]);
   }
 }
